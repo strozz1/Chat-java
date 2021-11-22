@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="338.0" prefWidth="273.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="app.javachat.AddServerController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label fx:id="welcomeText" text="Join Server" />
+   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
+      <children>
+         <Label text="Usuario">
+            <HBox.margin>
+               <Insets right="12.0" />
+            </HBox.margin>
+         </Label>
+         <TextField fx:id="inputUserJoin" />
+      </children>
+   </HBox>
+   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
+      <children>
+         <Label text="Servidor">
+            <HBox.margin>
+               <Insets right="12.0" />
+            </HBox.margin>
+         </Label>
+         <TextField fx:id="inputServerJoin" />
+      </children>
+   </HBox>
+   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
+      <children>
+         <Label text="Puerto">
+            <HBox.margin>
+               <Insets right="12.0" />
+            </HBox.margin>
+         </Label>
+         <TextField fx:id="inputPortJoin" />
+      </children>
+   </HBox>
+   <Button mnemonicParsing="false" onMouseClicked="#onJoinServer" text="Acceder" />
+   <Label fx:id="welcomeText1" text="Create Server" />
+   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
+      <children>
+         <Label text="Usuario">
+            <HBox.margin>
+               <Insets right="12.0" />
+            </HBox.margin>
+         </Label>
+         <TextField fx:id="inputUserCreate" />
+      </children>
+   </HBox>
+   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
+      <children>
+         <Label text="Servidor">
+            <HBox.margin>
+               <Insets right="12.0" />
+            </HBox.margin>
+         </Label>
+         <TextField fx:id="inputServerCreate" />
+      </children>
+   </HBox>
+   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
+      <children>
+         <Label text="Puerto">
+            <HBox.margin>
+               <Insets right="12.0" />
+            </HBox.margin>
+         </Label>
+         <TextField fx:id="inputPortCreate" />
+      </children>
+   </HBox>
+   <Button mnemonicParsing="false" onMouseClicked="#onCreateServer" text="Crear" />
+</VBox>
