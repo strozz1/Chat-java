@@ -2,7 +2,7 @@ package app.javachat.Controllers;
 
 import app.javachat.Excepciones.ExceptionConnexion;
 import app.javachat.Models.Mensaje;
-import app.javachat.Models.PackageInfo;
+import app.javachat.Models.Sala;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
 
@@ -59,14 +59,14 @@ public class SalaServidor{
             // Si el objeto pasado es null o no es un Mensaje o User, tiramos una exception
             if ((object instanceof User)) {
                 System.out.println("Preparándose para enviar el objeto de tipo SalaModel.");
-                socket = Sala.crearConexionConServer(((User) object).getIP(), PORT_INTERNO); // Creamos la conexion
+                socket = Sala.crearConnexionConServer(((User) object).getIP(), PORT_INTERNO); // Creamos la conexion
                 objectWriter = new ObjectOutputStream(socket.getOutputStream());
                 objectWriter.writeObject(salaModel);  //Escribimos el objeto.
             } else {
                 System.out.println("Preparándose para enviar el objet de tipo Mensaje.");
                 for (User user : salaModel.getListUsuarios()) {
                     try {
-                        socket = Sala.crearConexionConServer(user.getIP(), PORT_INTERNO); // Creamos la conexion
+                        socket = Sala.crearConnexionConServer(user.getIP(), PORT_INTERNO); // Creamos la conexion
                         if (socket == null) throw new ExceptionConnexion("El socket es nulo por errores internos.");
 
                         objectWriter = new ObjectOutputStream(socket.getOutputStream());
@@ -83,7 +83,7 @@ public class SalaServidor{
             try {
                 //Cerrar y liberar recursos;
                 System.out.println("Liberando Recursos y cerrando conexiones...");
-                Sala.cerrarConexionSocket(socket);
+                Sala.cerrarConnexionSocket(socket);
                 if (objectWriter != null)
                     objectWriter.close();
             } catch (IOException e) {
@@ -108,7 +108,7 @@ public class SalaServidor{
             try {
                 System.out.println("Creando servidor para recibir el mensaje.");
                 //Creamos una instancia de nuestro server para poder recibir mensajes de los usuarios.
-                socketServer = Sala.crearConexionPropia(salaModel.getPORT());
+                socketServer = Sala.crearConnexionPropia(salaModel.getPORT());
                 if (socketServer == null)
                     throw new ExceptionConnexion("El socket servidor es nulo por errores internos.");
 
@@ -139,8 +139,8 @@ public class SalaServidor{
             } finally {
                 try {
                     //Cerrar y liberar recursos
-                    Sala.cerrarConexionSocket(socketEntrante);
-                    Sala.cerrarConexionSocket(socketServer);
+                    Sala.cerrarConnexionSocket(socketEntrante);
+                    Sala.cerrarConnexionSocket(socketServer);
                     if (objectReader != null)
                         objectReader.close();
                 } catch (IOException e) {

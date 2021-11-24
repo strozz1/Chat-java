@@ -1,9 +1,8 @@
 package app.javachat.Controllers;
 
 import app.javachat.Models.Mensaje;
-import app.javachat.Models.PackageInfo;
+import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 public class ChatFileManager {
 
-    private PackageInfo paquete;
+    private SalaModel salaModel;
     private final String serverIp;
 
     private final String APP_NAME = "MyMessage";
@@ -27,13 +26,13 @@ public class ChatFileManager {
     private Path serverFile;
 
     /**
-     * Constructor el cual recibe la ip del server y una lista de mensajes, guardandolos en los atributos.
+     * Constructor el cual recibe la ip del server y una lista de mensajes, guardándolos en los atributos.
      *
-     * @param serverIp
-     * @param paquete
+     * @param serverIp ip del server
+     * @param salaModel sala del server
      */
-    ChatFileManager(String serverIp, PackageInfo paquete) {
-        this.paquete = paquete;
+    ChatFileManager(String serverIp, SalaModel salaModel) {
+        this.salaModel = salaModel;
         this.serverIp = serverIp;
         createServerFile();
         writeFile();
@@ -56,7 +55,7 @@ public class ChatFileManager {
     public void writeFile() {
         try {
             ObjectOutputStream writer = new ObjectOutputStream(Files.newOutputStream(serverFile));
-            writer.writeObject(paquete);
+            writer.writeObject(salaModel);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,7 +65,7 @@ public class ChatFileManager {
     public void readFile() {
         try {
             ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(serverFile));
-            paquete =(PackageInfo) reader.readObject();
+            salaModel =(SalaModel) reader.readObject();
             reader.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -74,30 +73,6 @@ public class ChatFileManager {
 
     }
 
-    public PackageInfo getPaquete() {
-        return paquete;
-    }
-
-    public void setPaquete(PackageInfo paquete) {
-        this.paquete = paquete;
-    }
-
     public static void main(String[] args) {
-        ArrayList<Mensaje> a = new ArrayList();
-        ArrayList<User> b = new ArrayList();
-        b.add(new User("Juan", "192.168.1.2"));
-        b.add(new User("Pepe", "192.168.1.3"));
-        b.add(new User("Alberto", "192.168.1.34"));
-
-        a.add(new Mensaje("hola", b.get(0), LocalDateTime.now()));
-        a.add(new Mensaje("adios", b.get(1), LocalDateTime.now()));
-        a.add(new Mensaje("q tal", b.get(0), LocalDateTime.now()));
-
-        PackageInfo g = new PackageInfo();
-        g.setListMensajes(a);
-        g.setListUsuarios(b);
-        ChatFileManager n = new ChatFileManager("192.167.1.12", g);
-        System.out.println(n.getPaquete());
-
     }
 }

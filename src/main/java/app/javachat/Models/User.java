@@ -1,7 +1,6 @@
 package app.javachat.Models;
 
 
-import app.javachat.Log.LogInfo;
 
 import java.io.Serializable;
 import java.net.InterfaceAddress;
@@ -68,7 +67,7 @@ public class User implements Serializable {
                         ipHost = interfaceAddress.getAddress().getHostAddress().toString();
             }
         } catch (SocketException e) {
-            LogInfo.log().severe(e.getMessage());
+            System.err.println(e.getMessage());
         }
         return ipHost;
     }

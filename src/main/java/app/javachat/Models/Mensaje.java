@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Mensaje implements Serializable {
-    private String content;
-    private User sender;
-    private LocalDateTime horaEnvio;
+    private final String content;
+    private final User sender;
+    private final LocalDateTime horaEnvio;
 
     public Mensaje(String content, User sender, LocalDateTime horaEnvio) {
         this.content = content;

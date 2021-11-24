@@ -1,6 +1,6 @@
-package app.javachat;
+package app.javachat.Controllers;
 
-import app.javachat.Controllers.SalaCliente;
+import app.javachat.MainApplication;
 import app.javachat.Models.Mensaje;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
@@ -13,13 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -28,7 +24,7 @@ public class ChatController {
     private User user;
 
     public SalaModel changeView() throws IOException {
-        FXMLLoader loader = new FXMLLoader(MainAplication.class.getResource("add-server-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("add-server-view.fxml"));
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(loader.load());

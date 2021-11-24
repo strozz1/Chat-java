@@ -5,9 +5,10 @@ import app.javachat.Controllers.SalaServidor;
 
 
 public class Servidor extends Thread {
-    private User host;
-    private  int port;
-    public void run(User host, int PORT) {
+    private static User host;
+    private static int port;
+
+    public static void startServer(User host, int PORT) {
         SalaServidor server = new SalaServidor(host, PORT);
         while (true) {
             server.recibirMensaje();
@@ -20,16 +21,23 @@ public class Servidor extends Thread {
     }
 
     public Servidor(User user, int port) {
-        this.port= port;
-        this.host = user;
+        Servidor.port = port;
+        host = user;
 
     }
 
     @Override
     public void run() {
         System.out.println("EL HOST DEL SERVIDOR ES " + host.getUsername() + " CON SERVIDOR " + host.getIP() + ":" + port);
-        run(host, port);
+        startServer(host, port);
 
 
+    }
+
+    public static void main(String[] args) {
+        User user = new User("host", "localhost");
+        port = 456;
+        System.out.println("EL HOST DEL SERVIDOR ES " + user.getUsername() + " CON SERVIDOR " + user.getIP() + ":" + port);
+        startServer(user, port);
     }
 }

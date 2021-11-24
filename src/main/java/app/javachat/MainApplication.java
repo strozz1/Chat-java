@@ -7,13 +7,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MainAplication extends Application {
+public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainAplication.class.getResource("main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 650);
         stage.setTitle("Chat");
-//        scene.getStylesheets().add(MainAplication.class.getResource("main-view-style.css").toExternalForm());
+        scene.getStylesheets().add(MainApplication.class.getResource("main-view-style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

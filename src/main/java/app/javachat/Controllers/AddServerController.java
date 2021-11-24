@@ -1,4 +1,4 @@
-package app.javachat;
+package app.javachat.Controllers;
 
 import app.javachat.Controllers.SalaCliente;
 import app.javachat.Models.SalaModel;
@@ -10,7 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
 public class AddServerController {
     String serverIp,userText;
@@ -20,8 +19,8 @@ public class AddServerController {
     private SalaModel sala;
     private User user;
 
-    public void onJoinServer(MouseEvent event) throws IOException {
-        serverIp= inputUserJoin.getText();
+    public void onJoinServer(MouseEvent event) {
+        serverIp= inputServerJoin.getText();
         userText = inputUserJoin.getText();
         User user = new User(userText,serverIp);
         port = Integer.parseInt(inputPortJoin.getText());
@@ -36,7 +35,7 @@ public class AddServerController {
 
     }
 
-    public void onCreateServer(MouseEvent event) throws IOException {
+    public void onCreateServer(MouseEvent event){
         serverIp= inputServerCreate.getText();
         userText = inputUserCreate.getText();
         User user = new User(userText,serverIp);

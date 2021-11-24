@@ -59,4 +59,12 @@ public class SalaModel implements Serializable {
     public List<Mensaje> getListMensajes() {
         return listMensajes;
     }
+
+    public void setListUsuarios(List<User> listUsuarios) {
+        this.listUsuarios = listUsuarios;
+    }
+
+    public void setListMensajes(List<Mensaje> listMensajes) {
+        this.listMensajes = listMensajes;
+    }
 }

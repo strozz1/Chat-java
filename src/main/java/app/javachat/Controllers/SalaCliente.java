@@ -1,34 +1,29 @@
 package app.javachat.Controllers;
 
 import app.javachat.Excepciones.ExceptionConnexion;
-import app.javachat.Models.Mensaje;
-import app.javachat.Models.PackageInfo;
+import app.javachat.Models.Sala;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
-import javafx.scene.control.ListView;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 
 /**
  * Esta clase se usa cada vez que un usuario quiera unirse a una sala ya creada.
  */
 public class SalaCliente {
-    private int PORT_INTERNO = 9656;
     private final User user;
     private final SalaModel salaModel;
 
     /**
      * Creamos una SalaCliente, pasándole un objeto SalaModel, el cual contiene la ip,
-     * el puerto y lista users y mensajes.También contiene el host.
+     * el puerto y lista users y mensajes. También contiene el host.
      * Además le pasamos nuestro usuario para que lo guarde
      *
-     * @param salaModel
-     * @param user
+     * @param salaModel el modelo de sala del servidor
+     * @param user      el usuario que accede al servidor
      */
     public SalaCliente(SalaModel salaModel, User user) {
         this.salaModel = salaModel;
@@ -37,6 +32,7 @@ public class SalaCliente {
     }
 
     public Object recibirMensaje() {
+        int PORT_INTERNO = 9656;
 
         System.out.println("METHOD IN: recibirMensaje() of class SalaCliente.java" +
                 "> Entrando al método...");
@@ -48,7 +44,7 @@ public class SalaCliente {
         try {
             System.out.println("> Creando servidor interno para recibir mensajes del servidor.");
             //Creamos una instancia de nuestro server interno para poder recibir mensajes del server.
-            if ((socketPropio = Sala.crearConexionPropia(PORT_INTERNO)) == null)
+            if ((socketPropio = Sala.crearConnexionPropia(PORT_INTERNO)) == null)
                 throw new ExceptionConnexion("El socket es nulo.");
             // Escuchamos mensajes entrantes y creamos el objeto socketServerEntrante, siendo este el usuario que envía datos.
             System.out.println("> Escuchando en el servidor." + user.getIP() + ":" + PORT_INTERNO);
@@ -65,8 +61,8 @@ public class SalaCliente {
         } finally {
             try {
                 //Cerrar y liberar recursos
-                Sala.cerrarConexionSocket(socketSaliente);
-                Sala.cerrarConexionSocket(socketPropio);
+                Sala.cerrarConnexionSocket(socketSaliente);
+                Sala.cerrarConnexionSocket(socketPropio);
                 if (objectReader != null)
                     objectReader.close();
             } catch (IOException e) {
@@ -80,8 +76,6 @@ public class SalaCliente {
     }
 
 
-
-
     public void enviarMensaje(Object mensaje) {
 
         System.out.println("METHOD IN: enviarMensaje() of class SalaCliente.java" +
@@ -92,10 +86,8 @@ public class SalaCliente {
         try {
             // Si el objeto pasado es null o no es un Mensaje.java, tiramos una exception
             if (mensaje == null) throw new ExceptionConnexion("El objeto a enviar es nulo");
-            if (!(mensaje instanceof Mensaje) && !(mensaje instanceof SalaModel))
-                throw new ExceptionConnexion("El objeto a enviar debe ser un objeto de tipo Mensaje o SalaModel");
-            // Creamos la conexion
-            socket = Sala.crearConexionConServer(salaModel.getServerIp(), salaModel.getPORT());
+            // Creamos la connexion
+            socket = Sala.crearConnexionConServer(salaModel.getServerIp(), salaModel.getPORT());
             if (socket == null) throw new ExceptionConnexion("El socket es nulo por errores internos.");
 
             objectWriter = new ObjectOutputStream(socket.getOutputStream());
@@ -107,7 +99,7 @@ public class SalaCliente {
         } finally {
             try {
                 //Cerrar y liberar recursos;
-                Sala.cerrarConexionSocket(socket);
+                Sala.cerrarConnexionSocket(socket);
                 if (objectWriter != null)
                     objectWriter.close();
             } catch (IOException e) {
@@ -119,11 +111,11 @@ public class SalaCliente {
     }
 
 
-    public List<User> getListUsuarios() {
-        return salaModel.getListUsuarios();
-    }
-
-    public List<Mensaje> getListMensajes() {
-        return salaModel.getListMensajes();
-    }
+//    public List<User> getListUsuarios() {
+//        return salaModel.getListUsuarios();
+//    }
+//
+//    public List<Mensaje> getListMensajes() {
+//        return salaModel.getListMensajes();
+//    }
 }
