@@ -2,6 +2,7 @@ module app.javachat {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.logging;
+    requires java.desktop;
 
 
     opens app.javachat to javafx.fxml;

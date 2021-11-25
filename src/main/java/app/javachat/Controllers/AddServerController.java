@@ -1,6 +1,11 @@
 package app.javachat.Controllers;
 
 import app.javachat.Controllers.SalaCliente;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.TrayIcon.MessageType;
+import java.net.MalformedURLException;
+
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.Servidor;
 import app.javachat.Models.User;
@@ -22,7 +27,7 @@ public class AddServerController {
     public void onJoinServer(MouseEvent event) {
         serverIp= inputServerJoin.getText();
         userText = inputUserJoin.getText();
-        User user = new User(userText,serverIp);
+        User user = new User(userText);
         port = Integer.parseInt(inputPortJoin.getText());
         SalaCliente sala = new SalaCliente(new SalaModel(serverIp,port,user),user);
         sala.enviarMensaje(user);
@@ -31,7 +36,8 @@ public class AddServerController {
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();
         thisStage.close();
-        
+
+
 
     }
 

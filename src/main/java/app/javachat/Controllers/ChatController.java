@@ -13,9 +13,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -53,8 +56,8 @@ public class ChatController {
                 Mensaje mensaje = (Mensaje) sala.recibirMensaje();
                 isMyMessage = mensaje.getSender().equals(user);
                 Label label = new Label(mensaje.toString());
-                if(isMyMessage)
-                label.setTextFill(Color.RED);
+                if (isMyMessage)
+                    label.setTextFill(Color.RED);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -62,6 +65,8 @@ public class ChatController {
                     }
 
                 });
+                if(!chatInput.isFocused())
+                notificationMessage(mensaje);
                 recibirMensajes(lv);
                 return null;
             }
@@ -75,6 +80,8 @@ public class ChatController {
 
     @FXML
     private ListView contenedorMensajes;
+    @FXML
+    private BorderPane primary;
     @FXML
     private TextField chatInput;
 
@@ -90,5 +97,33 @@ public class ChatController {
             }
         };
         (new Thread(task2)).start();
+    }
+
+    public void notificationMessage(Mensaje mensaje) {
+        try {
+            //Obtain only one instance of the SystemTray object
+            SystemTray tray = SystemTray.getSystemTray();
+
+            // If you want to create an icon in the system tray to preview
+            Image image = Toolkit.getDefaultToolkit().createImage("some-icon.png");
+            //Alternative (if the icon is on the classpath):
+            //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
+
+            TrayIcon trayIcon = new TrayIcon(image, "Java AWT Tray Demo");
+            //Let the system resize the image if needed
+            trayIcon.setImageAutoSize(true);
+            //Set tooltip text for the tray icon
+            trayIcon.setToolTip("System tray icon demo");
+            tray.add(trayIcon);
+
+            // Display info notification:
+            trayIcon.displayMessage("Nuevo mensaje de " + mensaje.getSender().getUsername(), mensaje.getContent(), TrayIcon.MessageType.INFO);
+            // Error:
+            // trayIcon.displayMessage("Hello, World", "Java Notification Demo", MessageType.ERROR);
+            // Warning:
+            // trayIcon.displayMessage("Hello, World", "Java Notification Demo", MessageType.WARNING);
+        } catch (Exception ex) {
+            System.err.print(ex);
+        }
     }
 }

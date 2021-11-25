@@ -1,9 +1,12 @@
 package app.javachat.Controllers;
 
 import app.javachat.Excepciones.ExceptionConnexion;
+import app.javachat.Models.Mensaje;
 import app.javachat.Models.Sala;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
+
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,6 +17,7 @@ import java.net.Socket;
  * Esta clase se usa cada vez que un usuario quiera unirse a una sala ya creada.
  */
 public class SalaCliente {
+
     private final User user;
     private final SalaModel salaModel;
 
@@ -118,4 +122,5 @@ public class SalaCliente {
 //    public List<Mensaje> getListMensajes() {
 //        return salaModel.getListMensajes();
 //    }
+
 }
