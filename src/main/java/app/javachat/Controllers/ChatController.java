@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -55,7 +56,9 @@ public class ChatController {
                 Boolean isMyMessage;
                 Mensaje mensaje = (Mensaje) sala.recibirMensaje();
                 isMyMessage = mensaje.getSender().equals(user);
+
                 Label label = new Label(mensaje.toString());
+
                 if (isMyMessage)
                     label.setTextFill(Color.RED);
                 Platform.runLater(new Runnable() {
@@ -65,10 +68,11 @@ public class ChatController {
                     }
 
                 });
-                if(!chatInput.isFocused())
-                notificationMessage(mensaje);
+                if (!chatInput.isFocused())
+                    notificationMessage(mensaje);
                 recibirMensajes(lv);
                 return null;
+
             }
 
         };
@@ -80,8 +84,6 @@ public class ChatController {
 
     @FXML
     private ListView contenedorMensajes;
-    @FXML
-    private BorderPane primary;
     @FXML
     private TextField chatInput;
 
@@ -125,5 +127,37 @@ public class ChatController {
         } catch (Exception ex) {
             System.err.print(ex);
         }
+    }
+
+    private Boolean isLightMode = true;
+
+    public void onThemeButtonClicked(MouseEvent mouseEvent) {
+        if (isLightMode)
+            changeToDarkMode();
+        else
+            changeToLightMode();
+
+    }
+
+    @FXML
+    private BorderPane parent;
+    @FXML
+    private ImageView themeImage;
+
+    private void changeToLightMode() {
+        parent.getStylesheets().remove(MainApplication.class.getResource("darkMode-style.css").toExternalForm());
+        parent.getStylesheets().add(MainApplication.class.getResource("lightMode-style.css").toExternalForm());
+//        javafx.scene.image.Image image = new javafx.scene.image.Image("src/main/java/app/javachat/img/lightIconTheme.png");
+//        themeImage.setImage(image);
+        isLightMode = !isLightMode;
+
+    }
+
+    private void changeToDarkMode() {
+        parent.getStylesheets().remove(MainApplication.class.getResource("lightMode-style.css").toExternalForm());
+        parent.getStylesheets().add(MainApplication.class.getResource("darkMode-style.css").toExternalForm());
+//        javafx.scene.image.Image image = new javafx.scene.image.Image("src/main/java/app/javachat/img/darkIconTheme.png");
+//        themeImage.setImage(image);
+        isLightMode = !isLightMode;
     }
 }

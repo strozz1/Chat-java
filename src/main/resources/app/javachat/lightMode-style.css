@@ -1,0 +1,18 @@
+.primaryColor{
+    -fx-background-color: #ffffff;
+}
+.secondaryColor{
+    -fx-background-color: #f8f8f8;
+}
+
+.roundButton{
+-fx-background-radius: 100;
+}
+.themeButton{
+    -fx-background-color: #454545;
+
+}
+.textColor{
+fx-textColor: #454545;
+}
+

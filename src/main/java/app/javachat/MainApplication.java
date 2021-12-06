@@ -13,7 +13,6 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 650);
         stage.setTitle("Chat");
-        scene.getStylesheets().add(MainApplication.class.getResource("main-view-style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
