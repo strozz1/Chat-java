@@ -2,6 +2,7 @@ package app.javachat.Models;
 
 
 import app.javachat.Controllers.SalaServidor;
+import app.javachat.Logger.Log;
 
 
 public class Servidor extends Thread {
@@ -28,7 +29,7 @@ public class Servidor extends Thread {
 
     @Override
     public void run() {
-        System.out.println("EL HOST DEL SERVIDOR ES " + host.getUsername() + " CON SERVIDOR " + host.getIP() + ":" + port);
+        Log.show("EL HOST DEL SERVIDOR ES " + host.getUsername() + " CON SERVIDOR " + host.getIP() + ":" + port);
         startServer(host, port);
 
 
@@ -37,7 +38,7 @@ public class Servidor extends Thread {
     public static void main(String[] args) {
         User user = new User("host", "localhost");
         port = 456;
-        System.out.println("EL HOST DEL SERVIDOR ES " + user.getUsername() + " CON SERVIDOR " + user.getIP() + ":" + port);
+        Log.show("EL HOST DEL SERVIDOR ES " + user.getUsername() + " CON SERVIDOR " + user.getIP() + ":" + port);
         startServer(user, port);
     }
 }

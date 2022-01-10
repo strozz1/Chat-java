@@ -1,6 +1,8 @@
 package app.javachat.Models;
 
 
+import app.javachat.Logger.Log;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,19 +16,14 @@ public interface Sala {
      * @return socket creado
      */
     static Socket crearConnexionConServer(String serverIp, int PORT) {
-        System.out.println("METHOD IN: crearConnexionConServer() of class Sala.java" +
-                "> Entrando al método...");
         Socket server = null;
         try {
-            System.out.println("Creando connexion con el server " + serverIp + ":" + PORT);
+            Log.show("Creando connexion con el server " + serverIp + ":" + PORT);
             server = new Socket(serverIp, PORT);
-            System.out.println("Servidor creado correctamente");
+            Log.show("Servidor creado correctamente");
         } catch (IOException e) {
-            System.out.println("ERROR: Ha habido un fallo al crear la conexion.");
-            e.printStackTrace();
+            Log.error("Ha habido un fallo al crear la conexion. " + e.getMessage());
         }
-        System.out.println("METHOD OUT: crearConnexionConServer() of class Sala.java" +
-                "> Saliendo del método...");
         return server;
     }
 
@@ -38,10 +35,10 @@ public interface Sala {
     static ServerSocket crearConnexionPropia(int PORT) {
         ServerSocket server = null;
         try {
-            System.out.println("Abirendo server en local, puerto " + PORT);
+            Log.show("Abriendo server en puerto " + PORT);
             server = new ServerSocket(PORT);
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            Log.error(e.getMessage());
         }
         return server;
     }
@@ -54,9 +51,9 @@ public interface Sala {
             //Si el server no es nulo, cierra la connexion.
             if (server != null)
                 server.close();
-            System.out.println("Conexion cerrada.");
+            Log.show("Conexion cerrada.");
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            Log.error(e.getMessage());
         }
     }
 
@@ -66,9 +63,9 @@ public interface Sala {
             if (server != null)
                 server.close();
 
-            System.out.println("Server cerrado.");
+            Log.show("Server cerrado.");
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            Log.error(e.getMessage());
         }
     }
 

@@ -1,6 +1,7 @@
 package app.javachat.Controllers;
 
 import app.javachat.Excepciones.ExceptionConnexion;
+import app.javachat.Logger.Log;
 import app.javachat.Models.Mensaje;
 import app.javachat.Models.Sala;
 import app.javachat.Models.SalaModel;
@@ -13,7 +14,7 @@ import java.net.*;
 import java.util.Enumeration;
 import java.util.List;
 
-public class SalaServidor{
+public class SalaServidor {
     private int PORT_INTERNO = 9656;
     private final SalaModel salaModel;
 
@@ -37,7 +38,7 @@ public class SalaServidor{
                         ipHost = interfaceAddress.getAddress().getHostAddress();
             }
         } catch (SocketException e) {
-            System.out.println(e.getMessage());
+            Log.error(e.getMessage(),"SERVER");
         }
         return ipHost;
     }
@@ -48,22 +49,20 @@ public class SalaServidor{
      * @param object el objeto a enviar
      */
     public void enviarMensaje(Object object) {
-        System.out.println("METHOD IN: enviarMensaje() of class SalaServidor.java" +
-                "> Entrando al método...");
         // creamos las instancias necesarias para enviar mensajes a los clientes
         Socket socket = null;
         ObjectOutputStream objectWriter = null;
 
-        System.out.println("Preparando para enviar mensaje." + object.toString());
+        Log.show("Preparando para enviar mensaje." + object.toString(),"SERVER");
         try {
             // Si el objeto pasado es null o no es un Mensaje o User, tiramos una exception
             if ((object instanceof User)) {
-                System.out.println("Preparándose para enviar el objeto de tipo SalaModel.");
+                Log.show("Preparándose para enviar el objeto de tipo SalaModel.","SERVER");
                 socket = Sala.crearConnexionConServer(((User) object).getIP(), PORT_INTERNO); // Creamos la conexion
                 objectWriter = new ObjectOutputStream(socket.getOutputStream());
                 objectWriter.writeObject(salaModel);  //Escribimos el objeto.
             } else {
-                System.out.println("Preparándose para enviar el objet de tipo Mensaje.");
+                Log.show("Preparándose para enviar el objet de tipo Mensaje.","SERVER");
                 for (User user : salaModel.getListUsuarios()) {
                     try {
                         socket = Sala.crearConnexionConServer(user.getIP(), PORT_INTERNO); // Creamos la conexion
@@ -71,34 +70,30 @@ public class SalaServidor{
 
                         objectWriter = new ObjectOutputStream(socket.getOutputStream());
                         objectWriter.writeObject(object);  //Escribimos el objeto.
-                        System.out.println("Mensaje enviado a " + user.getUsername() + " con IP " + user.getIP() + ".");
-                    }catch (Exception e){
-                        System.out.println("ERROR: Mensaje no enviado a "+((Mensaje) object).getSender().getUsername() +", es posible que se halla desconectado.");
+                        Log.show("Mensaje enviado a " + user.getUsername() + " con IP " + user.getIP() + ".","SERVER");
+                    } catch (Exception e) {
+                        Log.error("Mensaje no enviado a " + ((Mensaje) object).getSender().getUsername() + ", es posible que se halla desconectado.","SERVER");
                     }
                 }
             }
-        } catch (IOException  e) {
-            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            Log.error(e.getMessage());
         } finally {
             try {
                 //Cerrar y liberar recursos;
-                System.out.println("Liberando Recursos y cerrando conexiones...");
+                Log.show("Liberando Recursos y cerrando conexiones...","SERVER");
                 Sala.cerrarConnexionSocket(socket);
                 if (objectWriter != null)
                     objectWriter.close();
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                Log.error(e.getMessage(),"SERVER");
             }
         }
-        System.out.println("METHOD OUT: enviarMensaje() of class SalaServidor.java" +
-                "> Saliendo del método...");
     }
 
 
     public void recibirMensaje() {
         {
-            System.out.println("METHOD IN: recibirMensaje() of class SalaServidor.java" +
-                    "> Entrando al método...");
             ServerSocket socketServer = null;
             Socket socketEntrante = null;
             //objectRec es el que te envía el user, objectSender el objeto que envías.
@@ -106,13 +101,13 @@ public class SalaServidor{
             ObjectInputStream objectReader = null;
 
             try {
-                System.out.println("Creando servidor para recibir el mensaje.");
+                Log.show("Creando servidor para recibir el mensaje.","SERVER");
                 //Creamos una instancia de nuestro server para poder recibir mensajes de los usuarios.
                 socketServer = Sala.crearConnexionPropia(salaModel.getPORT());
                 if (socketServer == null)
                     throw new ExceptionConnexion("El socket servidor es nulo por errores internos.");
 
-                System.out.println("Escuchando en el servidor " + salaModel.getServerIp() + ":" + salaModel.getPORT() + ".");
+                Log.show("Escuchando en el servidor " + salaModel.getServerIp() + ":" + salaModel.getPORT() + ".","SERVER");
                 // Escuchamos mensajes entrantes y creamos el objeto socketServerEntrante, siendo este el usuario que envía datos.
                 socketEntrante = socketServer.accept();
                 if (socketEntrante == null)
@@ -120,22 +115,22 @@ public class SalaServidor{
 
                 objectReader = new ObjectInputStream(socketEntrante.getInputStream());
 
-                System.out.println("Leyendo el objeto recibido.");
+                Log.show("Leyendo el objeto recibido.","SERVER");
                 objectRecibido = objectReader.readObject();
                 // Al recibir el mensaje del cliente, comprobamos de que objeto se trata
                 if (objectRecibido instanceof User) {
-                    System.out.println("El objeto es de tipo User."+objectRecibido);
+                    Log.show("El objeto es de tipo User." + objectRecibido,"SERVER");
                     addUsuario((User) objectRecibido);
                 } else {
-                    System.out.println("El objeto es de tipo Mensaje."+objectRecibido);
+                    Log.show("El objeto es de tipo Mensaje." + objectRecibido,"SERVER");
                     addMensaje((Mensaje) objectRecibido);
-                    if(!salaModel.getListUsuarios().contains(((Mensaje) objectRecibido).getSender()))
+                    if (!salaModel.getListUsuarios().contains(((Mensaje) objectRecibido).getSender()))
                         addUsuario(((Mensaje) objectRecibido).getSender());
                 }
                 //Enviamos el mensaje
                 enviarMensaje(objectRecibido);
             } catch (IOException | ClassNotFoundException | ExceptionConnexion e) {
-                System.out.println("ERROR: "+e.getMessage());
+                Log.error(e.getMessage(),"SERVER");
             } finally {
                 try {
                     //Cerrar y liberar recursos
@@ -144,12 +139,10 @@ public class SalaServidor{
                     if (objectReader != null)
                         objectReader.close();
                 } catch (IOException e) {
-                    System.out.println(e.getMessage());
+                    Log.error(e.getMessage(),"SERVER");
                 }
             }
         }
-        System.out.println("METHOD OUT: recibirMensaje() of class SalaServidor.java" +
-                "> Saliendo del método...");
     }
 
     public void addMensaje(Mensaje mensaje) {
