@@ -24,7 +24,6 @@ public class SalaServidor {
 
     /**
      * Busca la ip local del sistema.
-     *
      * @return ipHost, que es la ip del pc del usuario
      */
     private static String getIpHost() {
@@ -45,7 +44,6 @@ public class SalaServidor {
 
     /**
      * Metodo que envia mensaje a todos los usuarios conectados.
-     *
      * @param object el objeto a enviar
      */
     public void enviarMensaje(Object object) {

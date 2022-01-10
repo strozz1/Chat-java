@@ -2,12 +2,10 @@ package app.javachat.Controllers;
 
 import app.javachat.Excepciones.ExceptionConnexion;
 import app.javachat.Logger.Log;
-import app.javachat.Models.Mensaje;
 import app.javachat.Models.Sala;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -44,22 +42,22 @@ public class SalaCliente {
         ObjectInputStream objectReader = null;
 
         try {
-            Log.show("Creando servidor interno para recibir mensajes del servidor.");
+            Log.show("Creando servidor interno para recibir mensajes del servidor.","CLIENT");
             //Creamos una instancia de nuestro server interno para poder recibir mensajes del server.
             if ((socketPropio = Sala.crearConnexionPropia(PORT_INTERNO)) == null)
                 throw new ExceptionConnexion("El socket es nulo.");
             // Escuchamos mensajes entrantes y creamos el objeto socketServerEntrante, siendo este el usuario que envía datos.
-            Log.show("Escuchando en el servidor." + user.getIP() + ":" + PORT_INTERNO);
+            Log.show("Escuchando en el servidor." + user.getIP() + ":" + PORT_INTERNO,"CLIENT");
             socketSaliente = socketPropio.accept();
             objectReader = new ObjectInputStream(socketSaliente.getInputStream());
 
-            Log.show("Leyendo objeto recibido.");
+            Log.show("Leyendo objeto recibido.","CLIENT");
             // Recaudamos el mensaje del cliente, comprobamos de que objeto se trata
             objetoRecibido = objectReader.readObject();
 
 
         } catch (IOException | ClassNotFoundException | ExceptionConnexion e) {
-            System.out.println(e.getMessage());
+            Log.error(e.getMessage(),"CLIENT");
         } finally {
             try {
                 //Cerrar y liberar recursos
@@ -68,7 +66,7 @@ public class SalaCliente {
                 if (objectReader != null)
                     objectReader.close();
             } catch (IOException e) {
-                Log.error(e.getMessage());
+                Log.error(e.getMessage(),"CLIENT");
             }
         }
         //Devolvemos el mensaje
@@ -92,10 +90,10 @@ public class SalaCliente {
 
             objectWriter = new ObjectOutputStream(socket.getOutputStream());
             objectWriter.writeObject(mensaje);  //Escribimos el objeto.
-            Log.show("Mensaje enviado." + mensaje);
+            Log.show("Mensaje enviado." + mensaje,"CLIENT");
 
         } catch (IOException | ExceptionConnexion e) {
-            Log.error(e.getMessage());
+            Log.error(e.getMessage(),"CLIENT");
         } finally {
             try {
                 //Cerrar y liberar recursos;
@@ -103,7 +101,7 @@ public class SalaCliente {
                 if (objectWriter != null)
                     objectWriter.close();
             } catch (IOException e) {
-                Log.error(e.getMessage());
+                Log.error(e.getMessage(),"CLIENT");
             }
         }
     }

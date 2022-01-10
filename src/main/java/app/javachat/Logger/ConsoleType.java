@@ -1,5 +1,7 @@
 package app.javachat.Logger;
 
+import app.javachat.Controllers.LoggerController;
+
 public class ConsoleType implements LoggerType{
     @Override
     public void showMessage(String msg) {
@@ -19,6 +21,6 @@ public class ConsoleType implements LoggerType{
     @Override
     public void showError(String msg, String sender) {
 
-        System.err.println("| "+sender + " ERROR| > " + msg);
+        System.err.println("|"+sender + " ERROR| > " + msg);
     }
 }

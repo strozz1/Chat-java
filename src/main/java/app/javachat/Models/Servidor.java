@@ -14,8 +14,6 @@ public class Servidor extends Thread {
         while (true) {
             server.recibirMensaje();
             System.out.println(server.getListUsuarios());
-            System.out.println(server.getListMensajes());
-
         }
 
 

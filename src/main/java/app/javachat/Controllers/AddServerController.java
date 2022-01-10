@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 
-public class AddServerController {
+public class AddServerController{
     String serverIp,userText;
     int port;
     @FXML
@@ -62,4 +62,6 @@ public class AddServerController {
     public User getUser() {
         return this.user;
     }
+
+
 }

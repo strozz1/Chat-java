@@ -1,11 +1,14 @@
 package app.javachat.Controllers;
 
+import app.javachat.Logger.Log;
+import app.javachat.Logger.WindowLogType;
 import app.javachat.MainApplication;
 import app.javachat.Models.Mensaje;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -160,4 +163,18 @@ public class ChatController {
 //        themeImage.setImage(image);
         isLightMode = !isLightMode;
     }
+
+    public void onLogPressed(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("logger-window.fxml"));
+        Stage stage = new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        Scene scene = new Scene(loader.load());
+        LoggerController controller = loader.getController();
+        LoggerControllerRetriever.setLoggerController(controller);
+        Log.setLoggerType(new WindowLogType());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
 }
