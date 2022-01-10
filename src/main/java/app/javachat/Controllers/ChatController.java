@@ -1,5 +1,6 @@
 package app.javachat.Controllers;
 
+import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
 import app.javachat.MainApplication;
@@ -12,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -30,25 +32,42 @@ public class ChatController {
     private SalaCliente sala;
     private User user;
 
-    public SalaModel changeView() throws IOException {
+    @FXML
+    private Button btnLog;
+    @FXML
+    private ListView contenedorMensajes;
+    @FXML
+    private TextField chatInput;
+
+    @FXML
+    private BorderPane parent;
+
+
+
+    @FXML
+    void initialize() throws IOException {
+        SalaModel salaModel = changeViewToAddOrJoinServer();
+        sala = new SalaCliente(salaModel, user);
+        recibirMensajes(contenedorMensajes);
+    }
+
+
+
+    public SalaModel changeViewToAddOrJoinServer() throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("add-server-view.fxml"));
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(loader.load());
         AddServerController addServerController = loader.getController();
         stage.setScene(scene);
+        stage.setOnCloseRequest(e->{
+            Platform.exit();
+            System.exit(1);
+        });
         stage.showAndWait();
         user = addServerController.getUser();
         SalaModel salaModel = addServerController.getSalaModel();
         return salaModel;
-    }
-
-
-    @FXML
-    void initialize() throws IOException {
-        SalaModel salaModel = changeView();
-        sala = new SalaCliente(salaModel, user);
-        recibirMensajes(contenedorMensajes);
     }
 
     public void recibirMensajes(ListView lv) {
@@ -84,11 +103,6 @@ public class ChatController {
 
     }
 
-
-    @FXML
-    private ListView contenedorMensajes;
-    @FXML
-    private TextField chatInput;
 
     public void onSendMensaje(MouseEvent mouseEvent) {
         String mensaje = chatInput.getText();
@@ -142,10 +156,6 @@ public class ChatController {
 
     }
 
-    @FXML
-    private BorderPane parent;
-    @FXML
-    private ImageView themeImage;
 
     private void changeToLightMode() {
         parent.getStylesheets().remove(MainApplication.class.getResource("darkMode-style.css").toExternalForm());
@@ -164,7 +174,13 @@ public class ChatController {
         isLightMode = !isLightMode;
     }
 
+
     public void onLogPressed(ActionEvent actionEvent) throws IOException {
+        loadLog();
+        btnLog.setDisable(true);
+    }
+
+    private void loadLog() throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("logger-window.fxml"));
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
@@ -174,6 +190,12 @@ public class ChatController {
         Log.setLoggerType(new WindowLogType());
         stage.setScene(scene);
         stage.show();
+
+        stage.setOnCloseRequest(windowEvent -> {
+            Log.setLoggerType(new ConsoleType());
+            btnLog.setDisable(false);
+            stage.close();
+        });
     }
 
 
