@@ -186,8 +186,7 @@ public class ChatController {
         stage.initModality(Modality.WINDOW_MODAL);
         Scene scene = new Scene(loader.load());
         LoggerController controller = loader.getController();
-        LoggerControllerRetriever.setLoggerController(controller);
-        Log.setLoggerType(new WindowLogType());
+        Log.setLoggerType(new WindowLogType(controller));
         stage.setScene(scene);
         stage.show();
 

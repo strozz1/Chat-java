@@ -1,8 +1,11 @@
 package app.javachat.Logger;
 
 public class Log {
-    static LoggerType loggerType = new ConsoleType();
+    private static LoggerType loggerType = new ConsoleType();
 
+    private Log(){
+
+    }
     public static void show(String message) {
 
         loggerType.showMessage(message);
@@ -27,4 +30,8 @@ public class Log {
         Log.loggerType = loggerType;
     }
 
+
+    public static LoggerType getLoggerType() {
+        return loggerType;
+    }
 }
