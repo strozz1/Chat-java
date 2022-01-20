@@ -7,7 +7,7 @@ import app.javachat.Logger.Log;
 import app.javachat.Models.ChatRequest;
 import app.javachat.Models.SimpleChat;
 import app.javachat.Models.User;
-import javafx.fxml.FXMLLoader;
+import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -58,9 +58,10 @@ public class ChatListener extends Thread {
 
             if (objectRead instanceof ChatRequest) {
                 this.chatRequest = (ChatRequest) objectRead;
-                crearNuevoChat();
+                ChatRequest selfChatRequest = new ChatRequest(Info.localUser);
+                crearNuevoChat(selfChatRequest.getSenderPort());
                 //devuelve nueva info al sender sobre tu puerto y nombre
-//                enviarChatRequest();
+//                enviarChatRequest(selfChatRequest);
 
             }
 
@@ -72,18 +73,17 @@ public class ChatListener extends Thread {
 
     }
 
-    private void crearNuevoChat() {
+    private void crearNuevoChat(int port) {
         // Cargar vistas del FXML
         lateralChatMenu= controller.getLateralMenu();
-        SimpleChat simpleChat= new SimpleChat(chatRequest,LOCAL_PORT);
+        SimpleChat simpleChat= new SimpleChat(chatRequest,port);
         ChatItem chatItem = new ChatItem();
         simpleChat.setChatItem(chatItem);
-        simpleChat.paintData();
 
         LeftChatItem leftChatItem= new LeftChatItem(simpleChat);
-
+        leftChatItem.setMainController(controller);
         //Add chat to left side
-        lateralChatMenu.getChildren().add(leftChatItem);
+        Platform.runLater(()->lateralChatMenu.getChildren().add(leftChatItem));
 
     }
 

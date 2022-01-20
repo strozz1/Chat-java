@@ -1,26 +1,35 @@
 package app.javachat.Controllers.CustomControllers;
 
+import app.javachat.Controllers.ViewControllers.MainController;
 import app.javachat.MainApplication;
-import app.javachat.Models.Chat;
+import app.javachat.Models.SimpleChat;
+import app.javachat.Models.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
 public class LeftChatItem extends AnchorPane {
     private LeftChatItemController controller;
+    private ChatItem chatItem;
 
     public LeftChatItem() {
         super();
         loadXML();
     }
 
-    public LeftChatItem(Chat chat) {
+    public LeftChatItem(SimpleChat chat) {
         super();
         loadXML();
+        chatItem = chat.getChatItem();
+        User otherUser = chat.getOtherUser();
+        setUsernameText(otherUser.getUsername());
         controller.setChat(chat);
+
+        //Start Listening
+        chat.start();
+
     }
 
     private void loadXML() {
@@ -41,5 +50,10 @@ public class LeftChatItem extends AnchorPane {
 
     public void setUsernameText(String username){
         controller.getLeftmenuUserLabel().setText(username);
+    }
+
+    public void setMainController(MainController mainController) {
+        controller.setMainController(mainController);
+
     }
 }

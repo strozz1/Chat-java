@@ -38,4 +38,7 @@ public class ChatItem extends AnchorPane {
         return controller.getChatBox();
     }
 
+    public ChatItemController getController() {
+        return controller;
+    }
 }

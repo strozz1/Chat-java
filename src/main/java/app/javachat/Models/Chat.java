@@ -26,11 +26,9 @@ public interface Chat {
 
     }
 
-    void setChatContainer(VBox chatContainer);
 
     ChatItem getChatItem();
 
     void setChatItem(ChatItem chatItem);
 
-    void paintData();
 }

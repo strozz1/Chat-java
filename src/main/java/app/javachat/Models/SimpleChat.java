@@ -77,11 +77,6 @@ public class SimpleChat implements Chat {
     }
 
     @Override
-    public void setChatContainer(VBox chatContainer) {
-        this.chatContainer = chatItem.getChatBox();
-    }
-
-    @Override
     public ChatItem getChatItem() {
         return chatItem;
     }
@@ -91,14 +86,16 @@ public class SimpleChat implements Chat {
         this.chatItem=chatItem;
     }
 
-    @Override
-    public void paintData() {
-        chatItem.setUsername(otherUser.getUsername());
-        //Todo
-    }
 
     private void printMessage(Message message) {
         Platform.runLater(() -> chatContainer.getChildren().add(new Label(message.getContent())));
     }
+
+
+    public User getOtherUser() {
+        return otherUser;
+    }
+
+
 
 }
