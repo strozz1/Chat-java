@@ -1,11 +1,11 @@
 .primaryColor{
-    -fx-background-color: #454545;
+    -fx-background-color: #2d2d2d;
 }
 .secondaryColor{
-    -fx-background-color: #737373;
+    -fx-background-color: #484848;
 }
 .thirdColor{
-     -fx-background-color: #989898;
+     -fx-background-color: #333333;
  }
 
 
@@ -16,8 +16,16 @@
     -fx-background-color: #f8f8f8;
 }
 .textColor{
-fx-textColor: #efefef;
+    -fx-text-fill: #efefef;
 }
 .textColor2{
-    fx-textColor: #969696;
+    -fx-text-fill: #969696;
+}
+.addButton{
+    -fx-background-color: transparent;
+    -fx-border-radius: 90;
+    -fx-background-radius: 90;
+    -fx-border-color: #ffffff;
+    -fx-text-fill: #ffffff;
+
 }

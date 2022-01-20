@@ -1,11 +1,11 @@
 .primaryColor{
-    -fx-background-color: #ffffff;
+    -fx-background-color: #d3d3d3;
 }
 .secondaryColor{
-    -fx-background-color: #d2d2d2;
+    -fx-background-color: #e7e7e7;
 }
 .thirdColor{
-    -fx-background-color: #989898;
+    -fx-background-color: #f6f6f6;
 }
 
 .roundButton{
@@ -16,9 +16,17 @@
 
 }
 .textColor{
-fx-textColor: #454545;
+    -fx-text-fill: #454545;
 }
 .textColor2{
-    fx-textColor: #aaaaaa;
+    -fx-text-fill: #aaaaaa;
+}
+.addButton{
+    -fx-background-color: transparent;
+    -fx-border-radius: 90;
+    -fx-background-radius: 90;
+    -fx-border-color:#454545;
+    -fx-text-fill: #454545;
+
 }
 

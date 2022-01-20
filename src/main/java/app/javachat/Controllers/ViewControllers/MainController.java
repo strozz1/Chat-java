@@ -2,10 +2,6 @@ package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Controllers.CustomControllers.UserChatItemControl;
 import app.javachat.Controllers.SalaCliente;
-import app.javachat.Llamadas.Call;
-import app.javachat.Logger.ConsoleType;
-import app.javachat.Logger.Log;
-import app.javachat.Logger.WindowLogType;
 import app.javachat.MainApplication;
 import app.javachat.Models.Mensaje;
 import app.javachat.Models.SalaModel;
@@ -19,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -31,12 +26,9 @@ import java.util.List;
 
 public class MainController {
     private List<UserChatItemControl> chatObjectList;
-    private Boolean isLightMode = true;
     private SalaCliente sala;
     private User localUser, otherUser = new User("Alberto Jimenez"); // Temporal user
 
-    @FXML
-    private Button btnLog;
     @FXML
     private VBox lateralMenu;
     @FXML
@@ -44,14 +36,10 @@ public class MainController {
     @FXML
     private TextField chatInput;
 
-    @FXML
-    private BorderPane parent;
 
-
-    public MainController() throws IOException {
+    public MainController(){
         chatObjectList = new ArrayList<>();
     }
-
 
     @FXML
     void initialize(){

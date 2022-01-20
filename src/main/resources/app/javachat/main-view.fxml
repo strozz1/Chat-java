@@ -4,22 +4,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300.0" minWidth="600.0" prefHeight="650.0" prefWidth="1000.0" styleClass="primaryColor" stylesheets="@darkMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.ViewControllers.MainController">
+<BorderPane fx:id="parent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="650.0" minWidth="1000.0" prefHeight="730.0" prefWidth="1400.0" styleClass="primaryColor" stylesheets="@darkMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.ViewControllers.MainController">
    <left>
-      <VBox alignment="CENTER_LEFT" maxWidth="250.0" styleClass="secondaryColor" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER_LEFT" maxWidth="250.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="lateralMenu" alignment="TOP_CENTER" prefWidth="250.0" styleClass="secondaryColor" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#getButtonLLamar" text="Llamar" />
-               </children>
+            <VBox fx:id="lateralMenu" alignment="TOP_CENTER" prefWidth="250.0" styleClass="primaryColor" VBox.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -27,7 +26,7 @@
                   <Insets top="20.0" />
                </padding>
             </VBox>
-            <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onMouseClicked="#onAddChat" style="-fx-background-color: #5bf20a; -fx-background-radius: 90; -fx-border-radius: 90; -fx-border-color: black;" text="+" textAlignment="CENTER">
+            <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onMouseClicked="#onAddChat" styleClass="addButton" text="+" textAlignment="CENTER">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
@@ -35,7 +34,7 @@
                   <Blend />
                </effect>
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
             </Button>
          </children>
@@ -46,7 +45,7 @@
          <center>
             <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="566.0" prefWidth="895.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
                <content>
-                  <VBox fx:id="paneChat" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="primaryColor" />
+                  <VBox fx:id="paneChat" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="thirdColor" />
                </content>
             </ScrollPane>
          </center>
@@ -58,7 +57,7 @@
                         <Cursor fx:constant="TEXT" />
                      </cursor>
                   </TextField>
-                  <Button fx:id="botonEnviarMensaje" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onSendMensaje" text="Send" textFill="WHITE">
+                  <Button fx:id="botonEnviarMensaje" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onSendMensaje" text="Send" textFill="#0a0a0a">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -74,6 +73,29 @@
                </padding>
             </HBox>
          </bottom>
+         <top>
+            <HBox alignment="CENTER" styleClass="secondaryColor" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="TOP_CENTER" prefHeight="96.0" prefWidth="1021.0">
+                     <children>
+                        <Circle fill="#5f88ae" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label prefHeight="76.0" prefWidth="877.0" styleClass="textColor" text="Nombre de la persona">
+                           <font>
+                              <Font name="System Bold" size="30.0" />
+                           </font>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="8.0" left="30.0" right="30.0" top="8.0" />
+                     </padding>
+                  </HBox>
+                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#getButtonLLamar" text="Llamar" textAlignment="CENTER" textFill="#070707" />
+               </children>
+            </HBox>
+         </top>
       </BorderPane>
    </center>
 </BorderPane>
