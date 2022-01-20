@@ -1,7 +1,5 @@
 package app.javachat.Logger;
 
-import app.javachat.Controllers.LoggerController;
-
 public class ConsoleType implements LoggerType{
     @Override
     public void showMessage(String msg) {

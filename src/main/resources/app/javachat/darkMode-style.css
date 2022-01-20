@@ -4,6 +4,10 @@
 .secondaryColor{
     -fx-background-color: #737373;
 }
+.thirdColor{
+     -fx-background-color: #989898;
+ }
+
 
 .roundButton{
 -fx-background-radius: 100;
@@ -12,5 +16,8 @@
     -fx-background-color: #f8f8f8;
 }
 .textColor{
-fx-textColor: #ffffff;
+fx-textColor: #efefef;
+}
+.textColor2{
+    fx-textColor: #969696;
 }

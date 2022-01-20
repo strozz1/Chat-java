@@ -4,80 +4,76 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" stylesheets="@lightMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.MainController">
+<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300.0" minWidth="600.0" prefHeight="650.0" prefWidth="1000.0" styleClass="primaryColor" stylesheets="@darkMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.ViewControllers.MainController">
    <left>
-      <VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="74.0" styleClass="secondaryColor" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER_LEFT" maxWidth="250.0" styleClass="secondaryColor" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onMouseClicked="#onThemeButtonClicked" prefHeight="46.0" prefWidth="46.0">
-               <graphic>
-                  <ImageView fx:id="themeImage" blendMode="GREEN" fitHeight="33.0" fitWidth="34.0" nodeOrientation="INHERIT" onMouseClicked="#onThemeButtonClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../img/darkIconTheme.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <styleClass>
-                  <String fx:value="roundButton" />
-                  <String fx:value="themeButton" />
-               </styleClass>
+            <VBox fx:id="lateralMenu" alignment="TOP_CENTER" prefWidth="250.0" styleClass="secondaryColor" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#getButtonLLamar" text="Llamar" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
+            <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onMouseClicked="#onAddChat" style="-fx-background-color: #5bf20a; -fx-background-radius: 90; -fx-border-radius: 90; -fx-border-color: black;" text="+" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+               <effect>
+                  <Blend />
+               </effect>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" />
+               </VBox.margin>
             </Button>
-            <Button fx:id="btnLog" mnemonicParsing="false" onAction="#onLogPressed" text="Log" />
-            <Button mnemonicParsing="false" onAction="#getButtonLLamar" text="Llamar" />
          </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets top="20.0" />
-         </padding></VBox>
+      </VBox>
    </left>
    <center>
-      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
-         <children>
-            <BorderPane prefHeight="649.0" prefWidth="899.0">
-               <center>
-                  <ScrollPane prefHeight="566.0" prefWidth="895.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
-                     <content>
-                        <ListView fx:id="contenedorMensajes" prefHeight="598.0" prefWidth="897.0" styleClass="primaryColor" />
-                     </content>
-                  </ScrollPane>
-               </center>
-               <bottom>
-                  <HBox alignment="CENTER" prefHeight="49.0" prefWidth="501.0" styleClass="secondaryColor" BorderPane.alignment="CENTER">
-                     <children>
-                        <TextField fx:id="chatInput" nodeOrientation="LEFT_TO_RIGHT" prefHeight="36.0" prefWidth="642.0" promptText="Escribe algo.." styleClass="textColor">
-                           <cursor>
-                              <Cursor fx:constant="TEXT" />
-                           </cursor>
-                        </TextField>
-                        <Button fx:id="botonEnviarMensaje" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onSendMensaje" text="Send">
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                           <styleClass>
-                              <String fx:value="primaryColor" />
-                              <String fx:value="textColor" />
-                              <String fx:value="roundButton" />
-                           </styleClass>
-                        </Button>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </bottom>
-            </BorderPane>
-         </children>
-      </Pane>
+      <BorderPane minHeight="200.0" minWidth="500.0" BorderPane.alignment="CENTER">
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="566.0" prefWidth="895.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox fx:id="paneChat" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="primaryColor" />
+               </content>
+            </ScrollPane>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="49.0" prefWidth="501.0" styleClass="secondaryColor" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="chatInput" nodeOrientation="LEFT_TO_RIGHT" prefHeight="36.0" prefWidth="642.0" promptText="Escribe algo.." styleClass="textColor2">
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
+                  </TextField>
+                  <Button fx:id="botonEnviarMensaje" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onSendMensaje" text="Send" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="primaryColor" />
+                        <String fx:value="textColor" />
+                        <String fx:value="roundButton" />
+                     </styleClass>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </bottom>
+      </BorderPane>
    </center>
 </BorderPane>

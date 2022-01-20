@@ -2,7 +2,10 @@
     -fx-background-color: #ffffff;
 }
 .secondaryColor{
-    -fx-background-color: #f8f8f8;
+    -fx-background-color: #d2d2d2;
+}
+.thirdColor{
+    -fx-background-color: #989898;
 }
 
 .roundButton{
@@ -14,5 +17,8 @@
 }
 .textColor{
 fx-textColor: #454545;
+}
+.textColor2{
+    fx-textColor: #aaaaaa;
 }
 

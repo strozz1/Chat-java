@@ -9,4 +9,7 @@ module app.javachat {
     exports app.javachat;
     exports app.javachat.Controllers;
     opens app.javachat.Controllers to javafx.fxml;
+    exports app.javachat.Controllers.ViewControllers;
+    opens app.javachat.Controllers.ViewControllers to javafx.fxml;
+    opens app.javachat.Controllers.CustomControllers to javafx.fxml;
 }

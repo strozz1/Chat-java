@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="onChatClicked" maxWidth="250.0" prefHeight="55.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+    <Circle fill="#b26052" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+    <Label fx:id="leftmenuUserLabel" alignment="BOTTOM_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="191.0" text="Oscar Gonzalez">
+        <HBox.margin>
+            <Insets left="10.0" />
+        </HBox.margin>
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+        <padding>
+            <Insets bottom="10.0" />
+        </padding>
+    </Label>
+    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+
+</HBox>

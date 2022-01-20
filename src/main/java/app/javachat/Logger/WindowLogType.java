@@ -1,8 +1,6 @@
 package app.javachat.Logger;
 
-import app.javachat.Controllers.LoggerController;
-
-import java.util.List;
+import app.javachat.Controllers.ViewControllers.LoggerController;
 
 public class WindowLogType implements LoggerType{
 

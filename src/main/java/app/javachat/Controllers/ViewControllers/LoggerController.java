@@ -1,4 +1,4 @@
-package app.javachat.Controllers;
+package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
