@@ -44,7 +44,6 @@ public class SalaCliente {
             Log.show("Creando servidor interno para recibir mensajes del servidor.","CLIENT");
             //Creamos una instancia de nuestro server interno para poder recibir mensajes del server.
             if ((socketPropio = Sala.crearConnexionPropia(PORT_INTERNO)) == null)
-                throw new ExceptionConnexion("El socket es nulo.");
             // Escuchamos mensajes entrantes y creamos el objeto socketServerEntrante, siendo este el usuario que envía datos.
             Log.show("Escuchando en el servidor." + user.getIP() + ":" + PORT_INTERNO,"CLIENT");
             socketSaliente = socketPropio.accept();
@@ -55,7 +54,7 @@ public class SalaCliente {
             objetoRecibido = objectReader.readObject();
 
 
-        } catch (IOException | ClassNotFoundException | ExceptionConnexion e) {
+        } catch (IOException | ClassNotFoundException  e) {
             Log.error(e.getMessage(),"CLIENT");
         } finally {
             try {
@@ -81,17 +80,15 @@ public class SalaCliente {
         try {
             // Si el objeto pasado es null o no es un Mensaje.java, tiramos una exception
             if (mensaje == null)
-                throw new ExceptionConnexion("El objeto a enviar es nulo");
             // Creamos la connexion
             socket = Sala.crearConnexionConServer(salaModel.getServerIp(), salaModel.getPORT());
             if (socket == null)
-                throw new ExceptionConnexion("El socket es nulo por errores internos.");
 
             objectWriter = new ObjectOutputStream(socket.getOutputStream());
             objectWriter.writeObject(mensaje);  //Escribimos el objeto.
             Log.show("Mensaje enviado." + mensaje,"CLIENT");
 
-        } catch (IOException | ExceptionConnexion e) {
+        } catch (IOException e) {
             Log.error(e.getMessage(),"CLIENT");
         } finally {
             try {

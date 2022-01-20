@@ -1,6 +1,7 @@
 package app.javachat;
 
-import app.javachat.Controllers.CustomControllers.UserChatItemControl;
+import app.javachat.Controllers.CustomControllers.ChatItem;
+import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Controllers.ViewControllers.MainController;
 import app.javachat.Logger.Log;
 import app.javachat.Models.ChatRequest;
@@ -23,6 +24,10 @@ public class ChatListener extends Thread {
     private ServerSocket localServer;
     private ChatRequest chatRequest;
 
+    public void setMainController(MainController mainController) {
+        this.controller = mainController;
+    }
+
     public ChatListener() {
         try {
             localServer = new ServerSocket(LOCAL_PORT);
@@ -35,7 +40,7 @@ public class ChatListener extends Thread {
     @Override
     public void run() {
         while (true) {
-            Log.show("Escuchando a nuevos posibles chats");
+
             escucharMensajes();
         }
     }
@@ -43,7 +48,9 @@ public class ChatListener extends Thread {
     private void escucharMensajes() {
 
         try {
+            Log.show("Escuchando a nuevos posibles chats");
             Socket inputServer = localServer.accept();
+            Log.show("recibido");
             ObjectInputStream inputStream = new ObjectInputStream(inputServer.getInputStream());
             Object objectRead = inputStream.readObject();
 
@@ -53,7 +60,7 @@ public class ChatListener extends Thread {
                 this.chatRequest = (ChatRequest) objectRead;
                 crearNuevoChat();
                 //devuelve nueva info al sender sobre tu puerto y nombre
-                enviarChatRequest();
+//                enviarChatRequest();
 
             }
 
@@ -66,12 +73,17 @@ public class ChatListener extends Thread {
     }
 
     private void crearNuevoChat() {
-        getChatListVBox();
-        UserChatItemControl chatItem= new UserChatItemControl();
-        //Todo
+        // Cargar vistas del FXML
+        lateralChatMenu= controller.getLateralMenu();
         SimpleChat simpleChat= new SimpleChat(chatRequest,LOCAL_PORT);
-        simpleChat.start();
-        lateralChatMenu.getChildren().add(chatItem);
+        ChatItem chatItem = new ChatItem();
+        simpleChat.setChatItem(chatItem);
+        simpleChat.paintData();
+
+        LeftChatItem leftChatItem= new LeftChatItem(simpleChat);
+
+        //Add chat to left side
+        lateralChatMenu.getChildren().add(leftChatItem);
 
     }
 
@@ -105,11 +117,5 @@ public class ChatListener extends Thread {
 
     }
 
-    public static void getChatListVBox() {
-        FXMLLoader loader = new FXMLLoader(MainController.class.getResource("main-view.fxml"));
-        controller = loader.getController();
-        lateralChatMenu= controller.getLateralMenu();
-
-    }
 
 }

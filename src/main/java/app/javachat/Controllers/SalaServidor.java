@@ -63,7 +63,7 @@ public class SalaServidor {
                 for (User user : salaModel.getListUsuarios()) {
                     try {
                         socket = Sala.crearConnexionConServer(user.getIP(), PORT_INTERNO); // Creamos la conexion
-                        if (socket == null) throw new ExceptionConnexion("El socket es nulo por errores internos.");
+
 
                         objectWriter = new ObjectOutputStream(socket.getOutputStream());
                         objectWriter.writeObject(object);  //Escribimos el objeto.
@@ -102,13 +102,11 @@ public class SalaServidor {
                 //Creamos una instancia de nuestro server para poder recibir mensajes de los usuarios.
                 socketServer = Sala.crearConnexionPropia(salaModel.getPORT());
                 if (socketServer == null)
-                    throw new ExceptionConnexion("El socket servidor es nulo por errores internos.");
 
                 Log.show("Escuchando en el servidor " + salaModel.getServerIp() + ":" + salaModel.getPORT() + ".","SERVER");
                 // Escuchamos mensajes entrantes y creamos el objeto socketServerEntrante, siendo este el usuario que envía datos.
                 socketEntrante = socketServer.accept();
                 if (socketEntrante == null)
-                    throw new ExceptionConnexion("El socket saliente es nulo por errores internos.");
 
                 objectReader = new ObjectInputStream(socketEntrante.getInputStream());
 
@@ -126,7 +124,7 @@ public class SalaServidor {
                 }
                 //Enviamos el mensaje
                 enviarMensaje(objectRecibido);
-            } catch (IOException | ClassNotFoundException | ExceptionConnexion e) {
+            } catch (IOException | ClassNotFoundException  e) {
                 Log.error(e.getMessage(),"SERVER");
             } finally {
                 try {

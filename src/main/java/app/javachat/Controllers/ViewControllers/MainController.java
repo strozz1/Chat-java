@@ -1,6 +1,7 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.Controllers.CustomControllers.UserChatItemControl;
+import app.javachat.ChatListener;
+import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Controllers.SalaCliente;
 import app.javachat.MainApplication;
 import app.javachat.Models.Message;
@@ -8,42 +9,42 @@ import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainController {
-    private List<UserChatItemControl> chatObjectList;
+    private List<LeftChatItem> chatObjectList;
     private SalaCliente sala;
-    private User localUser, otherUser = new User("Alberto Jimenez"); // Temporal user
+    private User localUser;
 
     @FXML
     private VBox lateralMenu;
     @FXML
-    private VBox paneChat;
-    @FXML
-    private TextField chatInput;
-
+    private BorderPane parent;
 
     public MainController(){
+        ChatListener chatListener = new ChatListener();
+        chatListener.setMainController(this);
+        chatListener.start();
         chatObjectList = new ArrayList<>();
     }
 
     @FXML
-    void initialize(){
+    void initialize() {
+//        parent.setCenter(new ChatItemControl("Main"));
     }
+
 
 
     public SalaModel changeViewToAddOrJoinServer() throws IOException {
@@ -85,67 +86,24 @@ public class MainController {
     }
 
 
-    public void onSendMensaje(MouseEvent mouseEvent) {
-        String mensaje = chatInput.getText();
-        Message msg = new Message(mensaje, localUser, LocalDateTime.now());
-        Task task2 = new Task<Void>() {
-
-            @Override
-            protected Void call() throws Exception {
-                sala.enviarMensaje(msg);
-                return null;
-            }
-        };
-        (new Thread(task2)).start();
-    }
-
-    public void getButtonLLamar(ActionEvent actionEvent) {
-
-        startCallWindow();
-
-    }
-
-    private void startCallWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("call-window.fxml"));
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
-            stage.setTitle("Llamada con $usuario");
-
-            CallWindowController callWindowController = new CallWindowController();
-            loadDataToCallController(callWindowController);
-            loader.setController(callWindowController);
-            Parent root =loader.load();
 
 
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadDataToCallController(CallWindowController callWindowController) {
-        //Set client user and the other line user
-        callWindowController.setLocalUser(localUser);
-        callWindowController.setOtherUser(otherUser);
-    }
 
     public void onAddChat(MouseEvent mouseEvent) throws IOException {
-        SalaModel salaModel = changeViewToAddOrJoinServer();
-        sala = new SalaCliente(salaModel, localUser);
-        recibirMensajes(paneChat);
-        UserChatItemControl userChatItemControl = new UserChatItemControl();
-        chatObjectList.add(userChatItemControl);
-        lateralMenu.getChildren().addAll(chatObjectList);
+//        SalaModel salaModel = changeViewToAddOrJoinServer();
+//        sala = new SalaCliente(salaModel, localUser);
+//        recibirMensajes(paneChat);
+//        UserChatItemControl userChatItemControl = new UserChatItemControl();
+//        chatObjectList.add(userChatItemControl);
+//        lateralMenu.getChildren().addAll(chatObjectList);
 
     }
 
     public VBox getLateralMenu() {
         return lateralMenu;
+    }
+    public BorderPane getChatContainer() {
+        return parent;
     }
 }

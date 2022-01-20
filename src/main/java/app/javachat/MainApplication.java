@@ -4,6 +4,7 @@ import app.javachat.Controllers.ViewControllers.LoggerController;
 import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
+import app.javachat.Models.ChatRequest;
 import app.javachat.Models.User;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,6 +18,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class MainApplication extends Application {
     private Stage stage;
@@ -25,22 +28,34 @@ public class MainApplication extends Application {
     private BorderPane root;
 
     public static void main(String[] args) {
-        new ChatListener().start();
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(2000);
+                Socket s= new Socket("localhost",867);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(s.getOutputStream());
+                objectOutputStream .writeObject(new ChatRequest(new User("oscar")));
+                objectOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }).start();
         launch();
     }
 
     @Override
     public void start(Stage stage) throws IOException {
-        Info.localUser=new User("default");
         this.stage = stage;
+        Info.localUser=new User("default");
+
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         root = fxmlLoader.load();
-        Scene scene = new Scene(root, 1400, 730);
+
+        setStage();
         setMenu(root);
-        stage.setTitle("Chat");
-        stage.setScene(scene);
-        stage.setMinWidth(1000);
-        stage.setMinHeight(650);
 
 
         stage.show();
@@ -49,6 +64,14 @@ public class MainApplication extends Application {
             System.exit(1);
         });
 
+    }
+
+    private void setStage() {
+        Scene scene = new Scene(root, 1400, 730);
+        stage.setTitle("Chat");
+        stage.setScene(scene);
+        stage.setMinWidth(1000);
+        stage.setMinHeight(650);
     }
 
     private void setMenu(BorderPane root) {

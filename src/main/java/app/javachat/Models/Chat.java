@@ -1,7 +1,9 @@
 package app.javachat.Models;
 
+import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.ViewControllers.MainController;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 public interface Chat {
@@ -23,4 +25,12 @@ public interface Chat {
         return controller.getLateralMenu();
 
     }
+
+    void setChatContainer(VBox chatContainer);
+
+    ChatItem getChatItem();
+
+    void setChatItem(ChatItem chatItem);
+
+    void paintData();
 }

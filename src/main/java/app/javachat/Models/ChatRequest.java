@@ -2,7 +2,9 @@ package app.javachat.Models;
 
 import app.javachat.Info;
 
-public class ChatRequest {
+import java.io.Serializable;
+
+public class ChatRequest implements Serializable {
     private User sender;
     private int senderPort;
 

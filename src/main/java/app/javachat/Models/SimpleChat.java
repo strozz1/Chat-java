@@ -1,6 +1,10 @@
 package app.javachat.Models;
 
+import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Logger.Log;
+import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,6 +15,8 @@ public class SimpleChat implements Chat {
     private static int LOCAL_PORT, OTHER_PORT;
     private final User otherUser;
     private ServerSocket serverLocal;
+    private VBox chatContainer;
+    private ChatItem chatItem;
 
 
     public SimpleChat(ChatRequest chatRequest, int localPort) {
@@ -33,6 +39,8 @@ public class SimpleChat implements Chat {
 
     @Override
     public void sendMessage() {
+
+        //Todo
     }
 
     @Override
@@ -48,7 +56,7 @@ public class SimpleChat implements Chat {
 
             Log.show("Leyendo objeto recibido.");
             inputObject = inputStream.readObject();
-            if(inputObject instanceof Message){
+            if (inputObject instanceof Message) {
                 printMessage((Message) inputObject);
             }
 
@@ -68,7 +76,29 @@ public class SimpleChat implements Chat {
         }
     }
 
-    private void printMessage(Message message) {
-        System.out.println(message);
+    @Override
+    public void setChatContainer(VBox chatContainer) {
+        this.chatContainer = chatItem.getChatBox();
     }
+
+    @Override
+    public ChatItem getChatItem() {
+        return chatItem;
+    }
+
+    @Override
+    public void setChatItem(ChatItem chatItem) {
+        this.chatItem=chatItem;
+    }
+
+    @Override
+    public void paintData() {
+        chatItem.setUsername(otherUser.getUsername());
+        //Todo
+    }
+
+    private void printMessage(Message message) {
+        Platform.runLater(() -> chatContainer.getChildren().add(new Label(message.getContent())));
+    }
+
 }
