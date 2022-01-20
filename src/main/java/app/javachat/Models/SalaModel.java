@@ -11,21 +11,21 @@ public class SalaModel implements Serializable {
     private final int PORT;
     private final String serverIp;
     private List<User> listUsuarios;
-    private List<Mensaje> listMensajes;
+    private List<Message> listMessages;
 
     public SalaModel(String serverIp, int PORT, User host) {
         this.serverIp = serverIp;
         this.PORT = PORT;
         this.host = host;
         this.listUsuarios = new ArrayList<>();
-        this.listMensajes = new ArrayList<>();
+        this.listMessages = new ArrayList<>();
 
     }
 
-    public SalaModel(String serverIp, int PORT, User host, List<User> listUsuarios, List<Mensaje> listMensajes) {
+    public SalaModel(String serverIp, int PORT, User host, List<User> listUsuarios, List<Message> listMessages) {
         this.serverIp = serverIp;
         this.listUsuarios = listUsuarios;
-        this.listMensajes = listMensajes;
+        this.listMessages = listMessages;
         this.PORT = PORT;
     }
 
@@ -43,9 +43,9 @@ public class SalaModel implements Serializable {
             listUsuarios.add(user);
     }
 
-    public void addMensaje(Mensaje mensaje) {
-        if (!listMensajes.contains(mensaje))
-            listMensajes.add(mensaje);
+    public void addMensaje(Message message) {
+        if (!listMessages.contains(message))
+            listMessages.add(message);
     }
 
     public User getHost() {
@@ -56,15 +56,15 @@ public class SalaModel implements Serializable {
         return listUsuarios;
     }
 
-    public List<Mensaje> getListMensajes() {
-        return listMensajes;
+    public List<Message> getListMensajes() {
+        return listMessages;
     }
 
     public void setListUsuarios(List<User> listUsuarios) {
         this.listUsuarios = listUsuarios;
     }
 
-    public void setListMensajes(List<Mensaje> listMensajes) {
-        this.listMensajes = listMensajes;
+    public void setListMensajes(List<Message> listMessages) {
+        this.listMessages = listMessages;
     }
 }

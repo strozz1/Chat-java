@@ -1,6 +1,5 @@
 package app.javachat.Controllers;
 
-import app.javachat.Excepciones.ExceptionConnexion;
 import app.javachat.Logger.Log;
 import app.javachat.Models.Sala;
 import app.javachat.Models.SalaModel;

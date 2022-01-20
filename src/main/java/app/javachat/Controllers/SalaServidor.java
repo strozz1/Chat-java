@@ -1,8 +1,7 @@
 package app.javachat.Controllers;
 
-import app.javachat.Excepciones.ExceptionConnexion;
 import app.javachat.Logger.Log;
-import app.javachat.Models.Mensaje;
+import app.javachat.Models.Message;
 import app.javachat.Models.Sala;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
@@ -70,7 +69,7 @@ public class SalaServidor {
                         objectWriter.writeObject(object);  //Escribimos el objeto.
                         Log.show("Mensaje enviado a " + user.getUsername() + " con IP " + user.getIP() + ".","SERVER");
                     } catch (Exception e) {
-                        Log.error("Mensaje no enviado a " + ((Mensaje) object).getSender().getUsername() + ", es posible que se halla desconectado.","SERVER");
+                        Log.error("Mensaje no enviado a " + ((Message) object).getSender().getUsername() + ", es posible que se halla desconectado.","SERVER");
                     }
                 }
             }
@@ -121,9 +120,9 @@ public class SalaServidor {
                     addUsuario((User) objectRecibido);
                 } else {
                     Log.show("El objeto es de tipo Mensaje." + objectRecibido,"SERVER");
-                    addMensaje((Mensaje) objectRecibido);
-                    if (!salaModel.getListUsuarios().contains(((Mensaje) objectRecibido).getSender()))
-                        addUsuario(((Mensaje) objectRecibido).getSender());
+                    addMensaje((Message) objectRecibido);
+                    if (!salaModel.getListUsuarios().contains(((Message) objectRecibido).getSender()))
+                        addUsuario(((Message) objectRecibido).getSender());
                 }
                 //Enviamos el mensaje
                 enviarMensaje(objectRecibido);
@@ -143,8 +142,8 @@ public class SalaServidor {
         }
     }
 
-    public void addMensaje(Mensaje mensaje) {
-        salaModel.getListMensajes().add(mensaje);
+    public void addMensaje(Message message) {
+        salaModel.getListMensajes().add(message);
     }
 
     public void addUsuario(User user) {
@@ -156,7 +155,7 @@ public class SalaServidor {
         return salaModel.getListUsuarios();
     }
 
-    public List<Mensaje> getListMensajes() {
+    public List<Message> getListMensajes() {
         return salaModel.getListMensajes();
     }
 

@@ -4,6 +4,7 @@ import app.javachat.Controllers.ViewControllers.LoggerController;
 import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
+import app.javachat.Models.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -24,11 +25,13 @@ public class MainApplication extends Application {
     private BorderPane root;
 
     public static void main(String[] args) {
+        new ChatListener().start();
         launch();
     }
 
     @Override
     public void start(Stage stage) throws IOException {
+        Info.localUser=new User("default");
         this.stage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         root = fxmlLoader.load();

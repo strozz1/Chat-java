@@ -3,7 +3,7 @@ package app.javachat.Controllers.ViewControllers;
 import app.javachat.Controllers.CustomControllers.UserChatItemControl;
 import app.javachat.Controllers.SalaCliente;
 import app.javachat.MainApplication;
-import app.javachat.Models.Mensaje;
+import app.javachat.Models.Message;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
 import javafx.application.Platform;
@@ -65,10 +65,10 @@ public class MainController {
             @Override
             protected Void call() throws Exception {
                 Boolean isMyMessage;
-                Mensaje mensaje = (Mensaje) sala.recibirMensaje();
-                isMyMessage = mensaje.getSender().equals(localUser);
+                Message message = (Message) sala.recibirMensaje();
+                isMyMessage = message.getSender().equals(localUser);
 
-                Label label = new Label(mensaje.toString());
+                Label label = new Label(message.toString());
 
                 if (isMyMessage)
                     label.setTextFill(Color.RED);
@@ -87,7 +87,7 @@ public class MainController {
 
     public void onSendMensaje(MouseEvent mouseEvent) {
         String mensaje = chatInput.getText();
-        Mensaje msg = new Mensaje(mensaje, localUser, LocalDateTime.now());
+        Message msg = new Message(mensaje, localUser, LocalDateTime.now());
         Task task2 = new Task<Void>() {
 
             @Override
@@ -143,5 +143,9 @@ public class MainController {
         chatObjectList.add(userChatItemControl);
         lateralMenu.getChildren().addAll(chatObjectList);
 
+    }
+
+    public VBox getLateralMenu() {
+        return lateralMenu;
     }
 }

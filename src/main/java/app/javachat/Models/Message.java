@@ -3,12 +3,12 @@ package app.javachat.Models;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Mensaje implements Serializable {
+public class Message implements Serializable {
     private final String content;
     private final User sender;
     private final LocalDateTime horaEnvio;
 
-    public Mensaje(String content, User sender, LocalDateTime horaEnvio) {
+    public Message(String content, User sender, LocalDateTime horaEnvio) {
         this.content = content;
         this.sender = sender;
         this.horaEnvio = horaEnvio;
