@@ -12,12 +12,12 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -28,9 +28,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class ChatController {
+public class MainController {
     private SalaCliente sala;
-    private User user;
+    private User localUser, otherUser = new User("Alberto Jimenez"); // Temporal user
 
     @FXML
     private Button btnLog;
@@ -43,14 +43,12 @@ public class ChatController {
     private BorderPane parent;
 
 
-
     @FXML
     void initialize() throws IOException {
         SalaModel salaModel = changeViewToAddOrJoinServer();
-        sala = new SalaCliente(salaModel, user);
+        sala = new SalaCliente(salaModel, localUser);
         recibirMensajes(contenedorMensajes);
     }
-
 
 
     public SalaModel changeViewToAddOrJoinServer() throws IOException {
@@ -60,12 +58,12 @@ public class ChatController {
         Scene scene = new Scene(loader.load());
         AddServerController addServerController = loader.getController();
         stage.setScene(scene);
-        stage.setOnCloseRequest(e->{
+        stage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(1);
         });
         stage.showAndWait();
-        user = addServerController.getUser();
+        localUser = addServerController.getUser();
         SalaModel salaModel = addServerController.getSalaModel();
         return salaModel;
     }
@@ -77,7 +75,7 @@ public class ChatController {
             protected Void call() throws Exception {
                 Boolean isMyMessage;
                 Mensaje mensaje = (Mensaje) sala.recibirMensaje();
-                isMyMessage = mensaje.getSender().equals(user);
+                isMyMessage = mensaje.getSender().equals(localUser);
 
                 Label label = new Label(mensaje.toString());
 
@@ -106,7 +104,7 @@ public class ChatController {
 
     public void onSendMensaje(MouseEvent mouseEvent) {
         String mensaje = chatInput.getText();
-        Mensaje msg = new Mensaje(mensaje, user, LocalDateTime.now());
+        Mensaje msg = new Mensaje(mensaje, localUser, LocalDateTime.now());
         Task task2 = new Task<Void>() {
 
             @Override
@@ -198,4 +196,38 @@ public class ChatController {
     }
 
 
+    public void getButtonLLamar(ActionEvent actionEvent) {
+
+        startCallWindow();
+
+    }
+
+    private void startCallWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("call-window.fxml"));
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
+            stage.setTitle("Llamada con $usuario");
+
+            CallWindowController callWindowController = new CallWindowController();
+            loadDataToCallController(callWindowController);
+            loader.setController(callWindowController);
+            Parent root =loader.load();
+
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadDataToCallController(CallWindowController callWindowController) {
+        //Set client user and the other line user
+        callWindowController.setLocalUser(localUser);
+        callWindowController.setOtherUser(otherUser);
+    }
 }

@@ -2,6 +2,8 @@ package app.javachat.Logger;
 
 import app.javachat.Controllers.LoggerController;
 
+import java.util.List;
+
 public class WindowLogType implements LoggerType{
 
     private static LoggerController controller;
@@ -9,7 +11,6 @@ public class WindowLogType implements LoggerType{
     public WindowLogType(LoggerController controller1){
         controller = controller1;
     }
-
 
 
     public static void setLoggerController(LoggerController controller1){
