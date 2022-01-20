@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" stylesheets="@lightMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.ChatController">
+<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" stylesheets="@lightMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.MainController">
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="74.0" styleClass="secondaryColor" BorderPane.alignment="CENTER">
          <children>
@@ -32,6 +32,7 @@
                </styleClass>
             </Button>
             <Button fx:id="btnLog" mnemonicParsing="false" onAction="#onLogPressed" text="Log" />
+            <Button mnemonicParsing="false" onAction="#getButtonLLamar" text="Llamar" />
          </children>
          <opaqueInsets>
             <Insets />

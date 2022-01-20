@@ -40,4 +40,9 @@ public class ConnectedCallState implements CallState {
         call.changeState(new DisconnectedCallState(call));
 
     }
+
+    @Override
+    public void waitResponse() {
+
+    }
 }

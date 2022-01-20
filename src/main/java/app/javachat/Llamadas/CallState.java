@@ -30,4 +30,8 @@ public interface CallState {
      * This method is called when Call changes state, caused by another method of this interface.
      */
     public void changeState();
+    /**
+     * This method is called when Call waits other user confirmation
+     * */
+    void waitResponse();
 }

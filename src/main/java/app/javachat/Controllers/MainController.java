@@ -1,5 +1,6 @@
 package app.javachat.Controllers;
 
+import app.javachat.Llamadas.Call;
 import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
@@ -41,10 +42,12 @@ public class MainController {
 
     @FXML
     private BorderPane parent;
+    private Call call;
 
 
     @FXML
     void initialize() throws IOException {
+
         SalaModel salaModel = changeViewToAddOrJoinServer();
         sala = new SalaCliente(salaModel, localUser);
         recibirMensajes(contenedorMensajes);
@@ -215,6 +218,7 @@ public class MainController {
             loadDataToCallController(callWindowController);
             loader.setController(callWindowController);
             Parent root =loader.load();
+
 
             Scene scene = new Scene(root);
             stage.setScene(scene);

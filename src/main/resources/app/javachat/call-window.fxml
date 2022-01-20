@@ -11,12 +11,13 @@
 <?import javafx.scene.text.Font?>
 
 <!--        fx:controller="app.javachat.Controllers.CallWindowController"-->
-<VBox prefHeight="196.0" prefWidth="302.0" style="-fx-border-radius: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" >
+
+<VBox prefHeight="196.0" prefWidth="302.0" style="-fx-border-radius: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="NEVER">
          <children>
             <Circle fill="#2a4f72" radius="30.0" stroke="BLACK" strokeType="INSIDE" />
-            <Label  fx:id="otherUserLabel" alignment="BOTTOM_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="191.0" text="Oscar Gonzalez">
+            <Label fx:id="otherUserLabel" alignment="BOTTOM_LEFT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="191.0" text="Oscar Gonzalez">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -34,7 +35,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label text="Tiempo de llamada">
+            <Label fx:id="labelTiempoLlamada" text="Tiempo de llamada">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -43,11 +44,6 @@
                </padding>
                <font>
                   <Font name="System Bold Italic" size="14.0" />
-               </font>
-            </Label>
-            <Label text="00:00:00">
-               <font>
-                  <Font name="System Bold" size="14.0" />
                </font>
             </Label>
          </children>
