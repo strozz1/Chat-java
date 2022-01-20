@@ -2,6 +2,7 @@ package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.MainApplication;
 import app.javachat.Models.Chat;
+import app.javachat.Models.SimpleChat;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -40,5 +41,9 @@ public class ChatItem extends AnchorPane {
 
     public ChatItemController getController() {
         return controller;
+    }
+
+    public void setChat(SimpleChat chat) {
+        this.chat= chat;
     }
 }

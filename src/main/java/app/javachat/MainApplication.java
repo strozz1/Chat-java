@@ -5,6 +5,7 @@ import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
 import app.javachat.Models.ChatRequest;
+import app.javachat.Models.Message;
 import app.javachat.Models.User;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalDateTime;
 
 public class MainApplication extends Application {
     private Stage stage;
@@ -41,6 +43,24 @@ public class MainApplication extends Application {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            for (int i = 0; i < 50; i++) {
+                System.out.println("enviando "+ i);
+                try {
+                    Thread.sleep(100);
+                    Socket s= new Socket("192.168.1.38",700);
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(s.getOutputStream());
+                    objectOutputStream .writeObject(new Message("sdsdsd",new User("oscar"), LocalDateTime.now()));
+                    objectOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
 
         });
         launch();

@@ -33,14 +33,17 @@ public class SimpleChat implements Chat {
 
     @Override
     public void start() {
-        Thread threadListener = new Thread(this::receiveMessage);
+        Thread threadListener = new Thread(()->{
+            while(true)
+                receiveMessage();
+        });
         threadListener.start();
     }
 
     @Override
     public void sendMessage() {
-
         //Todo
+
     }
 
     @Override
@@ -84,10 +87,12 @@ public class SimpleChat implements Chat {
     @Override
     public void setChatItem(ChatItem chatItem) {
         this.chatItem=chatItem;
+        this.chatContainer=chatItem.getChatBox();
     }
 
 
     private void printMessage(Message message) {
+        System.out.println(message);
         Platform.runLater(() -> chatContainer.getChildren().add(new Label(message.getContent())));
     }
 

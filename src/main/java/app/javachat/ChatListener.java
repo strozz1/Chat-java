@@ -50,7 +50,7 @@ public class ChatListener extends Thread {
         try {
             Log.show("Escuchando a nuevos posibles chats");
             Socket inputServer = localServer.accept();
-            Log.show("recibido");
+            Log.show("Nuevo chat!");
             ObjectInputStream inputStream = new ObjectInputStream(inputServer.getInputStream());
             Object objectRead = inputStream.readObject();
 
