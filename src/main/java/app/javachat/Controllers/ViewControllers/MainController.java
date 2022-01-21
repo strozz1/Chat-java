@@ -3,6 +3,7 @@ package app.javachat.Controllers.ViewControllers;
 import app.javachat.ChatListener;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Controllers.SalaCliente;
+import app.javachat.Info;
 import app.javachat.MainApplication;
 import app.javachat.Models.Message;
 import app.javachat.Models.SalaModel;
@@ -31,6 +32,8 @@ public class MainController {
     @FXML
     private VBox lateralMenu;
     @FXML
+    private Label usernameLeftLabel;
+    @FXML
     private BorderPane parent;
 
     public MainController(){
@@ -42,7 +45,7 @@ public class MainController {
 
     @FXML
     void initialize() {
-//        parent.setCenter(new ChatItemControl("Main"));
+        usernameLeftLabel.setText(Info.localUser.getUsername());
     }
 
 

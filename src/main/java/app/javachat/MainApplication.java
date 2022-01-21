@@ -64,12 +64,13 @@ public class MainApplication extends Application {
 
         });
         launch();
+
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
-        Info.localUser=new User("default");
+        Info.localUser=new User("Strozz1");
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         root = fxmlLoader.load();
@@ -113,6 +114,8 @@ public class MainApplication extends Application {
 
     private void createMenuPerfil() {
         Menu menuPerfil = new Menu("Perfil");
+        MenuItem itemCambiaNombre = new MenuItem("Cambiar nombre");
+        menuPerfil.getItems().add(itemCambiaNombre);
         menuBar.getMenus().add(menuPerfil);
     }
 

@@ -78,6 +78,7 @@ public class ChatListener extends Thread {
         lateralChatMenu= controller.getLateralMenu();
         SimpleChat simpleChat= new SimpleChat(chatRequest,port);
         ChatItem chatItem = new ChatItem();
+        chatItem.setUsername(chatRequest.getSender().getUsername());
         simpleChat.setChatItem(chatItem);
 
         LeftChatItem leftChatItem= new LeftChatItem(simpleChat);
