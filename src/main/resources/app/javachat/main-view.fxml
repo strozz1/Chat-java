@@ -1,31 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="parent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="650.0" minWidth="1000.0" prefHeight="730.0" prefWidth="1400.0" styleClass="primaryColor" stylesheets="@darkMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.ViewControllers.MainController">
    <left>
-      <VBox alignment="CENTER_LEFT" maxWidth="250.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
+      <VBox maxWidth="250.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="lateralMenu" alignment="TOP_CENTER" prefWidth="250.0" styleClass="primaryColor" VBox.vgrow="ALWAYS">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets top="20.0" />
-               </padding>
-            </VBox>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textColor" text="Perfil" textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="35.0" stroke="BLACK" strokeType="INSIDE">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="6.0" top="10.0" />
+                     </HBox.margin>
+                  </Circle>
+                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textColor" text="Username" wrapText="true">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Pane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="2.0" styleClass="secondaryColor" />
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="568.0" prefWidth="250.0" style="-fx-background-color: transparent;">
+               <content>
+                  <VBox fx:id="lateralMenu" alignment="TOP_CENTER" styleClass="primaryColor">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </ScrollPane>
             <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onMouseClicked="#onAddChat" styleClass="addButton" text="+" textAlignment="CENTER">
                <font>
                   <Font name="Arial Bold" size="18.0" />
@@ -40,4 +65,22 @@
          </children>
       </VBox>
    </left>
+   <center>
+      <BorderPane minHeight="200.0" minWidth="500.0" BorderPane.alignment="CENTER">
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="566.0" prefWidth="895.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="thirdColor">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="727.0" prefWidth="1148.0" styleClass="textColor" text="No tienes nada que mostrar. Prueba a iniciar un chat!" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children></VBox>
+               </content>
+            </ScrollPane>
+         </center>
+      </BorderPane>
+   </center>
 </BorderPane>

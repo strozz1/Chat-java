@@ -4,6 +4,7 @@ import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.MainApplication;
 import app.javachat.Models.Chat;
 import app.javachat.Models.Message;
+import app.javachat.Models.SimpleChat;
 import app.javachat.Models.User;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -33,6 +34,7 @@ public class ChatItemController {
     private Label headerUsername;
     @FXML
     private Button btnLlamar,btnSendMessage;
+    private Chat chat;
 
     @FXML
     void initialize() {
@@ -40,7 +42,8 @@ public class ChatItemController {
             startCallWindow();
         });
         btnSendMessage.setOnMouseClicked(mouseEvent -> {
-            sendNewMessage();
+            new Thread(this::sendNewMessage).start();
+            chatInput.setText("");
         });
     }
 
@@ -72,7 +75,7 @@ public class ChatItemController {
     private void sendNewMessage() {
         String mensaje = chatInput.getText();
         Message msg = new Message(mensaje, localUser, LocalDateTime.now());
-        //Todo
+        chat.sendMessage(msg);
     }
 
 
@@ -103,5 +106,9 @@ public class ChatItemController {
 
     public VBox getChatBox() {
         return chatBox;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat=chat;
     }
 }

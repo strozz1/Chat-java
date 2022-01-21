@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -33,24 +34,49 @@ public class SimpleChat implements Chat {
 
     @Override
     public void start() {
-        Thread threadListener = new Thread(()->{
-            while(true)
-                receiveMessage();
+        Thread threadListener = new Thread(() -> {
+            while (true) {
+                Message message = receiveMessage();
+                if (message != null) {
+                    printMessage(message);
+                }
+            }
         });
         threadListener.start();
     }
 
     @Override
-    public void sendMessage() {
+    public void sendMessage(Message message) {
+        Socket socket = null;
+        ObjectOutputStream outputStream = null;
         //Todo
+        try {
+            socket = new Socket(otherUser.getIP(), OTHER_PORT);
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(message);
+
+        } catch (IOException e) {
+            Log.error(e.getMessage());
+        } finally {
+            try {
+                if (outputStream != null)
+                    outputStream.close();
+                if (socket != null)
+                    socket.close();
+
+            } catch (IOException e) {
+                Log.error(e.getMessage());
+            }
+
+        }
 
     }
 
     @Override
-    public void receiveMessage() {
+    public Message receiveMessage() {
         ObjectInputStream inputStream = null;
         Socket otherUserSocket = null;
-        Object inputObject = null;
+        Object inputObject;
 
         try {
             //Socket del otro user.
@@ -60,7 +86,7 @@ public class SimpleChat implements Chat {
             Log.show("Leyendo objeto recibido.");
             inputObject = inputStream.readObject();
             if (inputObject instanceof Message) {
-                printMessage((Message) inputObject);
+                return (Message) inputObject;
             }
 
 
@@ -77,6 +103,7 @@ public class SimpleChat implements Chat {
                 Log.error(e.getMessage());
             }
         }
+        return null;
     }
 
     @Override
@@ -86,8 +113,8 @@ public class SimpleChat implements Chat {
 
     @Override
     public void setChatItem(ChatItem chatItem) {
-        this.chatItem=chatItem;
-        this.chatContainer=chatItem.getChatBox();
+        this.chatItem = chatItem;
+        this.chatContainer = chatItem.getChatBox();
     }
 
 
@@ -100,7 +127,6 @@ public class SimpleChat implements Chat {
     public User getOtherUser() {
         return otherUser;
     }
-
 
 
 }

@@ -1,22 +1,28 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.MainApplication;
-import app.javachat.Models.Chat;
 import app.javachat.Models.SimpleChat;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class ChatItem extends AnchorPane {
-    private Chat chat;
+public class ChatItem extends BorderPane {
     private ChatItemController controller;
 
     public ChatItem() {
         super();
+
+
         load();
+    }
+    public ChatItem(SimpleChat chat) {
+        super();
+        load();
+        controller.setChat(chat);
     }
     private void load() {
         try {
@@ -25,7 +31,8 @@ public class ChatItem extends AnchorPane {
             controller = new ChatItemController();
             loader.setController(controller);
             Node node = loader.load();
-            this.getChildren().add(node);
+
+            this.setCenter(node);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,7 +50,4 @@ public class ChatItem extends AnchorPane {
         return controller;
     }
 
-    public void setChat(SimpleChat chat) {
-        this.chat= chat;
-    }
 }

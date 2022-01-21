@@ -22,10 +22,10 @@
     -fx-text-fill: #969696;
 }
 .addButton{
-    -fx-background-color: transparent;
+    -fx-background-color: #ffffff;
     -fx-border-radius: 90;
     -fx-background-radius: 90;
     -fx-border-color: #ffffff;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: black;
 
 }

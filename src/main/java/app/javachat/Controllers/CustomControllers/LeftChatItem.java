@@ -23,7 +23,6 @@ public class LeftChatItem extends AnchorPane {
         super();
         loadXML();
         chatItem = chat.getChatItem();
-        chatItem.setChat(chat);
         User otherUser = chat.getOtherUser();
         setUsernameText(otherUser.getUsername());
         controller.setChat(chat);

@@ -8,12 +8,21 @@ import javafx.scene.layout.VBox;
 
 public interface Chat {
     /**
-     * Starts listening for messages
+     * Starts listening for messages. This creates a new Thread for not blocking the MainThread
      */
     void start();
-    void sendMessage();
 
-    void receiveMessage();
+    /**
+     * This opens a connection to the server and sends a message to the server
+     * @param message the messsage to send
+     */
+    void sendMessage(Message message);
+
+    /**
+     * Returns a message instance from another server. If the object received is not a Message, it will return null
+     * @return Message object
+     */
+    Message receiveMessage();
 
     /**
      * Return the VBox objects that holds all the messages from the Chat
