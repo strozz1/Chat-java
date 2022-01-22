@@ -8,8 +8,6 @@ import app.javachat.Models.Message;
 import app.javachat.Models.SimpleChat;
 import app.javachat.Models.User;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,6 +34,14 @@ public class ChatItemController {
     @FXML
     private Button btnLlamar, btnSendMessage;
     private Chat chat;
+
+    public ChatItemController() {
+    }
+
+    public ChatItemController(SimpleChat chat, User otherUser) {
+        this.otherUser = otherUser;
+        this.chat=chat;
+    }
 
     @FXML
     void initialize() {
@@ -87,12 +92,7 @@ public class ChatItemController {
         callWindowController.setOtherUser(otherUser);
     }
 
-    public void setChat(Chat chat) {
-        this.chat = chat;
-    }
-    public void setOtherUser(User otherUser) {
-        this.otherUser = otherUser;
-    }
+
 
     public void startListeningForMessages() {
         new Thread(() -> {

@@ -13,7 +13,6 @@
     </padding>
 
     <Label fx:id="welcomeText" text="Add new chat" />
-   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0" />
    <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
       <children>
          <Label text="Address">
@@ -21,7 +20,17 @@
                <Insets right="12.0" />
             </HBox.margin>
          </Label>
-         <TextField fx:id="inputTextAdress" />
+         <TextField fx:id="inputTextAddress" />
+      </children>
+   </HBox>
+   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
+      <children>
+         <Label text="PORT">
+            <HBox.margin>
+               <Insets right="12.0" />
+            </HBox.margin>
+         </Label>
+         <TextField fx:id="inputTextPort" />
       </children>
    </HBox>
    <Button mnemonicParsing="false" onMouseClicked="#onAddNewChat" text="Create" />

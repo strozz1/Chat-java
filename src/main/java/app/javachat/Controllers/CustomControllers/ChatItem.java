@@ -17,21 +17,20 @@ public class ChatItem extends BorderPane {
     public ChatItem() {
         super();
 
-
-        load();
+        controller = new ChatItemController();
+        load(controller);
     }
+
     public ChatItem(SimpleChat chat, User otherUser) {
         super();
-        load();
-        controller.setChat(chat);
-        controller.setOtherUser(otherUser);
+        controller = new ChatItemController(chat, otherUser);
+        load(controller);
         controller.startListeningForMessages();
     }
-    private void load() {
+
+    private void load(ChatItemController controller) {
         try {
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("chat-item.fxml"));
-            //Create new controller
-            controller = new ChatItemController();
             loader.setController(controller);
             Node node = loader.load();
 
@@ -40,6 +39,7 @@ public class ChatItem extends BorderPane {
             e.printStackTrace();
         }
     }
+
     public ChatItemController getController() {
         return controller;
     }

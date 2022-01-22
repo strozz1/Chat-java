@@ -31,38 +31,30 @@ public class MainController {
     private BorderPane parent;
 
     public MainController(){
-        chatObjectList = new ArrayList<>();
-        ChatListener chatListener = new ChatListener(this);
-        chatListener.start();
+
     }
 
     @FXML
     void initialize() {
+        chatObjectList = new ArrayList<>();
+        ChatListener chatListener = new ChatListener(this);
+        chatListener.start();
         usernameLeftLabel.setText(Info.localUser.getUsername());
     }
 
 
 
-    public SalaModel changeViewToAddOrJoinServer() throws IOException {
+    public void changeViewToAddOrJoinServer() throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("add-server-view.fxml"));
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(loader.load());
-        AddServerController addServerController = loader.getController();
         stage.setScene(scene);
         stage.showAndWait();
-        localUser = addServerController.getUser();
-        SalaModel salaModel = addServerController.getSalaModel();
-        return salaModel;
     }
 
     public void onAddChat(MouseEvent mouseEvent) throws IOException {
-//        SalaModel salaModel = changeViewToAddOrJoinServer();
-//        sala = new SalaCliente(salaModel, localUser);
-//        recibirMensajes(paneChat);
-//        UserChatItemControl userChatItemControl = new UserChatItemControl();
-//        chatObjectList.add(userChatItemControl);
-//        lateralMenu.getChildren().addAll(chatObjectList);
+        changeViewToAddOrJoinServer();
 
     }
 

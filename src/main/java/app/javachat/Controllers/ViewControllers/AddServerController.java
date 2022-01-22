@@ -27,27 +27,10 @@ public class AddServerController{
     private SalaModel sala;
     private User user;
 
-    public void onJoinServer(MouseEvent event) {
-        serverIp= inputServerJoin.getText();
-        userText = inputUserJoin.getText();
-        User user = new User(userText);
-        port = Integer.parseInt(inputPortJoin.getText());
-        SalaCliente sala = new SalaCliente(new SalaModel(serverIp,port,user),user);
-        sala.enviarMensaje(user);
-        this.sala = (SalaModel) sala.recibirMensaje();
-        this.user = user;
-        Node node = (Node) event.getSource();
-        Stage thisStage = (Stage) node.getScene().getWindow();
-        thisStage.close();
 
-
-
-    }
 
     public void onCreateServer(MouseEvent event){
-        Node node = (Node) event.getSource();
-        Stage thisStage = (Stage) node.getScene().getWindow();
-        thisStage.close();
+
     }
 
 
@@ -66,6 +49,15 @@ public class AddServerController{
         ChatRequest selfChatRequest= new ChatRequest(Info.localUser);
         ChatListener.enviarChatRequest(addressText, Integer.parseInt(portText),selfChatRequest);
 
+        closeWindow(mouseEvent);
+
     }
+
+    private void closeWindow(MouseEvent event) {
+        Node node = (Node) event.getSource();
+        Stage thisStage = (Stage) node.getScene().getWindow();
+        thisStage.close();
+    }
+
 
 }

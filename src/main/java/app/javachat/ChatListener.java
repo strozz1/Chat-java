@@ -62,6 +62,8 @@ public class ChatListener extends Thread {
                     enviarChatRequest(othersChatRequest.getSender().getIP(),
                             othersChatRequest.getChatListenerPort()
                             , selfChatRequest);
+                    createNewChat(othersChatRequest, selfChatRequest.getChatPort());
+
                 } else {
                     indexOfPort = othersChatRequest.getIndexOfPort();
                     createNewChat(othersChatRequest, Info.getPort(indexOfPort));
