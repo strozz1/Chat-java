@@ -15,6 +15,7 @@ public class SimpleChat implements Chat {
 
 
     public SimpleChat(ChatRequest chatRequest, int localPort) {
+        Log.show("Chat en el puerto "+localPort);
         this.OTHER_PORT = chatRequest.getChatPort();
         this.otherUser = chatRequest.getSender();
         this.LOCAL_PORT = localPort;
@@ -30,6 +31,7 @@ public class SimpleChat implements Chat {
 
     @Override
     public void sendMessage(Message message) {
+        Log.show("Enviar msg a "+OTHER_PORT);
         Socket socket = null;
         ObjectOutputStream outputStream = null;
         try {
@@ -62,11 +64,12 @@ public class SimpleChat implements Chat {
 
         try {
             //Socket del otro user.
-            Log.show("escuhando a chat");
+            Log.show("escuhando a chat puerto "+serverLocal.getLocalPort());
             otherUserSocket = serverLocal.accept();
+            Log.show("Leyendo objeto recibido.");
             inputStream = new ObjectInputStream(otherUserSocket.getInputStream());
 
-            Log.show("Leyendo objeto recibido.");
+
             inputObject = inputStream.readObject();
             Log.show(inputObject.toString());
             if (inputObject instanceof Message) {

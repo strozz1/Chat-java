@@ -3,9 +3,7 @@ package app.javachat.Models;
 
 
 import java.io.Serializable;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.net.*;
 import java.util.Enumeration;
 import java.util.Objects;
 
@@ -58,16 +56,22 @@ public class User implements Serializable {
     }
     private static String getIpHost() {
         String ipHost = null;
-        try {
-            //Busca en todas las interfaces del sistema la ip local del ordenador.
-            Enumeration<NetworkInterface> networkInterfaceEnumeration = NetworkInterface.getNetworkInterfaces();
-            while (networkInterfaceEnumeration.hasMoreElements()) {
-                for (InterfaceAddress interfaceAddress : networkInterfaceEnumeration.nextElement().getInterfaceAddresses())
-                    if (interfaceAddress.getAddress().isSiteLocalAddress())
-                        ipHost = interfaceAddress.getAddress().getHostAddress().toString();
-            }
-        } catch (SocketException e) {
-            System.err.println(e.getMessage());
+//        try {
+//            //Busca en todas las interfaces del sistema la ip local del ordenador.
+//            Enumeration<NetworkInterface> networkInterfaceEnumeration = NetworkInterface.getNetworkInterfaces();
+//            while (networkInterfaceEnumeration.hasMoreElements()) {
+//                for (InterfaceAddress interfaceAddress : networkInterfaceEnumeration.nextElement().getInterfaceAddresses())
+//                    if (interfaceAddress.getAddress().isSiteLocalAddress())
+//                        ipHost = interfaceAddress.getAddress().getHostAddress().toString();
+//            }
+//        } catch (SocketException e) {
+//            System.err.println(e.getMessage());
+//        }
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+             ipHost = socket.getLocalAddress().getHostAddress();
+        } catch (SocketException | UnknownHostException e) {
+            e.printStackTrace();
         }
         return ipHost;
     }

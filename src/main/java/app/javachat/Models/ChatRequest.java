@@ -30,7 +30,7 @@ public class ChatRequest implements Serializable {
     private int getAvailablePort() {
         //default port 100
         int port = 100;
-        for (int i = 700; i < 800; i++) {
+        for (int i = 768; i < 800; i++) {
             if (Info.isPortFree(i)) {
                 port = i;
                 break;
