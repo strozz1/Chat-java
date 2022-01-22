@@ -1,51 +1,48 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Controllers.ViewControllers.MainController;
-import app.javachat.Models.Chat;
-import javafx.application.Platform;
+import app.javachat.Models.User;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 
 public class LeftChatItemController {
 
     private MainController mainController;
     private static BorderPane parent;
-    private Chat chat;
+    private User otherUser;
+    private ChatItem chatItem;
+    @FXML
+    private Label leftmenuUserLabel;
+    @FXML
+    private HBox leftChatContainer;
+
+    public LeftChatItemController() {
+    }
+
+    public LeftChatItemController(ChatItem chatItem, User otherUser) {
+        this.chatItem = chatItem;
+        this.otherUser = otherUser;
+    }
 
 
     @FXML
-    void initialize(){
+    void initialize() {
 
+        leftmenuUserLabel.setText(otherUser.getUsername());
+        leftChatContainer.setOnMouseClicked(mouseEvent -> {
 
-        onChatClicked.setOnMouseClicked(mouseEvent -> {
             //Cargar Parent
-          parent= mainController.getChatContainer();
-            ChatItem item = chat.getChatItem();
-          parent.setCenter(item);
+            parent = mainController.getParent();
+            parent.setCenter(chatItem);
 
         });
     }
 
-    @FXML
-    private Label leftmenuUserLabel;
-    @FXML
-    private HBox onChatClicked;
-
-
-    public Label getLeftmenuUserLabel() {
-        return leftmenuUserLabel;
-    }
     public void setMainController(MainController controller) {
         this.mainController = controller;
     }
 
-    public void setChat(Chat chat) {
-        this.chat = chat;
-    }
 }

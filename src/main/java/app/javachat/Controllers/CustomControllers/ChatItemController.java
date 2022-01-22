@@ -1,11 +1,13 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Controllers.ViewControllers.CallWindowController;
+import app.javachat.Info;
 import app.javachat.MainApplication;
 import app.javachat.Models.Chat;
 import app.javachat.Models.Message;
 import app.javachat.Models.SimpleChat;
 import app.javachat.Models.User;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +27,7 @@ import java.time.LocalDateTime;
 
 
 public class ChatItemController {
-    private User localUser, otherUser = new User("Alberto Jimenez"); // Temporal user
+    private User otherUser;
     @FXML
     private TextField chatInput;
     @FXML
@@ -33,11 +35,12 @@ public class ChatItemController {
     @FXML
     private Label headerUsername;
     @FXML
-    private Button btnLlamar,btnSendMessage;
+    private Button btnLlamar, btnSendMessage;
     private Chat chat;
 
     @FXML
     void initialize() {
+        headerUsername.setText(otherUser.getUsername());
         btnLlamar.setOnMouseClicked(mouseEvent -> {
             startCallWindow();
         });
@@ -74,41 +77,31 @@ public class ChatItemController {
 
     private void sendNewMessage() {
         String mensaje = chatInput.getText();
-        Message msg = new Message(mensaje, localUser, LocalDateTime.now());
+        Message msg = new Message(mensaje, Info.localUser, LocalDateTime.now());
         chat.sendMessage(msg);
     }
 
-
-    public void onSendMensaje(MouseEvent mouseEvent) {
-
-        Task task2 = new Task<Void>() {
-
-            @Override
-            protected Void call() throws Exception {
-//                sala.enviarMensaje(msg);
-                return null;
-            }
-        };
-        (new Thread(task2)).start();
-    }
-
-
     private void loadDataToCallController(CallWindowController callWindowController) {
         //Set client user and the other line user
-        callWindowController.setLocalUser(localUser);
+        callWindowController.setLocalUser(Info.localUser);
         callWindowController.setOtherUser(otherUser);
     }
 
-    public Label getHeaderUsername() {
-        return headerUsername;
-    }
-
-
-    public VBox getChatBox() {
-        return chatBox;
-    }
-
     public void setChat(Chat chat) {
-        this.chat=chat;
+        this.chat = chat;
+    }
+    public void setOtherUser(User otherUser) {
+        this.otherUser = otherUser;
+    }
+
+    public void startListeningForMessages() {
+        new Thread(() -> {
+            while (true) {
+                Message message = chat.receiveMessage();
+                if (message != null)
+                    Platform.runLater(() -> chatBox.getChildren().add(new Label(message.getContent())));
+            }
+
+        }).start();
     }
 }

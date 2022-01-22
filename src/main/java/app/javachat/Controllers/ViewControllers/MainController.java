@@ -2,14 +2,10 @@ package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.ChatListener;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
-import app.javachat.Controllers.SalaCliente;
 import app.javachat.Info;
 import app.javachat.MainApplication;
-import app.javachat.Models.Message;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -26,7 +21,6 @@ import java.util.List;
 
 public class MainController {
     private List<LeftChatItem> chatObjectList;
-    private SalaCliente sala;
     private User localUser;
 
     @FXML
@@ -37,10 +31,9 @@ public class MainController {
     private BorderPane parent;
 
     public MainController(){
-        ChatListener chatListener = new ChatListener();
-        chatListener.setMainController(this);
-        chatListener.start();
         chatObjectList = new ArrayList<>();
+        ChatListener chatListener = new ChatListener(this);
+        chatListener.start();
     }
 
     @FXML
@@ -63,36 +56,6 @@ public class MainController {
         return salaModel;
     }
 
-    public void recibirMensajes(VBox lv) {
-        Task<Void> task = new Task<Void>() {
-
-            @Override
-            protected Void call() throws Exception {
-                Boolean isMyMessage;
-                Message message = (Message) sala.recibirMensaje();
-                isMyMessage = message.getSender().equals(localUser);
-
-                Label label = new Label(message.toString());
-
-                if (isMyMessage)
-                    label.setTextFill(Color.RED);
-                Platform.runLater(() -> lv.getChildren().add(label));
-                recibirMensajes(lv);
-                return null;
-
-            }
-
-        };
-        new Thread(task).start();
-
-
-    }
-
-
-
-
-
-
     public void onAddChat(MouseEvent mouseEvent) throws IOException {
 //        SalaModel salaModel = changeViewToAddOrJoinServer();
 //        sala = new SalaCliente(salaModel, localUser);
@@ -106,7 +69,7 @@ public class MainController {
     public VBox getLateralMenu() {
         return lateralMenu;
     }
-    public BorderPane getChatContainer() {
+    public BorderPane getParent() {
         return parent;
     }
 }

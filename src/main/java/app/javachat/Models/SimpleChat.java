@@ -1,10 +1,6 @@
 package app.javachat.Models;
 
-import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Logger.Log;
-import javafx.application.Platform;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,12 +12,10 @@ public class SimpleChat implements Chat {
     private static int LOCAL_PORT, OTHER_PORT;
     private final User otherUser;
     private ServerSocket serverLocal;
-    private VBox chatContainer;
-    private ChatItem chatItem;
 
 
     public SimpleChat(ChatRequest chatRequest, int localPort) {
-        this.OTHER_PORT = chatRequest.getSenderPort();
+        this.OTHER_PORT = chatRequest.getChatPort();
         this.otherUser = chatRequest.getSender();
         this.LOCAL_PORT = localPort;
         try {
@@ -32,18 +26,7 @@ public class SimpleChat implements Chat {
         }
     }
 
-    @Override
-    public void start() {
-        Thread threadListener = new Thread(() -> {
-            while (true) {
-                Message message = receiveMessage();
-                if (message != null) {
-                    printMessage(message);
-                }
-            }
-        });
-        threadListener.start();
-    }
+
 
     @Override
     public void sendMessage(Message message) {
@@ -80,6 +63,7 @@ public class SimpleChat implements Chat {
 
         try {
             //Socket del otro user.
+            Log.show("escuhando a chat");
             otherUserSocket = serverLocal.accept();
             inputStream = new ObjectInputStream(otherUserSocket.getInputStream());
 
@@ -104,28 +88,6 @@ public class SimpleChat implements Chat {
             }
         }
         return null;
-    }
-
-    @Override
-    public ChatItem getChatItem() {
-        return chatItem;
-    }
-
-    @Override
-    public void setChatItem(ChatItem chatItem) {
-        this.chatItem = chatItem;
-        this.chatContainer = chatItem.getChatBox();
-    }
-
-
-    private void printMessage(Message message) {
-        System.out.println(message);
-        Platform.runLater(() -> chatContainer.getChildren().add(new Label(message.getContent())));
-    }
-
-
-    public User getOtherUser() {
-        return otherUser;
     }
 
 

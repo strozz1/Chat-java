@@ -2,6 +2,7 @@ package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.MainApplication;
 import app.javachat.Models.SimpleChat;
+import app.javachat.Models.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -19,10 +20,12 @@ public class ChatItem extends BorderPane {
 
         load();
     }
-    public ChatItem(SimpleChat chat) {
+    public ChatItem(SimpleChat chat, User otherUser) {
         super();
         load();
         controller.setChat(chat);
+        controller.setOtherUser(otherUser);
+        controller.startListeningForMessages();
     }
     private void load() {
         try {
@@ -37,15 +40,6 @@ public class ChatItem extends BorderPane {
             e.printStackTrace();
         }
     }
-
-    public void setUsername(String name){
-        controller.getHeaderUsername().setText(name);
-    }
-
-    public VBox getChatBox() {
-        return controller.getChatBox();
-    }
-
     public ChatItemController getController() {
         return controller;
     }

@@ -6,7 +6,6 @@ import app.javachat.Controllers.ViewControllers.MainController;
 import app.javachat.Logger.Log;
 import app.javachat.Models.ChatRequest;
 import app.javachat.Models.SimpleChat;
-import app.javachat.Models.User;
 import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 
@@ -17,20 +16,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ChatListener extends Thread {
-    private static int LOCAL_PORT = Info.NEW_CHAT_LISTENER_PORT;
-    private static MainController controller;
-    private static VBox lateralChatMenu;
+    private final MainController mainController;
+    private VBox lateralChatMenu;
 
     private ServerSocket localServer;
-    private ChatRequest chatRequest;
+    private ChatRequest selfChatRequest;
 
-    public void setMainController(MainController mainController) {
-        this.controller = mainController;
-    }
+    public ChatListener(MainController mainController) {
+        this.mainController = mainController;
+        this.lateralChatMenu = mainController.getLateralMenu();
 
-    public ChatListener() {
         try {
-            localServer = new ServerSocket(LOCAL_PORT);
+            localServer = new ServerSocket(Info.NEW_CHAT_LISTENER_PORT);
         } catch (IOException e) {
             Log.error(e.getMessage());
         }
@@ -40,66 +37,61 @@ public class ChatListener extends Thread {
     @Override
     public void run() {
         while (true) {
-
-            escucharMensajes();
+            Log.show("Listening for new incoming chats");
+            listenForNewChats();
         }
     }
 
-    private void escucharMensajes() {
+    private void listenForNewChats() {
 
         try {
-            Log.show("Escuchando a nuevos posibles chats");
             Socket inputServer = localServer.accept();
-            Log.show("Nuevo chat!");
+            Log.show("New chat came!");
             ObjectInputStream inputStream = new ObjectInputStream(inputServer.getInputStream());
             Object objectRead = inputStream.readObject();
 
             inputStream.close();
 
-            if (objectRead instanceof ChatRequest) {
-                this.chatRequest = (ChatRequest) objectRead;
-                ChatRequest selfChatRequest = new ChatRequest(Info.localUser);
-                crearNuevoChat(selfChatRequest.getSenderPort());
-                //devuelve nueva info al sender sobre tu puerto y nombre
-//                enviarChatRequest(selfChatRequest);
-
+            if (objectRead instanceof ChatRequest othersChatRequest) {
+                selfChatRequest = new ChatRequest(Info.localUser, true);
+                //Si no es una respuesta, simplemente mandales una respuesta
+                int indexOfPort;
+                if (!othersChatRequest.isAccept()) {
+                    indexOfPort = othersChatRequest.getIndexOfPort();
+                    selfChatRequest.setIndexOfPort(indexOfPort);
+                    enviarChatRequest(othersChatRequest.getSender().getIP(),
+                            othersChatRequest.getChatListenerPort()
+                            , selfChatRequest);
+                } else {
+                    indexOfPort = othersChatRequest.getIndexOfPort();
+                    createNewChat(othersChatRequest, Info.getPort(indexOfPort));
+                }
             }
-
-
         } catch (IOException | ClassNotFoundException e) {
             Log.error(e.getMessage());
         }
-
-
     }
 
-    private void crearNuevoChat(int port) {
-        // Cargar vistas del FXML
-        lateralChatMenu= controller.getLateralMenu();
-        SimpleChat simpleChat= new SimpleChat(chatRequest,port);
-        ChatItem chatItem = new ChatItem();
-        chatItem.setUsername(chatRequest.getSender().getUsername());
-        simpleChat.setChatItem(chatItem);
+    private void createNewChat(ChatRequest othersChatRequest, int selfPort) {
+        SimpleChat simpleChat = new SimpleChat(othersChatRequest, selfPort);
+        ChatItem chatItem = new ChatItem(simpleChat, othersChatRequest.getSender());
 
-        LeftChatItem leftChatItem= new LeftChatItem(simpleChat);
-        leftChatItem.setMainController(controller);
+        LeftChatItem leftChatItem = new LeftChatItem(chatItem, othersChatRequest.getSender());
+        leftChatItem.setMainController(mainController);
+
         //Add chat to left side
-        Platform.runLater(()->lateralChatMenu.getChildren().add(leftChatItem));
+        Platform.runLater(() -> lateralChatMenu.getChildren().add(leftChatItem));
 
     }
 
-    private void enviarChatRequest() {
+    public static void enviarChatRequest(String ip, int chatListenerPort, ChatRequest chatRequest) {
         Socket socketEnviador = null;
         ObjectOutputStream outputStream = null;
-        //Creo el objeto a enviar, con el puerto.
-        ChatRequest chatRequestSelf = new ChatRequest(Info.localUser);
-        User user = chatRequest.getSender();
-        int port = chatRequest.getSenderPort();
 
         try {
-            socketEnviador = new Socket(user.getIP(), port);
+            socketEnviador = new Socket(ip, chatListenerPort);
             outputStream = new ObjectOutputStream(socketEnviador.getOutputStream());
-            outputStream.writeObject(chatRequestSelf);
+            outputStream.writeObject(chatRequest);
 
         } catch (IOException e) {
             Log.error(e.getMessage());
@@ -112,11 +104,6 @@ public class ChatListener extends Thread {
             } catch (IOException e) {
                 Log.error(e.getMessage());
             }
-
-
         }
-
     }
-
-
 }

@@ -1,11 +1,14 @@
 package app.javachat.Controllers.ViewControllers;
 
+import app.javachat.ChatListener;
 import app.javachat.Controllers.SalaCliente;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.TrayIcon.MessageType;
 import java.net.MalformedURLException;
 
+import app.javachat.Info;
+import app.javachat.Models.ChatRequest;
 import app.javachat.Models.SalaModel;
 import app.javachat.Models.Servidor;
 import app.javachat.Models.User;
@@ -20,7 +23,7 @@ public class AddServerController{
     String serverIp,userText;
     int port;
     @FXML
-    private TextField inputUserJoin,inputUserCreate,inputServerJoin,inputServerCreate,inputPortJoin,inputPortCreate;
+    private TextField inputTextAddress,inputTextPort;
     private SalaModel sala;
     private User user;
 
@@ -42,13 +45,6 @@ public class AddServerController{
     }
 
     public void onCreateServer(MouseEvent event){
-        serverIp= inputServerCreate.getText();
-        userText = inputUserCreate.getText();
-        User user = new User(userText,serverIp);
-        port = Integer.parseInt(inputPortCreate.getText());
-        new Servidor(user,port).start();
-        this.sala = new SalaModel(serverIp,port,user);
-        this.user=user;
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();
         thisStage.close();
@@ -63,5 +59,13 @@ public class AddServerController{
         return this.user;
     }
 
+
+    public void onAddNewChat(MouseEvent mouseEvent) {
+        String addressText = inputTextAddress.getText();
+        String portText = inputTextPort.getText();
+        ChatRequest selfChatRequest= new ChatRequest(Info.localUser);
+        ChatListener.enviarChatRequest(addressText, Integer.parseInt(portText),selfChatRequest);
+
+    }
 
 }

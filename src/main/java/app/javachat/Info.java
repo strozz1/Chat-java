@@ -12,8 +12,9 @@ public class Info {
     private static List<Integer> occupatedPorts= new ArrayList<>(NEW_CHAT_LISTENER_PORT);
     private static List<Chat> chats= new ArrayList<>();
 
-    public static void usePort(int PORT){
+    public static int usePort(int PORT){
         occupatedPorts.add(PORT);
+        return occupatedPorts.indexOf(PORT);
     }
     public static void unUsePort(int PORT){
         occupatedPorts.remove(PORT);
@@ -31,6 +32,9 @@ public class Info {
 
     public static List<Integer> getOccupatedPorts() {
         return occupatedPorts;
+    }
+    public static int getPort(int index){
+        return occupatedPorts.get(index);
     }
 
     public static boolean isPortFree(int port){
