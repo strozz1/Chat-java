@@ -50,7 +50,10 @@ public class ChatItemController {
             startCallWindow();
         });
         btnSendMessage.setOnMouseClicked(mouseEvent -> {
-            new Thread(this::sendNewMessage).start();
+            String message = chatInput.getText();
+            new Thread(()->{
+                sendNewMessage(message);
+            }).start();
             chatInput.setText("");
         });
     }
@@ -80,10 +83,10 @@ public class ChatItemController {
         }
     }
 
-    private void sendNewMessage() {
-        String mensaje = chatInput.getText();
-        Message msg = new Message(mensaje, Info.localUser, LocalDateTime.now());
+    private void sendNewMessage(String message) {
+        Message msg = new Message(message, Info.localUser, LocalDateTime.now());
         chat.sendMessage(msg);
+
     }
 
     private void loadDataToCallController(CallWindowController callWindowController) {

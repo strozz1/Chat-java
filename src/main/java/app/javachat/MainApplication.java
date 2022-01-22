@@ -1,11 +1,10 @@
 package app.javachat;
 
+import app.javachat.Controllers.ViewControllers.ChangeUserSettingsViewController;
 import app.javachat.Controllers.ViewControllers.LoggerController;
 import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
-import app.javachat.Models.ChatRequest;
-import app.javachat.Models.Message;
 import app.javachat.Models.User;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,9 +18,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.time.LocalDateTime;
 
 public class MainApplication extends Application {
     private Stage stage;
@@ -57,9 +53,6 @@ public class MainApplication extends Application {
 //            }
 
 
-
-
-
         }).start();
         launch();
 
@@ -68,13 +61,13 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
-        Info.localUser=new User("Strozz1");
+        Info.localUser = new User("Strozz1");
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         root = fxmlLoader.load();
 
         setStage();
-        setMenu(root);
+        setMenu();
 
 
         stage.show();
@@ -93,7 +86,7 @@ public class MainApplication extends Application {
         stage.setMinHeight(650);
     }
 
-    private void setMenu(BorderPane root) {
+    private void setMenu() {
         menuBar = new MenuBar();
 
         createMenuInicio();
@@ -113,6 +106,19 @@ public class MainApplication extends Application {
     private void createMenuPerfil() {
         Menu menuPerfil = new Menu("Perfil");
         MenuItem itemCambiaNombre = new MenuItem("Cambiar nombre");
+
+        itemCambiaNombre.setOnAction(actionEvent -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("change-user-settings-view.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(loader.load());
+                stage.setScene(scene);
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         menuPerfil.getItems().add(itemCambiaNombre);
         menuBar.getMenus().add(menuPerfil);
     }

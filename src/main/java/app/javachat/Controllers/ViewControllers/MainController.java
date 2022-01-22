@@ -4,7 +4,6 @@ import app.javachat.ChatListener;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Info;
 import app.javachat.MainApplication;
-import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,7 +43,7 @@ public class MainController {
 
 
 
-    public void changeViewToAddOrJoinServer() throws IOException {
+    public void openAddChatView() throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("add-server-view.fxml"));
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -54,7 +53,7 @@ public class MainController {
     }
 
     public void onAddChat(MouseEvent mouseEvent) throws IOException {
-        changeViewToAddOrJoinServer();
+        openAddChatView();
 
     }
 

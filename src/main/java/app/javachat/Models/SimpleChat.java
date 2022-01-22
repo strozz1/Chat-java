@@ -32,7 +32,6 @@ public class SimpleChat implements Chat {
     public void sendMessage(Message message) {
         Socket socket = null;
         ObjectOutputStream outputStream = null;
-        //Todo
         try {
             socket = new Socket(otherUser.getIP(), OTHER_PORT);
             outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -69,6 +68,7 @@ public class SimpleChat implements Chat {
 
             Log.show("Leyendo objeto recibido.");
             inputObject = inputStream.readObject();
+            Log.show(inputObject.toString());
             if (inputObject instanceof Message) {
                 return (Message) inputObject;
             }
