@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_RIGHT" style="-fx-background-radius: 0; -fx-background-color: yellow;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="messageVBox" alignment="TOP_RIGHT" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-radius: 30;" styleClass="message" stylesheets="@darkMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="TOP_RIGHT">
+      <HBox alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="547.0" style="-fx-background-color: transparent;">
          <children>
-            <Label fx:id="labelDate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="12:06:04 12/12/2001" HBox.hgrow="ALWAYS" />
-            <Label fx:id="labelUser" text="Username" textFill="RED" HBox.hgrow="ALWAYS">
+            <Label fx:id="labelDate" maxWidth="1.7976931348623157E308" style="-fx-background-color: transparent;" styleClass="textColor2" text="12:06:04 12/12/2001" HBox.hgrow="ALWAYS">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></Label>
+            <Label fx:id="labelUser" alignment="TOP_RIGHT" contentDisplay="RIGHT" styleClass="messageText" text="Username" textFill="RED" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
             </Label>
          </children>
       </HBox>
-      <Label fx:id="labelMessage" alignment="TOP_RIGHT" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Esta es una prueba de mensaje para mostrar en el chat jaja xd lol" wrapText="true" VBox.vgrow="ALWAYS" />
+      <Label fx:id="labelMessage" alignment="TOP_RIGHT" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="500.0" styleClass="messageText" text="Esta es una prueba de mensaje para mostrar engghghghgh evvvvvvvvvvvvvvvvvvvvvl chat jaja xd lol" wrapText="true" VBox.vgrow="ALWAYS">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor></Label>
    </children>
    <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
    </padding>
 </VBox>

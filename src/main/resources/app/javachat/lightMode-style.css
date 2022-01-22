@@ -16,9 +16,11 @@
 
 }
 .textColor{
+    -fx-border-color:transparent;
     -fx-text-fill: #454545;
 }
 .textColor2{
+    -fx-border-color:transparent;
     -fx-text-fill: #aaaaaa;
 }
 .addButton{
@@ -28,5 +30,15 @@
     -fx-border-color:#505050;
     -fx-text-fill: white;
 
+}
+.message{
+    -fx-border-color:transparent;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: black;
+}
+.messageText{
+    -fx-border-color:transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: #2d2d2d;
 }
 

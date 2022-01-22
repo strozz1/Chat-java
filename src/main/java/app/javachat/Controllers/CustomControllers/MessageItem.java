@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -24,10 +25,12 @@ public class MessageItem extends AnchorPane {
         load(controller);
     }
     public MessageItem(Message message,boolean isMine){
-        if(isMine)
+        if(isMine){
             nodeOrientationProperty().set(NodeOrientation.RIGHT_TO_LEFT);
-        else
+        }
+        else{
             nodeOrientationProperty().set(NodeOrientation.LEFT_TO_RIGHT);
+        }
 
         controller= new MessageItemController(message, isMine);
         load(controller);

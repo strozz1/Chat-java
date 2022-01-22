@@ -2,7 +2,9 @@ package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Models.Message;
 import javafx.fxml.FXML;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 public class MessageItemController {
 
@@ -11,9 +13,22 @@ public class MessageItemController {
 
     @FXML
     private Label labelDate,labelUser,labelMessage;
+    @FXML
+    private VBox messageVBox;
+
+    public VBox getMessageVBox() {
+        return messageVBox;
+    }
 
     @FXML
     void initialize(){
+        if(isMine){
+
+            messageVBox.nodeOrientationProperty().set(NodeOrientation.LEFT_TO_RIGHT);
+        }
+        else{
+            messageVBox.nodeOrientationProperty().set(NodeOrientation.RIGHT_TO_LEFT);
+        }
         labelDate.setText(message.getHoraEnvio().toString());
         labelUser.setText(message.getSender().getUsername());
         labelMessage.setText(message.getContent());

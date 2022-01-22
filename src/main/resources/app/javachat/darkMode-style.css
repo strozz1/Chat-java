@@ -29,3 +29,11 @@
     -fx-text-fill: black;
 
 }
+
+.message{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: black;
+}
+.messageText{
+    -fx-text-fill: #2d2d2d;
+}
