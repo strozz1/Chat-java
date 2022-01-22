@@ -1,8 +1,6 @@
-package app.javachat.Controllers;
+package app.javachat.Garage;
 
 import app.javachat.Logger.Log;
-import app.javachat.Models.Sala;
-import app.javachat.Models.SalaModel;
 import app.javachat.Models.User;
 
 import java.io.IOException;

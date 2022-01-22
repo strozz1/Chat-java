@@ -1,4 +1,6 @@
-package app.javachat.Models;
+package app.javachat.Calls;
+
+import app.javachat.Models.User;
 
 import java.io.Serializable;
 

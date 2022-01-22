@@ -1,4 +1,7 @@
-package app.javachat.Models;
+package app.javachat.Garage;
+
+import app.javachat.Models.Message;
+import app.javachat.Models.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;

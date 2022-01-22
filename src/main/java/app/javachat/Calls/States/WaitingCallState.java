@@ -1,9 +1,9 @@
-package app.javachat.Llamadas.States;
+package app.javachat.Calls.States;
 
-import app.javachat.Llamadas.Call;
-import app.javachat.Llamadas.CallState;
+import app.javachat.Calls.Call;
+import app.javachat.Calls.CallState;
 import app.javachat.Logger.Log;
-import app.javachat.Models.CallRequest;
+import app.javachat.Calls.CallRequest;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

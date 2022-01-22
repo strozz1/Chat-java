@@ -1,4 +1,4 @@
-package app.javachat.Models;
+package app.javachat.Garage;
 
 
 import app.javachat.Logger.Log;

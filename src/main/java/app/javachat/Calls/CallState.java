@@ -1,4 +1,4 @@
-package app.javachat.Llamadas;
+package app.javachat.Calls;
 
 public interface CallState {
 

@@ -1,6 +1,6 @@
-package app.javachat.Controllers;
+package app.javachat.Garage;
 
-import app.javachat.Models.SalaModel;
+import app.javachat.Garage.SalaModel;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -1,6 +1,6 @@
-package app.javachat.Llamadas;
+package app.javachat.Calls;
 
-import app.javachat.Llamadas.States.DisconnectedCallState;
+import app.javachat.Calls.States.DisconnectedCallState;
 import app.javachat.Models.User;
 
 public class Call {

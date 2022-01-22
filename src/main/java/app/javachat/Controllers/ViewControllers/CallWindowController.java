@@ -1,14 +1,12 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.Llamadas.Call;
-import app.javachat.Llamadas.States.DisconnectedCallState;
-import app.javachat.Llamadas.States.WaitingCallState;
+import app.javachat.Calls.Call;
+import app.javachat.Calls.States.DisconnectedCallState;
 import app.javachat.Models.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 public class CallWindowController {
     private User localUser,otherUser;

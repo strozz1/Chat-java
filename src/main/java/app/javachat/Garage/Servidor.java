@@ -1,8 +1,8 @@
-package app.javachat.Models;
+package app.javachat.Garage;
 
 
-import app.javachat.Controllers.SalaServidor;
 import app.javachat.Logger.Log;
+import app.javachat.Models.User;
 
 
 public class Servidor extends Thread {

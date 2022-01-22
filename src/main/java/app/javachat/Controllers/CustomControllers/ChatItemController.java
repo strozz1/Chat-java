@@ -1,11 +1,11 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Controllers.ViewControllers.CallWindowController;
-import app.javachat.Info;
+import app.javachat.Utilities.Info;
 import app.javachat.MainApplication;
-import app.javachat.Models.Chat;
+import app.javachat.Chats.Chat;
 import app.javachat.Models.Message;
-import app.javachat.Models.SimpleChat;
+import app.javachat.Chats.SimpleChat;
 import app.javachat.Models.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

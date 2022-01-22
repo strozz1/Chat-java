@@ -1,7 +1,8 @@
-package app.javachat.Models;
+package app.javachat.Chats;
 
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.ViewControllers.MainController;
+import app.javachat.Models.Message;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;

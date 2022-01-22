@@ -1,6 +1,6 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.Info;
+import app.javachat.Utilities.Info;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;

@@ -1,13 +1,11 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.MainApplication;
-import app.javachat.Models.SimpleChat;
+import app.javachat.Chats.SimpleChat;
 import app.javachat.Models.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 

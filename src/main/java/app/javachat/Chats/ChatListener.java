@@ -1,11 +1,10 @@
-package app.javachat;
+package app.javachat.Chats;
 
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Controllers.ViewControllers.MainController;
+import app.javachat.Utilities.Info;
 import app.javachat.Logger.Log;
-import app.javachat.Models.ChatRequest;
-import app.javachat.Models.SimpleChat;
 import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 

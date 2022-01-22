@@ -1,23 +1,12 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.Logger.ConsoleType;
-import app.javachat.Logger.Log;
-import app.javachat.MainApplication;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-
-public class LoggerController {
+public class LoggerWindowController {
     public enum MSG_STATES {SERVER, CLIENT, INFO}
 
     ;

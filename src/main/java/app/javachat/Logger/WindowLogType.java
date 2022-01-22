@@ -1,20 +1,20 @@
 package app.javachat.Logger;
 
-import app.javachat.Controllers.ViewControllers.LoggerController;
+import app.javachat.Controllers.ViewControllers.LoggerWindowController;
 
 public class WindowLogType implements LoggerType{
 
-    private static LoggerController controller;
+    private static LoggerWindowController controller;
 
-    public WindowLogType(LoggerController controller1){
+    public WindowLogType(LoggerWindowController controller1){
         controller = controller1;
     }
 
 
-    public static void setLoggerController(LoggerController controller1){
+    public static void setLoggerController(LoggerWindowController controller1){
         controller = controller1;
     }
-    public static LoggerController getLoggerController(){
+    public static LoggerWindowController getLoggerController(){
         return controller;
     }
     @Override

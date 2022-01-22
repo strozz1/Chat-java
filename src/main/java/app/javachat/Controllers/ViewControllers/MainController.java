@@ -1,8 +1,8 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.ChatListener;
+import app.javachat.Chats.ChatListener;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
-import app.javachat.Info;
+import app.javachat.Utilities.Info;
 import app.javachat.MainApplication;
 import app.javachat.Models.User;
 import javafx.fxml.FXML;

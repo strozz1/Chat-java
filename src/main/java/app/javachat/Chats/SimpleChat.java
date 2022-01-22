@@ -1,6 +1,8 @@
-package app.javachat.Models;
+package app.javachat.Chats;
 
 import app.javachat.Logger.Log;
+import app.javachat.Models.Message;
+import app.javachat.Models.User;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

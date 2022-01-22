@@ -1,11 +1,11 @@
 package app.javachat;
 
-import app.javachat.Controllers.ViewControllers.ChangeUserSettingsViewController;
-import app.javachat.Controllers.ViewControllers.LoggerController;
+import app.javachat.Controllers.ViewControllers.LoggerWindowController;
 import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
 import app.javachat.Models.User;
+import app.javachat.Utilities.Info;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -183,7 +183,7 @@ public class MainApplication extends Application {
             Scene scene;
             scene = new Scene(loader.load());
 
-            LoggerController controller = loader.getController();
+            LoggerWindowController controller = loader.getController();
             Log.setLoggerType(new WindowLogType(controller));
             stage.setScene(scene);
             stage.show();

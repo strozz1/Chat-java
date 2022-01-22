@@ -1,6 +1,6 @@
-package app.javachat;
+package app.javachat.Utilities;
 
-import app.javachat.Models.Chat;
+import app.javachat.Chats.Chat;
 import app.javachat.Models.User;
 
 import java.util.ArrayList;

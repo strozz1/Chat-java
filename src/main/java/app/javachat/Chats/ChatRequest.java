@@ -1,6 +1,7 @@
-package app.javachat.Models;
+package app.javachat.Chats;
 
-import app.javachat.Info;
+import app.javachat.Utilities.Info;
+import app.javachat.Models.User;
 
 import java.io.Serializable;
 

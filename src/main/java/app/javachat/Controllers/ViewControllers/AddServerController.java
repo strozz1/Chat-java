@@ -1,16 +1,10 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.ChatListener;
-import app.javachat.Controllers.SalaCliente;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.TrayIcon.MessageType;
-import java.net.MalformedURLException;
+import app.javachat.Chats.ChatListener;
 
-import app.javachat.Info;
-import app.javachat.Models.ChatRequest;
-import app.javachat.Models.SalaModel;
-import app.javachat.Models.Servidor;
+import app.javachat.Utilities.Info;
+import app.javachat.Chats.ChatRequest;
+import app.javachat.Garage.SalaModel;
 import app.javachat.Models.User;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
