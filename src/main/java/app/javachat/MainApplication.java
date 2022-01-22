@@ -25,38 +25,7 @@ public class MainApplication extends Application {
     private boolean isLightMode = false;
     private BorderPane root;
 
-    public static void main(String[] args) {
-        new Thread(() -> {
-//                Thread.sleep(2000);
-//                Socket s= new Socket("192.168.1.38",867);
-//                ObjectOutputStream objectOutputStream = new ObjectOutputStream(s.getOutputStream());
-//                objectOutputStream .writeObject(new ChatRequest(new User("oscar")));
-//                objectOutputStream.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            for (int i = 0; i < 50; i++) {
-//                System.out.println("enviando "+ i);
-//                try {
-//                    Thread.sleep(100);
-//                    Socket s= new Socket("192.168.1.38",700);
-//                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(s.getOutputStream());
-//                    objectOutputStream .writeObject(new Message("sdsdsd",new User("oscar"), LocalDateTime.now()));
-//                    objectOutputStream.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-
-
-        }).start();
-        launch();
-
-    }
+    public static void main(String[] args) {launch();}
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -72,10 +41,10 @@ public class MainApplication extends Application {
 
 
         stage.show();
-        stage.setOnCloseRequest(windowEvent -> {
-            Platform.exit();
-            System.exit(1);
-        });
+//        stage.setOnCloseRequest(windowEvent -> {
+//            Platform.exit();
+////            System.exit(1);
+//        });
 
     }
 

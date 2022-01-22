@@ -22,6 +22,7 @@ public class ChatListener extends Thread {
     private ChatRequest selfChatRequest;
 
     public ChatListener(MainController mainController) {
+
         this.mainController = mainController;
         this.lateralChatMenu = mainController.getLateralMenu();
 
@@ -69,6 +70,7 @@ public class ChatListener extends Thread {
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
             Log.error(e.getMessage());
         }
     }

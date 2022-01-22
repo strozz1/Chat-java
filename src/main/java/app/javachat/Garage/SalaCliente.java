@@ -12,10 +12,7 @@ import java.net.Socket;
 /**
  * Esta clase se usa cada vez que un usuario quiera unirse a una sala ya creada.
  */
-public class SalaCliente {
-
-    private final User user;
-    private final SalaModel salaModel;
+public record SalaCliente(SalaModel salaModel, User user) {
 
     /**
      * Creamos una SalaCliente, pasándole un objeto SalaModel, el cual contiene la ip,
@@ -25,10 +22,7 @@ public class SalaCliente {
      * @param salaModel el modelo de sala del servidor
      * @param user      el usuario que accede al servidor
      */
-    public SalaCliente(SalaModel salaModel, User user) {
-        this.salaModel = salaModel;
-        this.user = user;
-
+    public SalaCliente {
     }
 
     public Object recibirMensaje() {
@@ -39,21 +33,21 @@ public class SalaCliente {
         ObjectInputStream objectReader = null;
 
         try {
-            Log.show("Creando servidor interno para recibir mensajes del servidor.","CLIENT");
+            Log.show("Creando servidor interno para recibir mensajes del servidor.", "CLIENT");
             //Creamos una instancia de nuestro server interno para poder recibir mensajes del server.
             if ((socketPropio = Sala.crearConnexionPropia(PORT_INTERNO)) == null)
-            // Escuchamos mensajes entrantes y creamos el objeto socketServerEntrante, siendo este el usuario que envía datos.
-            Log.show("Escuchando en el servidor." + user.getIP() + ":" + PORT_INTERNO,"CLIENT");
+                // Escuchamos mensajes entrantes y creamos el objeto socketServerEntrante, siendo este el usuario que envía datos.
+                Log.show("Escuchando en el servidor." + user.getIP() + ":" + PORT_INTERNO, "CLIENT");
             socketSaliente = socketPropio.accept();
             objectReader = new ObjectInputStream(socketSaliente.getInputStream());
 
-            Log.show("Leyendo objeto recibido.","CLIENT");
+            Log.show("Leyendo objeto recibido.", "CLIENT");
             // Recaudamos el mensaje del cliente, comprobamos de que objeto se trata
             objetoRecibido = objectReader.readObject();
 
 
-        } catch (IOException | ClassNotFoundException  e) {
-            Log.error(e.getMessage(),"CLIENT");
+        } catch (IOException | ClassNotFoundException e) {
+            Log.error(e.getMessage(), "CLIENT");
         } finally {
             try {
                 //Cerrar y liberar recursos
@@ -62,7 +56,7 @@ public class SalaCliente {
                 if (objectReader != null)
                     objectReader.close();
             } catch (IOException e) {
-                Log.error(e.getMessage(),"CLIENT");
+                Log.error(e.getMessage(), "CLIENT");
             }
         }
         //Devolvemos el mensaje
@@ -78,16 +72,16 @@ public class SalaCliente {
         try {
             // Si el objeto pasado es null o no es un Mensaje.java, tiramos una exception
             if (mensaje == null)
-            // Creamos la connexion
-            socket = Sala.crearConnexionConServer(salaModel.getServerIp(), salaModel.getPORT());
+                // Creamos la connexion
+                socket = Sala.crearConnexionConServer(salaModel.getServerIp(), salaModel.getPORT());
             if (socket == null)
 
-            objectWriter = new ObjectOutputStream(socket.getOutputStream());
+                objectWriter = new ObjectOutputStream(socket.getOutputStream());
             objectWriter.writeObject(mensaje);  //Escribimos el objeto.
-            Log.show("Mensaje enviado." + mensaje,"CLIENT");
+            Log.show("Mensaje enviado." + mensaje, "CLIENT");
 
         } catch (IOException e) {
-            Log.error(e.getMessage(),"CLIENT");
+            Log.error(e.getMessage(), "CLIENT");
         } finally {
             try {
                 //Cerrar y liberar recursos;
@@ -95,7 +89,7 @@ public class SalaCliente {
                 if (objectWriter != null)
                     objectWriter.close();
             } catch (IOException e) {
-                Log.error(e.getMessage(),"CLIENT");
+                Log.error(e.getMessage(), "CLIENT");
             }
         }
     }

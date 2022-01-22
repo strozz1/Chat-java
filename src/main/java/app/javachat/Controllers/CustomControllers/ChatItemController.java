@@ -85,6 +85,7 @@ public class ChatItemController {
 
     private void sendNewMessage(String message) {
         Message msg = new Message(message, Info.localUser, LocalDateTime.now());
+        Platform.runLater(() ->chatBox.getChildren().add(new MessageItem(msg,true)));
         chat.sendMessage(msg);
 
     }
@@ -98,13 +99,15 @@ public class ChatItemController {
 
 
     public void startListeningForMessages() {
-        new Thread(() -> {
+        Thread thread = new Thread(() -> {
             while (true) {
                 Message message = chat.receiveMessage();
                 if (message != null)
-                    Platform.runLater(() -> chatBox.getChildren().add(new Label(message.getContent())));
+                    Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message,false)));
             }
 
-        }).start();
+        });
+        thread.setDaemon(true);
+        thread.start();
     }
 }
