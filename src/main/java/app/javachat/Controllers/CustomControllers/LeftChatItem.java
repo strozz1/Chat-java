@@ -36,11 +36,16 @@ public class LeftChatItem extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
     public void setMainController(MainController mainController) {
         controller.setMainController(mainController);
 
+    }
+    public ChatItem getChatItem(){
+        return controller.getChatItem();
     }
 }

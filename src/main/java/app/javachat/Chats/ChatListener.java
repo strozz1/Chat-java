@@ -3,8 +3,8 @@ package app.javachat.Chats;
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Controllers.ViewControllers.MainController;
-import app.javachat.Utilities.Info;
 import app.javachat.Logger.Log;
+import app.javachat.Utilities.Info;
 import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 
@@ -83,7 +83,10 @@ public class ChatListener extends Thread {
         leftChatItem.setMainController(mainController);
 
         //Add chat to left side
-        Platform.runLater(() -> lateralChatMenu.getChildren().add(leftChatItem));
+        if (!Info.checkIfChatExist(leftChatItem)) {
+            Platform.runLater(() -> lateralChatMenu.getChildren().add(leftChatItem));
+            Info.addChat(leftChatItem);
+        } else Log.error("El chat ya existe. Prueba uno distinto");
 
     }
 

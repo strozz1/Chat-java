@@ -45,4 +45,7 @@ public class LeftChatItemController {
         this.mainController = controller;
     }
 
+    public ChatItem getChatItem() {
+        return chatItem;
+    }
 }

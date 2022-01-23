@@ -40,11 +40,11 @@ public class AddServerController{
     public void onAddNewChat(MouseEvent mouseEvent) {
         String addressText = inputTextAddress.getText();
         String portText = inputTextPort.getText();
+
         ChatRequest selfChatRequest= new ChatRequest(Info.localUser);
         ChatListener.enviarChatRequest(addressText, Integer.parseInt(portText),selfChatRequest);
 
         closeWindow(mouseEvent);
-
     }
 
     private void closeWindow(MouseEvent event) {

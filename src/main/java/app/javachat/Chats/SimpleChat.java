@@ -12,7 +12,7 @@ import java.net.Socket;
 
 public class SimpleChat implements Chat {
     private static int LOCAL_PORT, OTHER_PORT;
-    private final User otherUser;
+    public final User otherUser;
     private ServerSocket serverLocal;
 
 

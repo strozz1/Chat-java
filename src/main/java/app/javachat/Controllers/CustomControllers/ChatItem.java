@@ -1,5 +1,6 @@
 package app.javachat.Controllers.CustomControllers;
 
+import app.javachat.Chats.Chat;
 import app.javachat.MainApplication;
 import app.javachat.Chats.SimpleChat;
 import app.javachat.Models.User;
@@ -42,4 +43,7 @@ public class ChatItem extends BorderPane {
         return controller;
     }
 
+    public Chat getChat() {
+        return controller.getChat();
+    }
 }

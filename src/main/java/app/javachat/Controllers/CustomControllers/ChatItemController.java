@@ -111,4 +111,8 @@ public class ChatItemController {
         thread.setDaemon(true);
         thread.start();
     }
+
+    public Chat getChat() {
+        return chat;
+    }
 }

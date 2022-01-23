@@ -7,7 +7,6 @@ import app.javachat.Logger.WindowLogType;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -38,14 +37,7 @@ public class MainApplication extends Application {
         root = fxmlLoader.load();
         setStage();
         setMenu();
-
-
         stage.show();
-//        stage.setOnCloseRequest(windowEvent -> {
-//            Platform.exit();
-////            System.exit(1);
-//        });
-
     }
 
     private void setStage() {
