@@ -18,9 +18,6 @@ public class MessageItem extends AnchorPane {
     public MessageItem(){
         setMaxWidth(USE_COMPUTED_SIZE);
         setMaxHeight(USE_COMPUTED_SIZE);
-        setPrefHeight(USE_COMPUTED_SIZE);
-        setPrefWidth(USE_COMPUTED_SIZE);
-
         controller= new MessageItemController();
         load(controller);
     }

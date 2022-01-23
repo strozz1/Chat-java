@@ -16,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -35,7 +36,6 @@ public class MainApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         root = fxmlLoader.load();
-
         setStage();
         setMenu();
 
@@ -83,6 +83,7 @@ public class MainApplication extends Application {
                 Stage stage = new Stage();
                 Scene scene = new Scene(loader.load());
                 stage.setScene(scene);
+                stage.initStyle(StageStyle.TRANSPARENT);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
             } catch (IOException e) {
