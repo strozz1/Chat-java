@@ -25,6 +25,7 @@ public class MainApplication extends Application {
     private boolean isLightMode = false;
     private BorderPane root;
 
+
     public static void main(String[] args) {launch();}
 
     @Override
