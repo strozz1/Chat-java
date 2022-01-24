@@ -3,6 +3,8 @@ package app.javachat.Utilities;
 import app.javachat.Chats.SimpleChat;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Models.User;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 
 public class Info {
     public static User localUser;
+    public static StringProperty username=new SimpleStringProperty("");
+
     public static final int NEW_CHAT_LISTENER_PORT = 867;
     private static List<Integer> occupatedPorts = new ArrayList<>(NEW_CHAT_LISTENER_PORT);
     private static List<LeftChatItem> chats = new ArrayList<>();
@@ -17,6 +21,10 @@ public class Info {
     public static int usePort(int PORT) {
         occupatedPorts.add(PORT);
         return occupatedPorts.indexOf(PORT);
+    }
+    public void setUsername(String username){
+        this.username.setValue(username);
+        localUser.setUsername(username);
     }
 
     public static void unUsePort(int PORT) {

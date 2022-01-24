@@ -67,6 +67,8 @@ public class User implements Serializable {
 //        } catch (SocketException e) {
 //            System.err.println(e.getMessage());
 //        }
+
+
         try(final DatagramSocket socket = new DatagramSocket()){
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
              ipHost = socket.getLocalAddress().getHostAddress();

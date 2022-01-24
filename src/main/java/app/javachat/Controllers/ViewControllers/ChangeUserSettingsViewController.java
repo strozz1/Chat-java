@@ -16,6 +16,7 @@ public class ChangeUserSettingsViewController {
     public void onSaveBtn(MouseEvent mouseEvent) {
         String newUsername = inputTextChangeUsername.getText();
         Info.localUser.setUsername(newUsername);
+        Info.username.setValue(newUsername);
         closeWindow(mouseEvent);
     }
     private void closeWindow(MouseEvent event) {

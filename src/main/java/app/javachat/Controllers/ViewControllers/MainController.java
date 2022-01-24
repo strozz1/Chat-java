@@ -41,7 +41,7 @@ public class MainController {
         ChatListener chatListener = new ChatListener(this);
         chatListener.setDaemon(true);
         chatListener.start();
-        usernameLeftLabel.setText(Info.localUser.getUsername());
+        usernameLeftLabel.textProperty().bind(Info.username);
     }
 
 

@@ -30,7 +30,8 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
-        Info.localUser = new User("Strozz1");
+        Info.localUser = new User("Radek");
+        Info.username.set(Info.localUser.getUsername());
         Log.show("Mi local Ip: "+Info.localUser.getIP());
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
