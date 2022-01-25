@@ -8,8 +8,13 @@ public class CallRequest implements Serializable {
     private boolean accept;
     private User user;
 
+
     public CallRequest(User user) {
         this.user= user;
+    }
+    public CallRequest(User user,boolean accept) {
+        this.user= user;
+        this.accept=accept;
     }
 
     public boolean isAccept() {

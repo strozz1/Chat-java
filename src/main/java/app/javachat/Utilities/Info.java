@@ -18,6 +18,12 @@ public class Info {
     private static List<Integer> occupatedPorts = new ArrayList<>(NEW_CHAT_LISTENER_PORT);
     private static List<LeftChatItem> chats = new ArrayList<>();
 
+    /**
+     * This method tells the program whichh port it wll use for a specific chat, returning the index of the list containing all che used ports.
+     *
+     * @param PORT
+     * @return position index of port on usedPorts list.
+     */
     public static int usePort(int PORT) {
         occupatedPorts.add(PORT);
         return occupatedPorts.indexOf(PORT);

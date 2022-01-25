@@ -1,6 +1,8 @@
 package app.javachat.Controllers.CustomControllers;
 
+import app.javachat.Calls.Call;
 import app.javachat.Chats.Chat;
+import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.MainApplication;
 import app.javachat.Chats.SimpleChat;
 import app.javachat.Models.User;
@@ -20,11 +22,13 @@ public class ChatItem extends BorderPane {
         load(controller);
     }
 
-    public ChatItem(SimpleChat chat, User otherUser) {
+    public ChatItem(SimpleChat chat, Call call, User otherUser) {
         super();
-        controller = new ChatItemController(chat, otherUser);
+
+        controller = new ChatItemController(chat,call, otherUser);
         load(controller);
         controller.startListeningForMessages();
+        controller.startListeningForCalls();
     }
 
     private void load(ChatItemController controller) {

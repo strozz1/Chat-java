@@ -17,8 +17,11 @@ public class CallWindowController {
     @FXML
     private Label labelTiempoLlamada;
 
-    public CallWindowController( ) {
-        this.call=new Call();
+    public CallWindowController() {
+
+    }
+    public CallWindowController(int selfPort,int otherPort) {
+        this.call=new Call(selfPort,otherPort);
     }
 
     @FXML
