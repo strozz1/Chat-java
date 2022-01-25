@@ -1,7 +1,6 @@
 package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Calls.Call;
-import app.javachat.Calls.States.DisconnectedCallState;
 import app.javachat.Models.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -20,8 +19,11 @@ public class CallWindowController {
     public CallWindowController() {
 
     }
-    public CallWindowController(int selfPort,int otherPort) {
-        this.call=new Call(selfPort,otherPort);
+
+
+    public CallWindowController(Call call) {
+        this.call=call;
+        otherUser=call.getOtherUser();
     }
 
     @FXML
@@ -29,18 +31,9 @@ public class CallWindowController {
         //Configurar UI
         setOtherUserLabel();
         //Iniciar la llamada
-        Thread hiloLLamada= new Thread(this::startCall);
-        hiloLLamada.start();
-
-    }
-
-    private void startCall() {
         call.startCall();
-        call.waitResponse();
-        if(call.getState() instanceof DisconnectedCallState){
-            cerrarVentana();
-        }
     }
+
 
     private void cerrarVentana() {
         Platform.runLater(() -> {
@@ -50,19 +43,8 @@ public class CallWindowController {
     }
 
     private void setOtherUserLabel() {
-        labelTiempoLlamada.setText("Esperando a la llamada...");
+        labelTiempoLlamada.setText("Tiempo llamada 00:00:12");
         otherUserLabel.setText(otherUser.getUsername());
-
-    }
-
-    public void setLocalUser(User user){
-        this.localUser=user;
-        call.setLocalUser(user);
-    }
-    public void setOtherUser(User user){
-        this.otherUser=user;
-        call.setOtherUser(user);
-
     }
 
 }

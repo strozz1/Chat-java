@@ -1,9 +1,7 @@
 package app.javachat.Calls;
 
-import app.javachat.Calls.States.DisconnectedCallState;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,16 +11,15 @@ import java.net.Socket;
 public class Call {
     private final int otherPort;
     private int localPort;
-    private CallState state;
     private User localUser, otherUser;
     private ServerSocket serverListener;
     private OutcomeSoundCall outcomeSoundCall;
     private IncomeSoundCall incomeSoundCall;
 
-    public Call(int localPort, int otherPort) {
+    public Call(int localPort,User otherUser, int otherPort) {
         this.localPort = localPort;
+        this.otherUser= otherUser;
         this.otherPort = otherPort;
-        state = new DisconnectedCallState(this);
         try {
             serverListener = new ServerSocket(localPort);
         } catch (IOException e) {
@@ -72,57 +69,22 @@ public class Call {
     }
 
     /**
-     * Cancel call. Only call if state is waiting.
+     * tell the other user we declined his call. We send him a CallRequest with accept false
      */
-    public void callFailed() {
-
-
+    public void callCanceled() {
+        sendCallRequest(false,true);
     }
-
-    /**
-     * Connect  call. Only call if state is waiting.
-     */
-    public void connect() {
-        state.connect();
-    }
-
-
-    public void changeState(CallState state) {
-        this.state = state;
-    }
-
-    public void setLocalUser(User localUser) {
-        this.localUser = localUser;
-    }
-
-    public void setOtherUser(User otherUser) {
-        this.otherUser = otherUser;
-    }
-
-    public User getLocalUser() {
-        return localUser;
-    }
-
-    public User getOtherUser() {
-        return otherUser;
-    }
-
-    public void waitResponse() {
-        state.waitResponse();
-    }
-
-    public CallState getState() {
-        return state;
-    }
-
     /**
      * tell the other user we accepted his call. We send him a CallRequest with accept true
      */
     public void acceptCall() {
+        sendCallRequest(true,true);
+    }
+    public void sendCallRequest(boolean accept,boolean isResponse) {
         Socket socket = null;
         ObjectOutputStream outputStream = null;
         try {
-            CallRequest callRequest = new CallRequest(Info.localUser, true);
+            CallRequest callRequest = new CallRequest(Info.localUser, accept,isResponse);
 
             socket = new Socket(otherUser.getIP(), otherPort);
             outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -139,6 +101,21 @@ public class Call {
                 e.printStackTrace();
             }
         }
+    }
 
+    public User getOtherUser() {
+        return otherUser;
+    }
+
+    public int getOtherPort() {
+        return otherPort;
+    }
+
+    public int getLocalPort() {
+        return localPort;
+    }
+
+    public User getLocalUser() {
+        return localUser;
     }
 }

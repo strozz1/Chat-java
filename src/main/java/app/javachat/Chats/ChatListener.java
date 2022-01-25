@@ -5,6 +5,7 @@ import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Controllers.ViewControllers.MainController;
 import app.javachat.Logger.Log;
+import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
 import javafx.application.Platform;
 import javafx.scene.layout.VBox;
@@ -54,6 +55,7 @@ public class ChatListener extends Thread {
             inputStream.close();
 
             if (objectRead instanceof ChatRequest othersChatRequest) {
+                User otherUser = othersChatRequest.getSender();
                 selfChatRequest = new ChatRequest(Info.localUser, true);
                 //Si no es una respuesta, simplemente mandales una respuesta
                 int indexOfChatPort, indexOfCallPort;
@@ -69,13 +71,13 @@ public class ChatListener extends Thread {
                     enviarChatRequest(othersChatRequest.getSender().getIP(), othersChatRequest.getChatListenerPort(), selfChatRequest);
 
                     //creamos nuevo chat pasandole el request del otro, nuestro puerto de chat y nuestro puerto de llamada
-                    createNewChat(othersChatRequest, selfChatRequest.getChatPort(), selfChatRequest.getCallPort());
+                    createNewChat(othersChatRequest, selfChatRequest.getChatPort(),otherUser, selfChatRequest.getCallPort());
 
                 } else {
                     // Si es una respuesta de chat(isAccept es true) creamos el chat pasandole el chat request,
                     indexOfChatPort = othersChatRequest.getIndexOfChatPort();
                     indexOfCallPort = othersChatRequest.getIndexOfCallPort();
-                    createNewChat(othersChatRequest, Info.getPort(indexOfChatPort),Info.getPort(indexOfCallPort));
+                    createNewChat(othersChatRequest, Info.getPort(indexOfChatPort), otherUser, Info.getPort(indexOfCallPort));
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -84,10 +86,10 @@ public class ChatListener extends Thread {
         }
     }
 
-    private void createNewChat(ChatRequest othersChatRequest, int selfPort, int selfCallPort) {
+    private void createNewChat(ChatRequest othersChatRequest, int selfPort, User otherUser, int selfCallPort) {
         SimpleChat simpleChat = new SimpleChat(othersChatRequest, selfPort);
-        Call call = new Call(selfCallPort,othersChatRequest.getCallPort());
-        ChatItem chatItem = new ChatItem(simpleChat,call, othersChatRequest.getSender());
+        Call call = new Call(selfCallPort, otherUser, othersChatRequest.getCallPort());
+        ChatItem chatItem = new ChatItem(simpleChat, call, othersChatRequest.getSender());
 
         LeftChatItem leftChatItem = new LeftChatItem(chatItem, othersChatRequest.getSender());
         leftChatItem.setMainController(mainController);

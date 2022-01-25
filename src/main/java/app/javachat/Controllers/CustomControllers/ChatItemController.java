@@ -41,6 +41,7 @@ public class ChatItemController {
     @FXML
     private Button btnLlamar, btnSendMessage;
     private Chat chat;
+    private Stage callWindow;
 
     public ChatItemController() {
     }
@@ -55,7 +56,7 @@ public class ChatItemController {
     void initialize() {
         headerUsername.setText(otherUser.getUsername());
         btnLlamar.setOnMouseClicked(mouseEvent -> {
-            startCallWindow();
+            call.sendCallRequest(false, false);
         });
         btnSendMessage.setOnMouseClicked(mouseEvent -> {
             String message = chatInput.getText();
@@ -74,20 +75,19 @@ public class ChatItemController {
         try {
             FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("call-window.fxml"));
 
-            Stage stage = new Stage();
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
-            stage.setTitle("Llamada con $usuario");
+            callWindow = new Stage();
+            callWindow.initModality(Modality.WINDOW_MODAL);
+            callWindow.setResizable(false);
+            callWindow.setTitle("Llamada con " + otherUser.getUsername());
 
-            CallWindowController callWindowController = new CallWindowController();
-            loadDataToCallController(callWindowController);
+            CallWindowController callWindowController = new CallWindowController(call);
             loader.setController(callWindowController);
             Parent root = loader.load();
 
 
             Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            callWindow.setScene(scene);
+            callWindow.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,13 +100,6 @@ public class ChatItemController {
         chat.sendMessage(msg);
 
     }
-
-    private void loadDataToCallController(CallWindowController callWindowController) {
-        //Set client user and the other line user
-        callWindowController.setLocalUser(Info.localUser);
-        callWindowController.setOtherUser(otherUser);
-    }
-
 
     public void startListeningForMessages() {
         Thread thread = new Thread(() -> {
@@ -121,9 +114,6 @@ public class ChatItemController {
         thread.start();
     }
 
-    public Chat getChat() {
-        return chat;
-    }
 
     public void startListeningForCalls() {
         Thread thread = new Thread(() -> {
@@ -131,8 +121,13 @@ public class ChatItemController {
                 CallRequest callRequest = call.listenForIncomingCalls();
                 if (callRequest != null) {
                     // Si el otro es el que inicia, creamos la ventana de nueva llamada
-                    if (!callRequest.isAccept()) {
+                    if (!callRequest.isResponse()) {
                         createIncomingCallWindow(call);
+                    } else {
+                        if (callRequest.isAccept())
+                            startCallWindow();
+                        else callWindow.close();
+
                     }
                 }
             }
@@ -141,6 +136,7 @@ public class ChatItemController {
         thread.setDaemon(true);
         thread.start();
     }
+
 
     private void createIncomingCallWindow(Call call) {
         try {
@@ -159,5 +155,9 @@ public class ChatItemController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Chat getChat() {
+        return chat;
     }
 }

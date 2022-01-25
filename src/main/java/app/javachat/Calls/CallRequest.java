@@ -7,14 +7,17 @@ import java.io.Serializable;
 public class CallRequest implements Serializable {
     private boolean accept;
     private User user;
+    private boolean isResponse;
 
 
     public CallRequest(User user) {
         this.user= user;
     }
-    public CallRequest(User user,boolean accept) {
+
+    public CallRequest(User user,boolean accept,boolean isResponse) {
         this.user= user;
         this.accept=accept;
+        this.isResponse= isResponse;
     }
 
     public boolean isAccept() {
@@ -23,5 +26,9 @@ public class CallRequest implements Serializable {
 
     public void setAccept(boolean accept) {
         this.accept = accept;
+    }
+
+    public boolean isResponse() {
+        return isResponse;
     }
 }
