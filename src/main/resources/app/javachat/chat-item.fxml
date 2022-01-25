@@ -16,7 +16,7 @@
 
 <BorderPane fx:id="borderPaneInside" minHeight="200.0" minWidth="500.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
                <center>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="566.0" prefWidth="895.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
+                  <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="566.0" prefWidth="895.0" styleClass="primaryColor" BorderPane.alignment="CENTER">
                      <content>
                         <VBox fx:id="chatBox"  spacing="10" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="thirdColor">
                <children>

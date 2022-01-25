@@ -8,12 +8,15 @@ import app.javachat.Models.Message;
 import app.javachat.Chats.SimpleChat;
 import app.javachat.Models.User;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -30,6 +33,8 @@ public class ChatItemController {
     private TextField chatInput;
     @FXML
     private VBox chatBox;
+    @FXML
+    private ScrollPane scroll;
     @FXML
     private Label headerUsername;
     @FXML
@@ -56,6 +61,9 @@ public class ChatItemController {
                 sendNewMessage(message);
             }).start();
             chatInput.setText("");
+        });
+        chatBox.heightProperty().addListener((observableValue, number, t1) -> {
+            scroll.setVvalue((Double)t1);
         });
     }
 
