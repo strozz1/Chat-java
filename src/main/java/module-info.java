@@ -4,7 +4,6 @@ module app.javachat {
     requires java.logging;
     requires java.desktop;
 
-
     opens app.javachat to javafx.fxml;
     exports app.javachat;
     opens app.javachat.Controllers.ViewControllers to javafx.fxml;
