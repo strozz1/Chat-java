@@ -23,6 +23,7 @@ public class CallWindowController {
 
     public CallWindowController(Call call) {
         this.call=call;
+        call.startCall();
         otherUser=call.getOtherUser();
     }
 

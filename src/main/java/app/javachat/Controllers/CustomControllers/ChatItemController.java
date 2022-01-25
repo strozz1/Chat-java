@@ -125,11 +125,12 @@ public class ChatItemController {
                 if (callRequest != null) {
                     // Si el otro es el que inicia, creamos la ventana de nueva llamada
                     if (!callRequest.isResponse()) {
-                        call.startCall();
                         Platform.runLater(()->createIncomingCallWindow(call));
                     } else {
-                        if (callRequest.isAccept())
+                        if (callRequest.isAccept()){
+                            call.startCall();
                             startCallWindow();
+                        }
                         else callWindow.close();
 
                     }
