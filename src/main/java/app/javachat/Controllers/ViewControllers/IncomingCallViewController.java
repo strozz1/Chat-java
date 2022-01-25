@@ -40,9 +40,9 @@ public class IncomingCallViewController {
         incomingCallUser.setText(user.getUsername());
         acceptCallButton.setOnMouseClicked(event ->{
             Thread thread= new Thread(() -> {
-                Platform.runLater(this::startCallWindow);
                 call.acceptCall();
                 call.startCall();
+                Platform.runLater(this::startCallWindow);
             });
             thread.start();
         });
