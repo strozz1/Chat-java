@@ -5,14 +5,16 @@ import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class MessageItemController {
 
     private boolean isMine;
     private Message message;
-
     @FXML
-    private Label labelDate,labelUser,labelMessage;
+    private Text labelMessage;
+    @FXML
+    private Label labelDate, labelUser;
     @FXML
     private VBox messageVBox;
 
@@ -21,12 +23,11 @@ public class MessageItemController {
     }
 
     @FXML
-    void initialize(){
-        if(isMine){
+    void initialize() {
+        if (isMine) {
 
             messageVBox.nodeOrientationProperty().set(NodeOrientation.LEFT_TO_RIGHT);
-        }
-        else{
+        } else {
             messageVBox.nodeOrientationProperty().set(NodeOrientation.RIGHT_TO_LEFT);
         }
         labelDate.setText(message.getHoraEnvio().toString());
@@ -38,8 +39,8 @@ public class MessageItemController {
     }
 
     public MessageItemController(Message message, boolean isMine) {
-        this.message= message;
-        this.isMine=isMine;
+        this.message = message;
+        this.isMine = isMine;
     }
 
 

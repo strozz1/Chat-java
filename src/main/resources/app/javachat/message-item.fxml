@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <VBox fx:id="messageVBox" alignment="TOP_RIGHT" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-border-radius: 25 0 25 25;   -fx-background-radius: 25 0 25 25;" styleClass="message" stylesheets="@darkMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -25,13 +26,13 @@
             </Label>
          </children>
       </HBox>
-      <Label fx:id="labelMessage" alignment="TOP_RIGHT" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="500.0" styleClass="messageText" text="Esta es una prueba de mensaje para mostrar engghghghgh evvvvvvvvvvvvvvvvvvvvvl chat jaja xd lol" wrapText="true" VBox.vgrow="ALWAYS">
+      <Text fx:id="labelMessage" styleClass="messageText" text="Esta es una prueba de mensaje para mostrar engghghghgh evvvvvvvvvvvvvvvvvvvvvl chat jaja xd lol" wrappingWidth="500.0" VBox.vgrow="ALWAYS">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
          <font>
             <Font size="16.0" />
-         </font></Label>
+         </font></Text>
    </children>
    <padding>
       <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
