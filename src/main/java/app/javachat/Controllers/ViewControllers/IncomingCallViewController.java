@@ -41,7 +41,6 @@ public class IncomingCallViewController {
         acceptCallButton.setOnMouseClicked(event ->{
             Thread thread= new Thread(() -> {
                 call.acceptCall();
-                call.startCall();
                 Platform.runLater(this::startCallWindow);
             });
             thread.start();

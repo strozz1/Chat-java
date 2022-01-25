@@ -45,8 +45,8 @@ public class Call {
     public void startCall() {
 
         try {
-            incomeSoundCall = new IncomeSoundCall(localPort);
-            outcomeSoundCall = new OutcomeSoundCall(otherUser, otherPort);
+            incomeSoundCall = new IncomeSoundCall(localPort+1);
+            outcomeSoundCall = new OutcomeSoundCall(otherUser, otherPort+1);
 
             incomeSoundCall.start();
             //Wait in case lag for listening

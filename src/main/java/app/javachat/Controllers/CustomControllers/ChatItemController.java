@@ -43,6 +43,7 @@ public class ChatItemController {
     private Button btnLlamar, btnSendMessage;
     private Chat chat;
     private Stage callWindow;
+    private boolean notCalled;
 
     public ChatItemController() {
     }
@@ -118,7 +119,8 @@ public class ChatItemController {
 
     public void startListeningForCalls() {
         Thread thread = new Thread(() -> {
-            while (true) {
+            notCalled=true;
+            while (notCalled) {
                 Log.show("Escuchando posibles llamadas");
                 CallRequest callRequest = call.listenForIncomingCalls();
                 Log.show("llamada encontrada");
@@ -128,12 +130,12 @@ public class ChatItemController {
                         Platform.runLater(()->createIncomingCallWindow(call));
                     } else {
                         if (callRequest.isAccept()){
-                            call.closeServerListener();
                             Platform.runLater(()->startCallWindow());
                         }
                         else callWindow.close();
 
                     }
+                    notCalled=false;
                 }
             }
 
