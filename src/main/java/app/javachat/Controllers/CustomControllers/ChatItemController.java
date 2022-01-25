@@ -6,6 +6,7 @@ import app.javachat.Chats.Chat;
 import app.javachat.Chats.SimpleChat;
 import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.Controllers.ViewControllers.IncomingCallViewController;
+import app.javachat.Logger.Log;
 import app.javachat.MainApplication;
 import app.javachat.Models.Message;
 import app.javachat.Models.User;
@@ -118,11 +119,14 @@ public class ChatItemController {
     public void startListeningForCalls() {
         Thread thread = new Thread(() -> {
             while (true) {
+                Log.show("Escuchando posibles llamadas");
                 CallRequest callRequest = call.listenForIncomingCalls();
+                Log.show("llamada encontrada");
                 if (callRequest != null) {
                     // Si el otro es el que inicia, creamos la ventana de nueva llamada
                     if (!callRequest.isResponse()) {
-                        createIncomingCallWindow(call);
+                        call.startCall();
+                        Platform.runLater(()->createIncomingCallWindow(call));
                     } else {
                         if (callRequest.isAccept())
                             startCallWindow();

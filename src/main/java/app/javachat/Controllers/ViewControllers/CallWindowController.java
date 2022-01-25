@@ -31,7 +31,7 @@ public class CallWindowController {
         //Configurar UI
         setOtherUserLabel();
         //Iniciar la llamada
-        call.startCall();
+//        call.startCall();
     }
 
 

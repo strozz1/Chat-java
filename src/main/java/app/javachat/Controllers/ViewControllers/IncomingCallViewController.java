@@ -4,6 +4,7 @@ import app.javachat.Calls.Call;
 import app.javachat.Calls.CallRequest;
 import app.javachat.MainApplication;
 import app.javachat.Models.User;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -39,7 +40,7 @@ public class IncomingCallViewController {
         incomingCallUser.setText(user.getUsername());
         acceptCallButton.setOnMouseClicked(event ->{
             Thread thread= new Thread(() -> {
-                startCallWindow();
+                Platform.runLater(this::startCallWindow);
                 call.acceptCall();
                 call.startCall();
             });
