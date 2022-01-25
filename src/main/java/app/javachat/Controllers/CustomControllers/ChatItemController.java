@@ -128,8 +128,7 @@ public class ChatItemController {
                         Platform.runLater(()->createIncomingCallWindow(call));
                     } else {
                         if (callRequest.isAccept()){
-                            call.startCall();
-                            startCallWindow();
+                            Platform.runLater(()->startCallWindow());
                         }
                         else callWindow.close();
 
