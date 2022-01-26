@@ -1,6 +1,7 @@
 package app.javachat.Calls;
 
 import app.javachat.Controllers.ViewControllers.CallWindowController;
+import app.javachat.Logger.Log;
 import app.javachat.MainApplication;
 import app.javachat.Models.User;
 import javafx.application.Platform;
@@ -26,26 +27,29 @@ public class OutcomeSoundCall extends Thread {
     private Socket socket;
     private Node view;
 
-    public OutcomeSoundCall(User otherUser, int otherPort,Call call) {
-        this.call=call;
+    public OutcomeSoundCall(User otherUser, int otherPort, Call call) {
+        this.call = call;
         this.otherUser = otherUser;
-        this.port= otherPort;
+        this.port = otherPort;
     }
 
     @Override
     public void run() {
-        System.out.println("post audio running");
+
         try {
+            Log.show("Started sending audio.", "OUT-CALL");
             captureSound();
+            Log.show("Stopped sending audio.", "OUT-CALL");
         } catch (LineUnavailableException | IOException e) {
-              call.endCall();
-            Platform.runLater(()->{
-                
+            call.endCall();
+            Platform.runLater(() -> {
+
             });
         }
     }
 
     public void stopCall() {
+        isCapturing=false;
     }
 
 
@@ -82,7 +86,7 @@ public class OutcomeSoundCall extends Thread {
     }
 
     public void setView(Node node) {
-        this.view= node;
+        this.view = node;
     }
 }
 

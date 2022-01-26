@@ -70,6 +70,7 @@ public class IncomingCallViewController {
 
             Scene scene = new Scene(root);
             callWindow.setScene(scene);
+            callWindow.setAlwaysOnTop(true);
             callWindow.show();
 
         } catch (IOException e) {

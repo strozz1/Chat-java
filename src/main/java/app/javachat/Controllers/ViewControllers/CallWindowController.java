@@ -1,6 +1,7 @@
 package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Calls.Call;
+import app.javachat.Logger.Log;
 import app.javachat.Models.User;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,6 +23,7 @@ public class CallWindowController {
     @FXML
     private Label labelTiempoLlamada;
     public static StringProperty timer=new SimpleStringProperty("00:00:00");
+    private boolean isCallOnline=false;
 
 
     public CallWindowController() {
@@ -45,6 +47,7 @@ public class CallWindowController {
         btnEndCall.setOnMouseClicked(event -> {
             call.endCall();
             cerrarVentana();
+            stopTimer();
         });
     }
 
@@ -62,22 +65,26 @@ public class CallWindowController {
         thisStage.close();
     }
 
-    public void startCallTimer() {
+    void startCallTimer() {
+        isCallOnline=true;
        Thread thread= new Thread(this::timer);
        thread.start();
     }
 
+    void stopTimer(){
+        isCallOnline=false;
+    }
+
     void timer() {
-                LocalTime of = LocalTime.of(0, 0, 0);
-        while(true) {
+                LocalTime of = LocalTime.of(00, 00, 00);
+        while(isCallOnline) {
             try {
                 String info = "Tiempo de llamada  " + of.toString();
                 Platform.runLater(()->timer.setValue(info));
                 Thread.sleep(1000);
                 of = of.plusSeconds(1);
-                System.out.println(of);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.error(e.getMessage());
             }
         }
     }
