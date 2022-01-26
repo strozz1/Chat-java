@@ -1,6 +1,14 @@
 package app.javachat.Calls;
 
+import app.javachat.Controllers.ViewControllers.CallWindowController;
+import app.javachat.MainApplication;
 import app.javachat.Models.User;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -11,12 +19,15 @@ public class OutcomeSoundCall extends Thread {
 
     private final User otherUser;
     private final int port;
+    private final Call call;
     private boolean isCapturing;
     private static final int BUFFER_SIZE = 1000;
     private OutputStream outputStream;
     private Socket socket;
+    private Node view;
 
-    public OutcomeSoundCall(User otherUser, int otherPort) {
+    public OutcomeSoundCall(User otherUser, int otherPort,Call call) {
+        this.call=call;
         this.otherUser = otherUser;
         this.port= otherPort;
     }
@@ -26,10 +37,11 @@ public class OutcomeSoundCall extends Thread {
         System.out.println("post audio running");
         try {
             captureSound();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (LineUnavailableException | IOException e) {
+              call.endCall();
+            Platform.runLater(()->{
+                
+            });
         }
     }
 
@@ -59,7 +71,6 @@ public class OutcomeSoundCall extends Thread {
             outputStream = socket.getOutputStream();
             int read = targetDataLine.read(buffer, 0, BUFFER_SIZE / 2); // la info se guarda en tempBuffer
             if (read > 0) {
-                System.out.println(read);
                 outputStream.write(buffer, 0, read);
             }
             outputStream.close();
@@ -70,5 +81,8 @@ public class OutcomeSoundCall extends Thread {
         return new AudioFormat(16000, 8, 1, true, true);
     }
 
+    public void setView(Node node) {
+        this.view= node;
+    }
 }
 

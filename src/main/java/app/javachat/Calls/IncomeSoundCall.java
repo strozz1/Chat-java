@@ -59,7 +59,6 @@ public class IncomeSoundCall extends Thread {
             while ((read = audioInputStream.read(buffer, 0, BUFFER_SIZE / 2)) != -1) {
                 if (read > 0) {
                     //Escribimos la informacion en el buffer de la linea
-                    System.out.println(Arrays.toString(buffer));
                     sourceDataLine.write(buffer, 0, read);
 
                 }

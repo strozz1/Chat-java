@@ -1,7 +1,10 @@
 package app.javachat.Calls;
 
+import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
+import javafx.scene.Node;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,13 +19,18 @@ public class Call {
     private ServerSocket serverListener;
     private OutcomeSoundCall outcomeSoundCall;
     private IncomeSoundCall incomeSoundCall;
+    private CallWindowController controller;
 
     public Call(int localPort, User otherUser, int otherPort) {
         this.localPort = localPort;
         this.otherUser = otherUser;
         this.otherPort = otherPort;
 
+        incomeSoundCall = new IncomeSoundCall(localPort+1);
+        outcomeSoundCall = new OutcomeSoundCall(otherUser, otherPort+1,this);
+
     }
+
 
     public CallRequest listenForIncomingCalls() {
         CallRequest callRequest = null;
@@ -43,10 +51,8 @@ public class Call {
      * Initialize call. Only call if state is disconnected.
      */
     public void startCall() {
-
         try {
-            incomeSoundCall = new IncomeSoundCall(localPort+1);
-            outcomeSoundCall = new OutcomeSoundCall(otherUser, otherPort+1);
+            System.out.println("se emeia");
 
             incomeSoundCall.start();
             //Wait in case lag for listening

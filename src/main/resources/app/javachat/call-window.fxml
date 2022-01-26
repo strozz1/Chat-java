@@ -50,7 +50,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="57.0" prefWidth="300.0">
          <children>
-            <Button alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="97.0" style="-fx-background-color: red; -fx-background-radius: 90;">
+            <Button fx:id="btnEndCall" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="97.0" style="-fx-background-color: red; -fx-background-radius: 90;">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" rotate="176.1">
                      <image>

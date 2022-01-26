@@ -44,11 +44,13 @@ public class IncomingCallViewController {
                 Platform.runLater(this::startCallWindow);
             });
             thread.start();
+            closeWindow(event);
         });
 
         cancelCallButton.setOnMouseClicked(event ->{
             call.callCanceled();
             closeWindow(event);
+
 
         });
     }
