@@ -1,6 +1,7 @@
 package app.javachat.Calls;
 
 import app.javachat.Logger.Log;
+import app.javachat.Utilities.Info;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.net.Socket;
 import java.util.Arrays;
 
 public class IncomeSoundCall extends Thread {
-    private static final int BUFFER_SIZE = 1000;
+    private static final int BUFFER_SIZE = 512;
     private ServerSocket serverSocket;
     private boolean listening;
 
@@ -49,7 +50,7 @@ public class IncomeSoundCall extends Thread {
         byte[] buffer = new byte[BUFFER_SIZE];
         listening = true;
 
-        AudioFormat audioFormat = getAudioFormat();
+        AudioFormat audioFormat = Info.Call.getAudioFormat();
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
         SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
         sourceDataLine.open(audioFormat);
@@ -74,9 +75,6 @@ public class IncomeSoundCall extends Thread {
         }
     }
 
-    private AudioFormat getAudioFormat() {
-        return new AudioFormat(16000, 8, 1, true, true);
-    }
 
 }
 

@@ -7,6 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+
 public class MessageItemController {
 
     private boolean isMine;
@@ -22,19 +26,6 @@ public class MessageItemController {
         return messageVBox;
     }
 
-    @FXML
-    void initialize() {
-        if (isMine) {
-
-            messageVBox.nodeOrientationProperty().set(NodeOrientation.LEFT_TO_RIGHT);
-        } else {
-            messageVBox.nodeOrientationProperty().set(NodeOrientation.RIGHT_TO_LEFT);
-        }
-        labelDate.setText(message.getHoraEnvio().toString());
-        labelUser.setText(message.getSender().getUsername());
-        labelMessage.setText(message.getContent());
-    }
-
     public MessageItemController() {
     }
 
@@ -43,5 +34,17 @@ public class MessageItemController {
         this.isMine = isMine;
     }
 
+    @FXML
+    void initialize() {
+        if (isMine) {
 
+            messageVBox.nodeOrientationProperty().set(NodeOrientation.LEFT_TO_RIGHT);
+        } else {
+            messageVBox.nodeOrientationProperty().set(NodeOrientation.RIGHT_TO_LEFT);
+        }
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm - d MMM");
+        labelDate.setText(message.getHoraEnvio().format(format));
+        labelUser.setText(message.getSender().getUsername());
+        labelMessage.setText(message.getContent());
+    }
 }

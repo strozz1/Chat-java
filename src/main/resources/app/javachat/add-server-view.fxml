@@ -30,7 +30,7 @@
                <Insets right="12.0" />
             </HBox.margin>
          </Label>
-         <TextField fx:id="inputTextPort" text="867"/>
+         <TextField fx:id="inputTextPort" text="867" onKeyPressed="#onKeyPressed"/>
       </children>
    </HBox>
    <Button mnemonicParsing="false" onMouseClicked="#onAddNewChat" text="Create" />

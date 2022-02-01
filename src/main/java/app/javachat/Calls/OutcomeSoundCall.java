@@ -1,15 +1,10 @@
 package app.javachat.Calls;
 
-import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.Logger.Log;
-import app.javachat.MainApplication;
 import app.javachat.Models.User;
+import app.javachat.Utilities.Info;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -22,10 +17,10 @@ public class OutcomeSoundCall extends Thread {
     private final int port;
     private final Call call;
     private boolean isCapturing;
-    private static final int BUFFER_SIZE = 1000;
+
     private OutputStream outputStream;
     private Socket socket;
-    private Node view;
+
 
     public OutcomeSoundCall(User otherUser, int otherPort, Call call) {
         this.call = call;
@@ -54,11 +49,11 @@ public class OutcomeSoundCall extends Thread {
 
 
     public void captureSound() throws LineUnavailableException, IOException {
-        byte[] buffer = new byte[BUFFER_SIZE];
+        byte[] buffer = new byte[Info.Call.BUFFER_SIZE];
         isCapturing = true;
 
         //Definir el formato audio
-        AudioFormat audioFormat = getAudioFormat();
+        AudioFormat audioFormat = Info.Call.getAudioFormat();
 
         // Info sobre la linea
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
@@ -73,7 +68,7 @@ public class OutcomeSoundCall extends Thread {
         while (isCapturing) {
             socket = new Socket(otherUser.getIP(), port);
             outputStream = socket.getOutputStream();
-            int read = targetDataLine.read(buffer, 0, BUFFER_SIZE / 2); // la info se guarda en tempBuffer
+            int read = targetDataLine.read(buffer, 0, Info.Call.BUFFER_SIZE); // la info se guarda en tempBuffer
             if (read > 0) {
                 outputStream.write(buffer, 0, read);
             }
@@ -81,12 +76,5 @@ public class OutcomeSoundCall extends Thread {
         }
     }
 
-    private AudioFormat getAudioFormat() {
-        return new AudioFormat(16000, 8, 1, true, true);
-    }
-
-    public void setView(Node node) {
-        this.view = node;
-    }
 }
 

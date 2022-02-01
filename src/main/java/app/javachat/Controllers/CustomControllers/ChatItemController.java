@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -61,15 +62,23 @@ public class ChatItemController {
             call.sendCallRequest(false, false);
         });
         btnSendMessage.setOnMouseClicked(mouseEvent -> {
-            String message = chatInput.getText();
-            new Thread(() -> {
-                sendNewMessage(message);
-            }).start();
-            chatInput.setText("");
+            onSendMessage();
+        });
+        chatInput.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                onSendMessage();
         });
         chatBox.heightProperty().addListener((observableValue, number, t1) -> {
             scroll.setVvalue((Double) t1);
         });
+    }
+
+    private void onSendMessage() {
+        String message = chatInput.getText();
+        new Thread(() -> {
+            sendNewMessage(message);
+        }).start();
+        chatInput.setText("");
     }
 
 
@@ -120,7 +129,7 @@ public class ChatItemController {
 
     public void startListeningForCalls() {
         Thread thread = new Thread(() -> {
-            notCalled=true;
+            notCalled = true;
             while (notCalled) {
                 Log.show("Escuchando posibles llamadas");
                 CallRequest callRequest = call.listenForIncomingCalls();
@@ -128,15 +137,14 @@ public class ChatItemController {
                 if (callRequest != null) {
                     // Si el otro es el que inicia, creamos la ventana de nueva llamada
                     if (!callRequest.isResponse()) {
-                        Platform.runLater(()->createIncomingCallWindow(call));
+                        Platform.runLater(() -> createIncomingCallWindow(call));
                     } else {
-                        if (callRequest.isAccept()){
-                            Platform.runLater(()->startCallWindow());
-                        }
-                        else callWindow.close();
+                        if (callRequest.isAccept()) {
+                            Platform.runLater(() -> startCallWindow());
+                        } else callWindow.close();
 
                     }
-                    notCalled=false;
+                    notCalled = false;
                 }
             }
 
