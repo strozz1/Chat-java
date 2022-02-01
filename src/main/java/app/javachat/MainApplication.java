@@ -1,5 +1,6 @@
 package app.javachat;
 
+import app.javachat.Garage.ChatFileManager;
 import app.javachat.Logger.Log;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
@@ -21,10 +22,7 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Info.localUser = new User("Oscar");
-        Info.username.set(Info.localUser.getUsername());
-        Log.show("Mi local Ip: "+Info.localUser.getIP());
-
+        Info.loadState();
         this.stage = stage;
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
@@ -33,6 +31,10 @@ public class MainApplication extends Application {
         MenuBuilder.createMenu(root);
 
         stage.show();
+
+        stage.setOnCloseRequest(e->{
+            ChatFileManager.saveState();
+        });
     }
 
     private void setStage() {

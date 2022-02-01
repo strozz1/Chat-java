@@ -8,8 +8,9 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-public class LeftChatItem extends AnchorPane {
+public class LeftChatItem extends AnchorPane implements Serializable {
     private LeftChatItemController controller;
 
     public LeftChatItem() {
@@ -18,9 +19,9 @@ public class LeftChatItem extends AnchorPane {
         loadXML(controller);
     }
 
-    public LeftChatItem(ChatItem chatItem,User otherUser) {
+    public LeftChatItem(ChatItem chatItem) {
         super();
-        controller = new LeftChatItemController(chatItem,otherUser);
+        controller = new LeftChatItemController(chatItem);
         loadXML(controller);
     }
 

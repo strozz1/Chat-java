@@ -10,8 +10,9 @@ import javafx.scene.layout.Background;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class MessageItem extends AnchorPane {
+public class MessageItem extends AnchorPane implements Serializable {
 
     private MessageItemController controller;
 

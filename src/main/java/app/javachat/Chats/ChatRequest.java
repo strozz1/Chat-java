@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class ChatRequest implements Serializable {
     private final User sender;
-    private final int chatPort;
+    private int chatPort;
     private final int chatListenerPort;
     private final boolean accept;
     private final int callPort;
@@ -103,5 +103,9 @@ public class ChatRequest implements Serializable {
 
     public void setIndexOfChatPort(int indexOfChatPort) {
         this.indexOfChatPort = indexOfChatPort;
+    }
+
+    public void setChatPort(int chatPort) {
+        this.chatPort = chatPort;
     }
 }

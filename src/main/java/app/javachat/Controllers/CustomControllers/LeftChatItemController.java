@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 
-public class LeftChatItemController {
+public class LeftChatItemController{
 
     private MainController mainController;
     private static BorderPane parent;
@@ -22,9 +22,9 @@ public class LeftChatItemController {
     public LeftChatItemController() {
     }
 
-    public LeftChatItemController(ChatItem chatItem, User otherUser) {
+    public LeftChatItemController(ChatItem chatItem) {
         this.chatItem = chatItem;
-        this.otherUser = otherUser;
+        this.otherUser = chatItem.getOtherUser();
     }
 
 

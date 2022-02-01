@@ -33,6 +33,7 @@ public class CallWindowController {
 
     public CallWindowController(Call call) {
         this.call = call;
+        this.call.setController(this);
         call.startCall();
         otherUser = call.getOtherUser();
     }
@@ -45,14 +46,18 @@ public class CallWindowController {
         labelTiempoLlamada.textProperty().bind(timer);
 
         btnEndCall.setOnMouseClicked(event -> {
-            call.endCall();
-            cerrarVentana();
-            stopTimer();
+            endCall();
         });
     }
 
+    private void endCall() {
+        call.endCall();
+        cerrarVentana();
+        stopTimer();
+    }
 
-    private void cerrarVentana() {
+
+    public void cerrarVentana() {
         Platform.runLater(() -> {
             Stage stage = (Stage) labelTiempoLlamada.getScene().getWindow();
             stage.close();
@@ -60,7 +65,6 @@ public class CallWindowController {
     }
 
     public void closeWindow() {
-
         Stage thisStage = (Stage) btnEndCall.getScene().getWindow();
         thisStage.close();
     }

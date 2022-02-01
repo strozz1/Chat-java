@@ -3,16 +3,15 @@ package app.javachat.Calls;
 import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
-import javafx.scene.Node;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Call {
+public class Call implements Serializable {
     private final int otherPort;
     private int localPort;
     private User localUser, otherUser;
@@ -26,8 +25,8 @@ public class Call {
         this.otherUser = otherUser;
         this.otherPort = otherPort;
 
-        incomeSoundCall = new IncomeSoundCall(localPort+1);
-        outcomeSoundCall = new OutcomeSoundCall(otherUser, otherPort+1,this);
+        incomeSoundCall = new IncomeSoundCall(localPort + 1, this);
+        outcomeSoundCall = new OutcomeSoundCall(otherUser, otherPort + 1, this);
 
     }
 
@@ -64,10 +63,13 @@ public class Call {
 
     /**
      * Stop call. Only call if state is connected.
+     *
      */
     public void endCall() {
-        incomeSoundCall.stopCall();
-        outcomeSoundCall.stopCall();
+            incomeSoundCall.stopCall();
+            outcomeSoundCall.stopCall();
+            controller.cerrarVentana();
+
     }
 
     /**
@@ -130,5 +132,10 @@ public class Call {
             e.printStackTrace();
         }
         serverListener = null;
+    }
+
+
+    public void setController(CallWindowController callWindowController) {
+        this.controller= callWindowController;
     }
 }

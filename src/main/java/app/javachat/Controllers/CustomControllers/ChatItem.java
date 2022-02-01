@@ -2,17 +2,18 @@ package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Calls.Call;
 import app.javachat.Chats.Chat;
-import app.javachat.Controllers.ViewControllers.CallWindowController;
-import app.javachat.MainApplication;
 import app.javachat.Chats.SimpleChat;
+import app.javachat.MainApplication;
 import app.javachat.Models.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-public class ChatItem extends BorderPane {
+public class ChatItem extends BorderPane implements Serializable {
+    private User otherUser;
     private ChatItemController controller;
 
     public ChatItem() {
@@ -22,10 +23,10 @@ public class ChatItem extends BorderPane {
         load(controller);
     }
 
-    public ChatItem(SimpleChat chat, Call call, User otherUser) {
+    public ChatItem(Chat chat, Call call, User otherUser) {
         super();
-
-        controller = new ChatItemController(chat,call, otherUser);
+        this.otherUser = otherUser;
+        controller = new ChatItemController(chat, call, otherUser);
         load(controller);
         controller.startListeningForMessages();
         controller.startListeningForCalls();
@@ -49,5 +50,9 @@ public class ChatItem extends BorderPane {
 
     public Chat getChat() {
         return controller.getChat();
+    }
+
+    public User getOtherUser() {
+        return otherUser;
     }
 }

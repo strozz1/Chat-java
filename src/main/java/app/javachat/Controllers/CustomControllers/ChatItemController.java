@@ -26,10 +26,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-public class ChatItemController {
+public class ChatItemController{
     private Call call;
     private User otherUser;
     @FXML
@@ -49,7 +50,7 @@ public class ChatItemController {
     public ChatItemController() {
     }
 
-    public ChatItemController(SimpleChat chat, Call call, User otherUser) {
+    public ChatItemController(Chat chat, Call call, User otherUser) {
         this.otherUser = otherUser;
         this.chat = chat;
         this.call = call;

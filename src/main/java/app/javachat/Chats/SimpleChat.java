@@ -7,10 +7,11 @@ import app.javachat.Models.User;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class SimpleChat implements Chat {
+public class SimpleChat implements Chat, Serializable {
     private static int LOCAL_PORT, OTHER_PORT;
     public final User otherUser;
     private ServerSocket serverLocal;

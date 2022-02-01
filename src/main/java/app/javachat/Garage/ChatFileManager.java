@@ -1,6 +1,8 @@
 package app.javachat.Garage;
 
-import app.javachat.Garage.SalaModel;
+import app.javachat.Logger.Log;
+import app.javachat.Models.AppState;
+import app.javachat.Utilities.Info;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,67 +11,48 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static app.javachat.Utilities.Info.APP_NAME;
+
 public class ChatFileManager {
 
-    private SalaModel salaModel;
-    private final String serverIp;
 
-    private final String APP_NAME = "MyMessage";
-    private final String FILE_NAME = "mensajes.xd";
-    private final String PATH_TO_USER_FOLDER = System.getProperty("user.home");
+    private static final String FILE_NAME = "userData.conf";
+    private static final String APP_FOLDER = System.getProperty("user.home");
 
-    private Path userFolder;
-    private Path serverFolder;
-    private Path serverFile;
+    private static final Path userFolder = Paths.get(APP_FOLDER).resolve(APP_NAME);
+    private static final Path userDataFile = userFolder.resolve(FILE_NAME);
 
-    /**
-     * Constructor el cual recibe la ip del server y una lista de mensajes, guardándolos en los atributos.
-     *
-     * @param serverIp ip del server
-     * @param salaModel sala del server
-     */
-    ChatFileManager(String serverIp, SalaModel salaModel) {
-        this.salaModel = salaModel;
-        this.serverIp = serverIp;
-        createServerFile();
-        writeFile();
-    }
+    public static void saveState() {
+        Log.show("Saving user data to local store");
 
-
-    private void createServerFile() {
-        userFolder = Paths.get(PATH_TO_USER_FOLDER).resolve(Paths.get(APP_NAME));
-        serverFolder = userFolder.resolve(Paths.get(serverIp));
-        serverFile = serverFolder.resolve(Paths.get(FILE_NAME));
-        try {
-            //Create Server folder
-            Files.createDirectories(serverFolder);
-
+        AppState appState = Info.saveState();
+        try (ObjectOutputStream writer = new ObjectOutputStream(Files.newOutputStream(userDataFile))) {
+            writer.writeObject(appState);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error(e.getMessage(), "ChatFileManager");
         }
     }
 
-    public void writeFile() {
-        try {
-            ObjectOutputStream writer = new ObjectOutputStream(Files.newOutputStream(serverFile));
-            writer.writeObject(salaModel);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-    }
-    public void readFile() {
-        try {
-            ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(serverFile));
-            salaModel =(SalaModel) reader.readObject();
-            reader.close();
+    public static AppState loadState() {
+        Log.show("Loading user data from local store");
+            try {
+                if (!Files.exists(userDataFile)) {
+                Files.createDirectories(userFolder);
+                Files.createFile(userDataFile);
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        AppState appState = new AppState();
+        try (ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(userDataFile))) {
+            appState = (AppState) reader.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            Log.error(e.getMessage(), "ChatFileManager");
         }
+        return appState;
 
-    }
-
-    public static void main(String[] args) {
     }
 }

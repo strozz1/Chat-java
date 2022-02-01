@@ -5,6 +5,7 @@ import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Controllers.ViewControllers.MainController;
 import app.javachat.Logger.Log;
+import app.javachat.Models.ChatInfo;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
 import javafx.application.Platform;
@@ -71,7 +72,7 @@ public class ChatListener extends Thread {
                     enviarChatRequest(othersChatRequest.getSender().getIP(), othersChatRequest.getChatListenerPort(), selfChatRequest);
 
                     //creamos nuevo chat pasandole el request del otro, nuestro puerto de chat y nuestro puerto de llamada
-                    createNewChat(othersChatRequest, selfChatRequest.getChatPort(),otherUser, selfChatRequest.getCallPort());
+                    createNewChat(othersChatRequest, selfChatRequest.getChatPort(), otherUser, selfChatRequest.getCallPort());
 
                 } else {
                     // Si es una respuesta de chat(isAccept es true) creamos el chat pasandole el chat request,
@@ -87,17 +88,27 @@ public class ChatListener extends Thread {
     }
 
     private void createNewChat(ChatRequest othersChatRequest, int selfPort, User otherUser, int selfCallPort) {
-        SimpleChat simpleChat = new SimpleChat(othersChatRequest, selfPort);
+        ChatInfo chatInfo = new ChatInfo();
+        Chat chat = new SimpleChat(othersChatRequest, selfPort);
         Call call = new Call(selfCallPort, otherUser, othersChatRequest.getCallPort());
-        ChatItem chatItem = new ChatItem(simpleChat, call, othersChatRequest.getSender());
+        ChatItem chatItem = new ChatItem(chat, call, othersChatRequest.getSender());
 
-        LeftChatItem leftChatItem = new LeftChatItem(chatItem, othersChatRequest.getSender());
+        LeftChatItem leftChatItem = new LeftChatItem(chatItem);
         leftChatItem.setMainController(mainController);
 
+        chatInfo.setLocalChatPort(selfPort);
+        chatInfo.setLocalCallPort(selfCallPort);
+        chatInfo.setOtherChatPort(othersChatRequest.getChatPort());
+        chatInfo.setOtherCallPort(othersChatRequest.getCallPort());
+        chatInfo.setUser(otherUser);
+
+        System.out.println("envia "+chatInfo.getOtherChatPort()+" recibe"+chatInfo.getLocalChatPort());
         //Add chat to left side
-        if (!Info.checkIfChatExist(leftChatItem)) {
+        if (!Info.checkIfChatExist(chatInfo)) {
             Platform.runLater(() -> lateralChatMenu.getChildren().add(leftChatItem));
-            Info.addChat(leftChatItem);
+            Info.addChat(chatInfo);
+            Info.chatInfoList.forEach(System.out::println);
+
         } else Log.error("El chat ya existe. Prueba uno distinto");
 
     }

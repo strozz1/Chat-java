@@ -5,17 +5,19 @@ import app.javachat.Utilities.Info;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.ServerSocket;
 
 import static app.javachat.Utilities.Info.Call.BUFFER_SIZE;
 
-public class IncomeSoundCall extends Thread {
+public class IncomeSoundCall extends Thread  implements Serializable {
+    private final Call call;
     private boolean listening;
 
     private DatagramPacket datagramPacket;
     private DatagramSocket socket;
+    private SourceDataLine sourceDataLine;
 
     @Override
     public void run() {
@@ -23,20 +25,23 @@ public class IncomeSoundCall extends Thread {
             Log.show("Started receiving audio.", "In-CALL");
             getAudio();
         } catch (IOException | LineUnavailableException e) {
-            Log.error(e.getMessage());
+            call.endCall();
         }
     }
 
     public void stopCall() {
         listening = false;
         socket.close();
+        sourceDataLine.close();
         Log.show("Stopped receiving audio.", "IN-CALL");
 
     }
 
-    public IncomeSoundCall(int localPort) {
+    public IncomeSoundCall(int localPort, Call call) {
+        this.call=call;
         try {
             socket = new DatagramSocket(localPort);
+            socket.setSoTimeout(1500);
         } catch (IOException e) {
             Log.error(e.getMessage(), "IncomeSoundCall");
         }
@@ -49,7 +54,7 @@ public class IncomeSoundCall extends Thread {
 
         AudioFormat audioFormat = Info.Call.getAudioFormat();
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-        SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
+        sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
         sourceDataLine.open(audioFormat);
         sourceDataLine.start();
 

@@ -1,14 +1,19 @@
 package app.javachat.Controllers.ViewControllers;
 
+import app.javachat.Calls.Call;
+import app.javachat.Chats.Chat;
 import app.javachat.Chats.ChatListener;
+import app.javachat.Chats.ChatRequest;
+import app.javachat.Chats.SimpleChat;
+import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
-import app.javachat.Utilities.Info;
 import app.javachat.MainApplication;
-import app.javachat.Models.User;
+import app.javachat.Models.ChatInfo;
+import app.javachat.Utilities.Info;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -17,12 +22,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainController {
-    private List<LeftChatItem> chatObjectList;
-    private User localUser;
 
     @FXML
     private VBox lateralMenu;
@@ -31,19 +33,33 @@ public class MainController {
     @FXML
     private BorderPane parent;
 
-    public MainController(){
+    public MainController() {
 
     }
 
     @FXML
     void initialize() {
-        chatObjectList = new ArrayList<>();
         ChatListener chatListener = new ChatListener(this);
         chatListener.setDaemon(true);
         chatListener.start();
         usernameLeftLabel.textProperty().bind(Info.username);
+
+        loadStoredChats();
     }
 
+    private void loadStoredChats() {
+        List<ChatInfo> chats = Info.chatInfoList;
+        chats.forEach(info -> {
+            ChatRequest chatRequest = new ChatRequest(info.getUser(), true);
+            chatRequest.setChatPort(info.getOtherChatPort());
+            Chat chat = new SimpleChat(chatRequest, info.getLocalChatPort());
+            Call call = new Call(info.getLocalCallPort(), info.getUser(), info.getOtherCallPort());
+            ChatItem chatItem = new ChatItem(chat, call, info.getUser());
+            LeftChatItem leftChatItem = new LeftChatItem(chatItem);
+            leftChatItem.setMainController(this);
+            lateralMenu.getChildren().add(leftChatItem);
+        });
+    }
 
 
     public void openAddChatView() throws IOException {
@@ -64,6 +80,7 @@ public class MainController {
     public VBox getLateralMenu() {
         return lateralMenu;
     }
+
     public BorderPane getParent() {
         return parent;
     }

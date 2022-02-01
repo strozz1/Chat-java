@@ -2,6 +2,9 @@ package app.javachat.Utilities;
 
 import app.javachat.Chats.SimpleChat;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
+import app.javachat.Garage.ChatFileManager;
+import app.javachat.Models.AppState;
+import app.javachat.Models.ChatInfo;
 import app.javachat.Models.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -13,11 +16,13 @@ import java.util.List;
 
 public class Info {
     public static User localUser;
-    public static StringProperty username=new SimpleStringProperty("");
-
+    public static StringProperty username = new SimpleStringProperty("");
     public static final int NEW_CHAT_LISTENER_PORT = 867;
+    public static final String APP_NAME = "MensajeriaApp";
+    public static List<ChatInfo> chatInfoList = new ArrayList<>();
     private static List<Integer> occupatedPorts = new ArrayList<>(NEW_CHAT_LISTENER_PORT);
-    private static List<LeftChatItem> chats = new ArrayList<>();
+    public static List<LeftChatItem> chats = new ArrayList<>();
+
 
     /**
      * This method tells the program whichh port it wll use for a specific chat, returning the index of the list containing all che used ports.
@@ -29,17 +34,38 @@ public class Info {
         occupatedPorts.add(PORT);
         return occupatedPorts.indexOf(PORT);
     }
-    public void setUsername(String username){
-        this.username.setValue(username);
+
+    public static void setUsername(String username) {
+        Info.username.setValue(username);
         localUser.setUsername(username);
+    }
+
+    public static AppState saveState() {
+        AppState appState = new AppState();
+        appState.setUser(localUser);
+        appState.setOccupatedPorts(occupatedPorts);
+        appState.setChatInfoList(chatInfoList);
+
+        return appState;
+    }
+
+    public static void loadState() {
+        AppState appState = ChatFileManager.loadState();
+
+        localUser = appState.getUser();
+        setUsername(localUser.getUsername());
+
+        occupatedPorts = appState.getOccupatedPorts();
+        System.out.println(appState.getChatInfoList());
+        chatInfoList=appState.getChatInfoList();
     }
 
     public static void unUsePort(int PORT) {
         occupatedPorts.remove(PORT);
     }
 
-    public static void addChat(LeftChatItem chat) {
-        chats.add(chat);
+    public static void addChat(ChatInfo chat) {
+        chatInfoList.add(chat);
     }
 
     public static int getChatPos(LeftChatItem chat) {
@@ -62,10 +88,10 @@ public class Info {
         return !occupatedPorts.contains(port);
     }
 
-    public static boolean checkIfChatExist(LeftChatItem chatItem) {
-        for (LeftChatItem local : chats) {
-            String newIp = ((SimpleChat) chatItem.getChatItem().getChat()).otherUser.getIP();
-            String localIp = ((SimpleChat) local.getChatItem().getChat()).otherUser.getIP();
+    public static boolean checkIfChatExist(ChatInfo chatInfo) {
+        for (ChatInfo local : chatInfoList) {
+            String newIp = chatInfo.getUser().getIP();
+            String localIp = chatInfo.getUser().getIP();
             if (newIp.equals(localIp))
                 return true;
         }
@@ -80,10 +106,10 @@ public class Info {
     /**
      * Embeded class for Call Info and data.
      */
-    public static class Call{
+    public static class Call {
         public static final int BUFFER_SIZE = 512;
-        public static int SAMPLE_RATE = 44000;
-        public static int SAMPLE_SIZE_BITS =16;
+        public static final int SAMPLE_RATE = 44000;
+        public static final int SAMPLE_SIZE_BITS = 16;
 
         public static AudioFormat getAudioFormat() {
             return new AudioFormat(Info.Call.SAMPLE_RATE, Info.Call.SAMPLE_SIZE_BITS, 1, true, true);

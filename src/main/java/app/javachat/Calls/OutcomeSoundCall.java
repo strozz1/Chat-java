@@ -7,15 +7,14 @@ import javafx.application.Platform;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 
 import static app.javachat.Utilities.Info.Call.BUFFER_SIZE;
 
-public class OutcomeSoundCall extends Thread {
+public class OutcomeSoundCall extends Thread  implements Serializable {
 
     private final User otherUser;
     private final int port;
@@ -24,6 +23,7 @@ public class OutcomeSoundCall extends Thread {
 
     private DatagramPacket datagramPacket;
     private DatagramSocket socket;
+    private TargetDataLine targetDataLine;
 
 
     public OutcomeSoundCall(User otherUser, int otherPort, Call call) {
@@ -49,6 +49,8 @@ public class OutcomeSoundCall extends Thread {
 
     public void stopCall() {
         isCapturing = false;
+        targetDataLine.close();
+        socket.close();
     }
 
 
@@ -63,7 +65,7 @@ public class OutcomeSoundCall extends Thread {
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
 
         //Creamos la linea por donde escuchar el audio, pasandole la info del audio q queremos escuchar
-        TargetDataLine targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
+        targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
 
         //Abrimos la linea y empezamos a caputar el sonido.
         targetDataLine.open(audioFormat);
