@@ -5,41 +5,38 @@ import app.javachat.Utilities.Info;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Arrays;
+
+import static app.javachat.Utilities.Info.Call.BUFFER_SIZE;
 
 public class IncomeSoundCall extends Thread {
-    private static final int BUFFER_SIZE = 512;
-    private ServerSocket serverSocket;
     private boolean listening;
+
+    private DatagramPacket datagramPacket;
+    private DatagramSocket socket;
 
     @Override
     public void run() {
         try {
             Log.show("Started receiving audio.", "In-CALL");
             getAudio();
-
         } catch (IOException | LineUnavailableException e) {
             Log.error(e.getMessage());
         }
     }
 
     public void stopCall() {
-        try {
-            listening = false;
-            serverSocket.close();
-        } catch (IOException e) {
-            Log.error(e.getMessage());
-        }
+        listening = false;
+        socket.close();
         Log.show("Stopped receiving audio.", "IN-CALL");
 
     }
 
     public IncomeSoundCall(int localPort) {
         try {
-            serverSocket = new ServerSocket(localPort);
+            socket = new DatagramSocket(localPort);
         } catch (IOException e) {
             Log.error(e.getMessage(), "IncomeSoundCall");
         }
@@ -55,26 +52,17 @@ public class IncomeSoundCall extends Thread {
         SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
         sourceDataLine.open(audioFormat);
         sourceDataLine.start();
-        Socket socket;
+
         while (listening) {
-            socket = serverSocket.accept();
-            InputStream inputStream = socket.getInputStream();
-            AudioInputStream audioInputStream = new AudioInputStream(inputStream, audioFormat, BUFFER_SIZE / audioFormat.getFrameSize());
+            datagramPacket = new DatagramPacket(buffer, BUFFER_SIZE);
+            socket.receive(datagramPacket);
 
-            int read;
-            //Leer hasta q devuelva -1, es decir, hasta q este vacio
-            while ((read = audioInputStream.read(buffer, 0, BUFFER_SIZE / 2)) != -1) {
-                if (read > 0) {
-                    //Escribimos la informacion en el buffer de la linea
-                    sourceDataLine.write(buffer, 0, read);
+            //Escribimos la informacion en el buffer de la linea
+            sourceDataLine.write(buffer, 0, BUFFER_SIZE);
 
-                }
-            }
-            audioInputStream.close();
-            inputStream.close();
         }
     }
 
-
 }
+
 

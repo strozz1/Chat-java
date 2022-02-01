@@ -52,8 +52,6 @@ public class Call {
      */
     public void startCall() {
         try {
-            System.out.println("se emeia");
-
             incomeSoundCall.start();
             //Wait in case lag for listening
             Thread.sleep(500);

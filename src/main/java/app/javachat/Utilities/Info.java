@@ -83,7 +83,7 @@ public class Info {
     public static class Call{
         public static final int BUFFER_SIZE = 512;
         public static int SAMPLE_RATE = 44000;
-        public static int SAMPLE_SIZE_BITS = 8;
+        public static int SAMPLE_SIZE_BITS =16;
 
         public static AudioFormat getAudioFormat() {
             return new AudioFormat(Info.Call.SAMPLE_RATE, Info.Call.SAMPLE_SIZE_BITS, 1, true, true);
