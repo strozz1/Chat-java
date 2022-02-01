@@ -3,6 +3,7 @@ package app.javachat.Controllers.ViewControllers;
 import app.javachat.Chats.ChatListener;
 import app.javachat.Chats.ChatRequest;
 import app.javachat.Garage.SalaModel;
+import app.javachat.Logger.Log;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
 import javafx.event.Event;
@@ -46,8 +47,6 @@ public class AddServerController {
     public void onKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER)
             createChat(event);
-
-
     }
 
     private void closeWindow(Event event) {
@@ -55,15 +54,19 @@ public class AddServerController {
         Stage thisStage = (Stage) node.getScene().getWindow();
         thisStage.close();
     }
+
     private void createChat(Event mouseEvent) {
         String addressText = inputTextAddress.getText();
         String portText = inputTextPort.getText();
-
-        ChatRequest selfChatRequest = new ChatRequest(Info.localUser);
-        ChatListener.enviarChatRequest(addressText, Integer.parseInt(portText), selfChatRequest);
-        closeWindow(mouseEvent);
+        boolean isNotMyAddress = !addressText.equals(Info.localUser.getIP());
+        boolean hasNoChars = !addressText.matches("[a-zA-Z]+");
+        if (hasNoChars && isNotMyAddress){
+            ChatRequest selfChatRequest = new ChatRequest(Info.localUser);
+            ChatListener.enviarChatRequest(addressText, Integer.parseInt(portText), selfChatRequest);
+            closeWindow(mouseEvent);
+        }else
+        Log.error("la direccion no es correcta", "AddServer");
     }
-
 
 
 }

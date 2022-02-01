@@ -43,7 +43,6 @@ public class MainController {
         chatListener.setDaemon(true);
         chatListener.start();
         usernameLeftLabel.textProperty().bind(Info.username);
-
         loadStoredChats();
     }
 

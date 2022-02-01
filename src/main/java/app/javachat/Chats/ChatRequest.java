@@ -52,8 +52,8 @@ public class ChatRequest implements Serializable {
      */
     private int getAvailableChatPort() {
         //default port 100
-        int port = 100;
-        for (int i = 768; i < 800; i++) {
+        int port = 55400;
+        for (int i = 55400; i < 55700; i++) {
             if (Info.isPortFree(i)) {
                 port = i;
                 break;
@@ -68,9 +68,8 @@ public class ChatRequest implements Serializable {
      * @return
      */
     private int getAvailableCallPort() {
-        //default port 100
-        int port = 100;
-        for (int i = 768; i < 800; i++) {
+        int port=55000;
+        for (int i = 55000; i < 55300; i++) {
             if (Info.isPortFree(i)) {
                 port = i;
                 break;

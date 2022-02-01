@@ -1,8 +1,6 @@
 package app.javachat;
 
-import app.javachat.Garage.ChatFileManager;
-import app.javachat.Logger.Log;
-import app.javachat.Models.User;
+import app.javachat.Utilities.LocalDataManager;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MenuBuilder;
 import javafx.application.Application;
@@ -33,7 +31,7 @@ public class MainApplication extends Application {
         stage.show();
 
         stage.setOnCloseRequest(e->{
-            ChatFileManager.saveState();
+            LocalDataManager.saveState();
         });
     }
 

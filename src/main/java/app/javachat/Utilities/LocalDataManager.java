@@ -1,19 +1,18 @@
-package app.javachat.Garage;
+package app.javachat.Utilities;
 
 import app.javachat.Logger.Log;
 import app.javachat.Models.AppState;
-import app.javachat.Utilities.Info;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static app.javachat.Utilities.Info.APP_NAME;
 
-public class ChatFileManager {
+public class LocalDataManager {
 
 
     private static final String FILE_NAME = "userData.conf";
@@ -24,7 +23,7 @@ public class ChatFileManager {
 
     public static void saveState() {
         Log.show("Saving user data to local store");
-
+        createFiles();
         AppState appState = Info.saveState();
         try (ObjectOutputStream writer = new ObjectOutputStream(Files.newOutputStream(userDataFile))) {
             writer.writeObject(appState);
@@ -36,15 +35,7 @@ public class ChatFileManager {
 
     public static AppState loadState() {
         Log.show("Loading user data from local store");
-            try {
-                if (!Files.exists(userDataFile)) {
-                Files.createDirectories(userFolder);
-                Files.createFile(userDataFile);
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        createFiles();
 
         AppState appState = new AppState();
         try (ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(userDataFile))) {
@@ -53,6 +44,30 @@ public class ChatFileManager {
             Log.error(e.getMessage(), "ChatFileManager");
         }
         return appState;
+
+    }
+
+    private static void createFiles() {
+        try {
+            if (!Files.exists(userDataFile)) {
+                Files.createDirectories(userFolder);
+                Files.createFile(userDataFile);
+            }
+
+        } catch (IOException e) {
+            Log.error(e.getMessage());
+        }
+    }
+
+    public static void savePhoto(File file){
+
+        try {
+            BufferedWriter bufferedWriter= new BufferedWriter(new FileWriter(new File("a.png")));
+            Files.delete(userFolder.resolve("profile.png"));
+            Files.copy(Paths.get(file.getPath()),userFolder.resolve("profile.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

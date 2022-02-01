@@ -11,11 +11,16 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class MenuBuilder {
     private static MenuBar menuBar;
@@ -41,9 +46,26 @@ public class MenuBuilder {
 
     private static void createProfileMenu() {
         Menu profileMenu = new Menu("Perfil");
-        MenuItem itemCambiaNombre = new MenuItem("Cambiar nombre");
+        MenuItem itemChangeName = new MenuItem("Cambiar nombre");
+        MenuItem itemChangePhoto = new MenuItem("Cambiar Foto");
 
-        itemCambiaNombre.setOnAction(actionEvent -> {
+        itemChangePhoto.setOnAction(actionEvent -> {
+            Stage stage = new Stage();
+            FileChooser fileChooser= new FileChooser();
+            fileChooser.setTitle("Select new photo");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("All Images", "*.*"),
+                    new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                    new FileChooser.ExtensionFilter("PNG", "*.png")
+            );
+            File file = fileChooser.showOpenDialog(stage);
+            if(file !=null){
+                LocalDataManager.savePhoto(file);
+            }
+        });
+
+        itemChangeName.setOnAction(actionEvent -> {
             try {
                 FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("change-user-settings-view.fxml"));
                 Stage stage = new Stage();
@@ -56,9 +78,11 @@ public class MenuBuilder {
                 e.printStackTrace();
             }
         });
-        profileMenu.getItems().add(itemCambiaNombre);
+        profileMenu.getItems().add(itemChangeName);
+        profileMenu.getItems().add(itemChangePhoto);
         menuBar.getMenus().add(profileMenu);
     }
+
 
     private static void createViewMenu() {
         Menu viewMenu = new Menu("Ver");

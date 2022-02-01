@@ -1,14 +1,10 @@
 package app.javachat.Utilities;
 
-import app.javachat.Chats.SimpleChat;
-import app.javachat.Controllers.CustomControllers.LeftChatItem;
-import app.javachat.Garage.ChatFileManager;
 import app.javachat.Models.AppState;
 import app.javachat.Models.ChatInfo;
 import app.javachat.Models.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.Node;
 
 import javax.sound.sampled.AudioFormat;
 import java.util.ArrayList;
@@ -21,7 +17,6 @@ public class Info {
     public static final String APP_NAME = "MensajeriaApp";
     public static List<ChatInfo> chatInfoList = new ArrayList<>();
     private static List<Integer> occupatedPorts = new ArrayList<>(NEW_CHAT_LISTENER_PORT);
-    public static List<LeftChatItem> chats = new ArrayList<>();
 
 
     /**
@@ -50,13 +45,12 @@ public class Info {
     }
 
     public static void loadState() {
-        AppState appState = ChatFileManager.loadState();
+        AppState appState = LocalDataManager.loadState();
 
         localUser = appState.getUser();
         setUsername(localUser.getUsername());
 
         occupatedPorts = appState.getOccupatedPorts();
-        System.out.println(appState.getChatInfoList());
         chatInfoList=appState.getChatInfoList();
     }
 
@@ -66,18 +60,6 @@ public class Info {
 
     public static void addChat(ChatInfo chat) {
         chatInfoList.add(chat);
-    }
-
-    public static int getChatPos(LeftChatItem chat) {
-        return chats.indexOf(chat);
-    }
-
-    public static void removeChat(LeftChatItem chat) {
-        chats.remove(chat);
-    }
-
-    public static List<Integer> getOccupatedPorts() {
-        return occupatedPorts;
     }
 
     public static int getPort(int index) {
@@ -91,15 +73,11 @@ public class Info {
     public static boolean checkIfChatExist(ChatInfo chatInfo) {
         for (ChatInfo local : chatInfoList) {
             String newIp = chatInfo.getUser().getIP();
-            String localIp = chatInfo.getUser().getIP();
+            String localIp = local.getUser().getIP();
             if (newIp.equals(localIp))
                 return true;
         }
         return false;
-    }
-
-    public static Node getChat(int pos) {
-        return chats.get(pos);
     }
 
 
