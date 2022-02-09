@@ -1,7 +1,6 @@
 package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Calls.Call;
-import app.javachat.Calls.CallRequest;
 import app.javachat.MainApplication;
 import app.javachat.Models.User;
 import javafx.application.Platform;

@@ -62,7 +62,7 @@ public class AddServerController {
         boolean hasNoChars = !addressText.matches("[a-zA-Z]+");
         if (hasNoChars && isNotMyAddress){
             ChatRequest selfChatRequest = new ChatRequest(Info.localUser);
-            ChatListener.enviarChatRequest(addressText, Integer.parseInt(portText), selfChatRequest);
+            ChatListener.sendChatRequest(addressText, Integer.parseInt(portText), selfChatRequest);
             closeWindow(mouseEvent);
         }else
         Log.error("la direccion no es correcta", "AddServer");

@@ -5,49 +5,43 @@ import app.javachat.Models.User;
 
 import java.io.Serializable;
 
+import static app.javachat.Utilities.Info.Call.getAvailableCallPort;
+
 public class ChatRequest implements Serializable {
     private final User sender;
+    private final boolean accept;
     private int chatPort;
     private final int chatListenerPort;
-    private final boolean accept;
-    private final int callPort;
+    private final int callListenerPort;
 
     //This will be use to see where is my port in my local list.
-    private int indexOfChatPort,indexOfCallPort;
+    private int indexOfChatPort;
 
     public ChatRequest(User sender) {
+        this.sender = sender; //User
+        this.accept = false; // if its response
+        this.chatPort = getAvailableChatPort();  //Chat port
+        this.chatListenerPort = Info.CHAT_LISTENER_PORT; //port for listening inc. chats
+        this.callListenerPort = Info.CALL_LISTENER_PORT;
+    }
+
+    public ChatRequest(User sender, boolean accept) {
+        this.accept = accept;
         this.sender = sender;
         this.chatPort = getAvailableChatPort();
-        this.accept= false;
-        this.chatListenerPort= Info.NEW_CHAT_LISTENER_PORT;
-        this.callPort = getAvailableCallPort();
-
-
-    }
-    public ChatRequest(User sender,boolean accept) {
-        this.sender = sender;
-        this.chatPort = getAvailableChatPort();
-        this.accept=accept;
-        this.chatListenerPort= Info.NEW_CHAT_LISTENER_PORT;
-        this.callPort = getAvailableCallPort();
-
+        this.chatListenerPort = Info.CHAT_LISTENER_PORT;
+        this.callListenerPort = Info.CALL_LISTENER_PORT;
 
     }
 
-    public int getIndexOfCallPort() {
-        return indexOfCallPort;
+    public int getCallListenerPort() {
+        return callListenerPort;
     }
 
-    public int getCallPort() {
-        return callPort;
-    }
-
-    public void setIndexOfCallPort(int indexOfCallPort) {
-        this.indexOfCallPort = indexOfCallPort;
-    }
 
     /**
      * Searches for a port and returns it, saving his index on indexOfChatPort
+     *
      * @return
      */
     private int getAvailableChatPort() {
@@ -59,25 +53,11 @@ public class ChatRequest implements Serializable {
                 break;
             }
         }
-        this.indexOfChatPort =Info.usePort(port);
+        this.indexOfChatPort = Info.usePort(port);
         return port;
     }
 
-    /**
-     * Searches for a port and returns it, saving his index on indexOfCallPort
-     * @return
-     */
-    private int getAvailableCallPort() {
-        int port=55000;
-        for (int i = 55000; i < 55300; i++) {
-            if (Info.isPortFree(i)) {
-                port = i;
-                break;
-            }
-        }
-        this.indexOfCallPort =Info.usePort(port);
-        return port;
-    }
+
 
 
     public User getSender() {

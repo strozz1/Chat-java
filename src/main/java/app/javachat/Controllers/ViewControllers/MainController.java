@@ -40,8 +40,7 @@ public class MainController {
     @FXML
     void initialize() {
         ChatListener chatListener = new ChatListener(this);
-        chatListener.setDaemon(true);
-        chatListener.start();
+        chatListener.startThreads();
         usernameLeftLabel.textProperty().bind(Info.username);
         loadStoredChats();
     }
@@ -52,8 +51,7 @@ public class MainController {
             ChatRequest chatRequest = new ChatRequest(info.getUser(), true);
             chatRequest.setChatPort(info.getOtherChatPort());
             Chat chat = new SimpleChat(chatRequest, info.getLocalChatPort());
-            Call call = new Call(info.getLocalCallPort(), info.getUser(), info.getOtherCallPort());
-            ChatItem chatItem = new ChatItem(chat, call, info.getUser());
+            ChatItem chatItem = new ChatItem(chat, info.getUser(),info.getOtherCallListenerPort());
             LeftChatItem leftChatItem = new LeftChatItem(chatItem);
             leftChatItem.setMainController(this);
             lateralMenu.getChildren().add(leftChatItem);

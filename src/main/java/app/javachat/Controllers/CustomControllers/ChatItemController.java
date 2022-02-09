@@ -2,8 +2,9 @@ package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Calls.Call;
 import app.javachat.Calls.CallRequest;
+import app.javachat.Calls.CallResponse;
 import app.javachat.Chats.Chat;
-import app.javachat.Chats.SimpleChat;
+import app.javachat.Chats.ChatListener;
 import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.Controllers.ViewControllers.IncomingCallViewController;
 import app.javachat.Logger.Log;
@@ -26,13 +27,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.time.LocalDateTime;
 
 
-public class ChatItemController{
+public class ChatItemController {
+    private int callListenerPort;
     private Call call;
     private User otherUser;
+    private Chat chat;
+    private Stage callWindow;
+    private boolean notCalled;
+
     @FXML
     private TextField chatInput;
     @FXML
@@ -43,24 +50,21 @@ public class ChatItemController{
     private Label headerUsername;
     @FXML
     private Button btnLlamar, btnSendMessage;
-    private Chat chat;
-    private Stage callWindow;
-    private boolean notCalled;
 
     public ChatItemController() {
     }
 
-    public ChatItemController(Chat chat, Call call, User otherUser) {
+    public ChatItemController(Chat chat, User otherUser, int callListenerPort) {
+        this.callListenerPort= callListenerPort;
         this.otherUser = otherUser;
         this.chat = chat;
-        this.call = call;
     }
 
     @FXML
     void initialize() {
         headerUsername.setText(otherUser.getUsername());
         btnLlamar.setOnMouseClicked(mouseEvent -> {
-            call.sendCallRequest(false, false);
+            sendCallRequest();
         });
         btnSendMessage.setOnMouseClicked(mouseEvent -> {
             onSendMessage();
@@ -72,6 +76,16 @@ public class ChatItemController{
         chatBox.heightProperty().addListener((observableValue, number, t1) -> {
             scroll.setVvalue((Double) t1);
         });
+    }
+
+    private void sendCallRequest() {
+        CallRequest callRequest = ChatListener.sendCallRequest(otherUser.getIP(), callListenerPort, new CallRequest());
+        if(callRequest.isUserFree()){
+            Call call = new Call(Info.Call.getAvailableCallPort(),callRequest.getSender(),callRequest.getCallPort());
+            call.sendCallRequest(true,false);
+            this.call=call;
+            startListeningForCalls();
+        }
     }
 
     private void onSendMessage() {
@@ -133,14 +147,14 @@ public class ChatItemController{
             notCalled = true;
             while (notCalled) {
                 Log.show("Escuchando posibles llamadas");
-                CallRequest callRequest = call.listenForIncomingCalls();
+                CallResponse callResponse = call.listenForIncomingCalls();
                 Log.show("llamada encontrada");
-                if (callRequest != null) {
+                if (callResponse != null) {
                     // Si el otro es el que inicia, creamos la ventana de nueva llamada
-                    if (!callRequest.isResponse()) {
+                    if (!callResponse.isResponse()) {
                         Platform.runLater(() -> createIncomingCallWindow(call));
                     } else {
-                        if (callRequest.isAccept()) {
+                        if (callResponse.isAccept()) {
                             Platform.runLater(() -> startCallWindow());
                         } else callWindow.close();
 

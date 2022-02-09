@@ -23,13 +23,13 @@ public class ChatItem extends BorderPane implements Serializable {
         load(controller);
     }
 
-    public ChatItem(Chat chat, Call call, User otherUser) {
+    public ChatItem(Chat chat, User otherUser,int callListenerPort) {
         super();
         this.otherUser = otherUser;
-        controller = new ChatItemController(chat, call, otherUser);
+        controller = new ChatItemController(chat, otherUser,callListenerPort);
         load(controller);
         controller.startListeningForMessages();
-        controller.startListeningForCalls();
+//        controller.startListeningForCalls();
     }
 
     private void load(ChatItemController controller) {

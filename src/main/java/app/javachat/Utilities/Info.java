@@ -13,10 +13,12 @@ import java.util.List;
 public class Info {
     public static User localUser;
     public static StringProperty username = new SimpleStringProperty("");
-    public static final int NEW_CHAT_LISTENER_PORT = 867;
+    public static final int CHAT_LISTENER_PORT = 867;
+    public static final int CALL_LISTENER_PORT = 8899;
+    public static final int CALL_PORT = 8879;
     public static final String APP_NAME = "MensajeriaApp";
     public static List<ChatInfo> chatInfoList = new ArrayList<>();
-    private static List<Integer> occupatedPorts = new ArrayList<>(NEW_CHAT_LISTENER_PORT);
+    private static List<Integer> occupatedPorts = new ArrayList<>(CHAT_LISTENER_PORT);
 
 
     /**
@@ -88,9 +90,29 @@ public class Info {
         public static final int BUFFER_SIZE = 512;
         public static final int SAMPLE_RATE = 44000;
         public static final int SAMPLE_SIZE_BITS = 16;
+        private static boolean userFree=true;
 
         public static AudioFormat getAudioFormat() {
             return new AudioFormat(Info.Call.SAMPLE_RATE, Info.Call.SAMPLE_SIZE_BITS, 1, true, true);
+        }
+        /**
+         * Searches for a port and returns it, saving his index on indexOfCallPort
+         *
+         * @return
+         */
+        public static int getAvailableCallPort() {
+            int port = 55000;
+            for (int i = 55000; i < 55300; i++) {
+                if (Info.isPortFree(i)) {
+                    port = i;
+                    break;
+                }
+            }
+            return port;
+        }
+
+        public static boolean isUserFree() {
+            return userFree;
         }
     }
 }

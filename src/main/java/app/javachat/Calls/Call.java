@@ -31,18 +31,18 @@ public class Call implements Serializable {
     }
 
 
-    public CallRequest listenForIncomingCalls() {
-        CallRequest callRequest = null;
+    public CallResponse listenForIncomingCalls() {
+        CallResponse callResponse = null;
         try {
             serverListener = new ServerSocket(localPort);
             //Recivimos el call request del otro usuario
             Socket socketAccept = serverListener.accept();
             ObjectInputStream inputStream = new ObjectInputStream(socketAccept.getInputStream());
-            callRequest = (CallRequest) inputStream.readObject();
+            callResponse = (CallResponse) inputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return callRequest;
+        return callResponse;
     }
 
 
@@ -90,11 +90,11 @@ public class Call implements Serializable {
         Socket socket = null;
         ObjectOutputStream outputStream = null;
         try {
-            CallRequest callRequest = new CallRequest(Info.localUser, accept, isResponse);
+            CallResponse callResponse = new CallResponse(Info.localUser, accept, isResponse);
 
             socket = new Socket(otherUser.getIP(), otherPort);
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            outputStream.writeObject(callRequest);
+            outputStream.writeObject(callResponse);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
