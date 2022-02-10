@@ -1,6 +1,5 @@
 package app.javachat.Utilities;
 
-import app.javachat.Calls.Call;
 import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.Controllers.ViewControllers.IncomingCallViewController;
 import app.javachat.MainApplication;
@@ -97,7 +96,7 @@ public class Info {
     public static class Call {
         public static final int CALL_PORT = getAvailableCallPort();
         private static boolean inCall = false;
-        static app.javachat.Calls.Call call;
+        static app.javachat.Calls.Call localCall;
         public static final int CALL_LISTENER_PORT = 8867;
         public static final int BUFFER_SIZE = 512;
         public static final int SAMPLE_RATE = 44000;
@@ -132,12 +131,12 @@ public class Info {
             Call.inCall = inCall;
         }
 
-        public static app.javachat.Calls.Call getCall() {
-            return call;
+        public static app.javachat.Calls.Call getLocalCall() {
+            return localCall;
         }
 
-        public static void setCall(app.javachat.Calls.Call call) {
-            Call.call = call;
+        public static void setLocalCall(app.javachat.Calls.Call call) {
+            localCall = call;
         }
 
         public static void startCallWindow() {
@@ -147,7 +146,7 @@ public class Info {
                 Stage callWindow = new Stage();
                 callWindow.initModality(Modality.WINDOW_MODAL);
                 callWindow.setResizable(false);
-                callWindow.setTitle("Llamada con " + call.getOtherUser().getUsername());
+                callWindow.setTitle("Llamada con " + localCall.getOtherUser().getUsername());
 
                 CallWindowController callWindowController = new CallWindowController();
                 loader.setController(callWindowController);

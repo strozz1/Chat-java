@@ -1,6 +1,5 @@
 package app.javachat.Calls;
 
-import app.javachat.Chats.ChatRequest;
 import app.javachat.Logger.Log;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
@@ -9,7 +8,6 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -50,8 +48,9 @@ public class CallListener {
 
                         User otherUser = callRequest.getUser();
                         Call call = new Call(CALL_PORT, otherUser, callRequest.getCallPort());
-                        Info.Call.setCall(call);
-                        Info.Call.getCall().sendCallRequest(false, false);
+                        Info.Call.setLocalCall(call);
+                        Info.Call.getLocalCall().sendCallRequest(false, false);
+                        System.out.println(Info.Call.getLocalCall().getOtherUser());
                         Log.show("Sent a call request.", "Call Listener");
                     }
                 } else sendCallResponse(callRequest);
@@ -70,8 +69,8 @@ public class CallListener {
      */
     private void sendCallResponse(CallRequest callRequest) throws IOException {
         boolean isInCall = !Info.Call.isInCall();
-        CallRequest selfCallRequest = new CallRequest(isInCall, true, false);
 
+        CallRequest selfCallRequest = new CallRequest(isInCall, true, false);
         String ip = callRequest.getUser().getIP();
         int port = callRequest.getCallListenerPort();
 
@@ -86,6 +85,7 @@ public class CallListener {
      * This method listen for incoming calls, accepted by the call listener
      */
     public void listenForIncomingCalls() {
+
         try {
             callServer = new ServerSocket(CALL_PORT);
             Log.show("Listening for new incoming calls at port "+ CALL_PORT,"Call Listener");
@@ -93,7 +93,8 @@ public class CallListener {
             Socket socketAccept = callServer.accept();
             ObjectInputStream inputStream = new ObjectInputStream(socketAccept.getInputStream());
             CallRequest callRequest = (CallRequest) inputStream.readObject();
-
+            Call call = new Call(CALL_PORT, callRequest.getUser(), callRequest.getCallPort());
+            Info.Call.setLocalCall(call);
             // If accept, create call window, otherwise create new call incoming window.
             if (callRequest.isAccept()) {
                 Info.Call.setInCall(true);

@@ -1,7 +1,5 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.Calls.Call;
-import app.javachat.Calls.CallRequest;
 import app.javachat.MainApplication;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
@@ -28,7 +26,7 @@ public class IncomingCallViewController {
     private Stage callWindow;
 
     public IncomingCallViewController() {
-        user= Info.Call.getCall().getOtherUser();
+        user= Info.Call.getLocalCall().getOtherUser();
     }
 
 
@@ -37,7 +35,7 @@ public class IncomingCallViewController {
         incomingCallUser.setText(user.getUsername());
         acceptCallButton.setOnMouseClicked(event -> {
             Thread thread = new Thread(() -> {
-                Info.Call.getCall().acceptCall();
+                Info.Call.getLocalCall().acceptCall();
                 Platform.runLater(this::startCallWindow);
                 Info.Call.setInCall(true);
             });
@@ -46,7 +44,7 @@ public class IncomingCallViewController {
         });
 
         cancelCallButton.setOnMouseClicked(event -> {
-            Info.Call.getCall().callCanceled();
+            Info.Call.getLocalCall().callCanceled();
             closeWindow(event);
 
 
@@ -60,7 +58,7 @@ public class IncomingCallViewController {
             callWindow = new Stage();
             callWindow.initModality(Modality.WINDOW_MODAL);
             callWindow.setResizable(false);
-            callWindow.setTitle("Llamada con " + Info.Call.getCall().getOtherUser().getUsername());
+            callWindow.setTitle("Llamada con " + Info.Call.getLocalCall().getOtherUser().getUsername());
 
             CallWindowController callWindowController = new CallWindowController();
             loader.setController(callWindowController);

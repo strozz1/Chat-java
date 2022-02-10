@@ -1,6 +1,5 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.Calls.Call;
 import app.javachat.Logger.Log;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
@@ -27,9 +26,9 @@ public class CallWindowController {
 
 
     public CallWindowController() {
-        Info.Call.getCall().setController(this);
-        Info.Call.getCall().startCall();
-        otherUser = Info.Call.getCall().getOtherUser();
+        Info.Call.getLocalCall().setController(this);
+        Info.Call.getLocalCall().startCall();
+        otherUser = Info.Call.getLocalCall().getOtherUser();
     }
 
     @FXML
@@ -45,7 +44,7 @@ public class CallWindowController {
     }
 
     private void endCall() {
-        Info.Call.getCall().endCall();
+        Info.Call.getLocalCall().endCall();
         cerrarVentana();
         stopTimer();
     }
