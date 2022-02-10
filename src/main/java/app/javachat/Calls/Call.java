@@ -90,7 +90,7 @@ public class Call implements Serializable {
         Socket socket = null;
         ObjectOutputStream outputStream = null;
         try {
-            CallRequest callRequest = new CallRequest(accept, isResponse,false);
+            CallRequest callRequest = new CallRequest(true, isResponse,accept);
 
             socket = new Socket(otherUser.getIP(), otherPort);
             outputStream = new ObjectOutputStream(socket.getOutputStream());

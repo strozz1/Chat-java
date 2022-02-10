@@ -105,6 +105,11 @@ public class CallListener {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        try {
+            callServer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
