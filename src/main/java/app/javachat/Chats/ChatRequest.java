@@ -22,7 +22,7 @@ public class ChatRequest implements Serializable {
         this.chatPort = getAvailableChatPort();
         this.accept= false;
         this.chatListenerPort= Info.NEW_CHAT_LISTENER_PORT;
-        this.callListenerPort = getAvailableCallPort();
+        this.callListenerPort = Info.Call.CALL_LISTENER_PORT;
 
 
     }
@@ -31,7 +31,7 @@ public class ChatRequest implements Serializable {
         this.chatPort = getAvailableChatPort();
         this.accept=accept;
         this.chatListenerPort= Info.NEW_CHAT_LISTENER_PORT;
-        this.callListenerPort = getAvailableCallPort();
+        this.callListenerPort = Info.Call.CALL_LISTENER_PORT;
     }
 
     public int getCallListenerPort() {
