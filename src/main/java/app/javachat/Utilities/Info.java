@@ -1,12 +1,22 @@
 package app.javachat.Utilities;
 
+import app.javachat.Calls.Call;
+import app.javachat.Controllers.ViewControllers.CallWindowController;
+import app.javachat.Controllers.ViewControllers.IncomingCallViewController;
+import app.javachat.MainApplication;
 import app.javachat.Models.AppState;
 import app.javachat.Models.ChatInfo;
 import app.javachat.Models.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import javax.sound.sampled.AudioFormat;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +61,7 @@ public class Info {
         setUsername(localUser.getUsername());
 
         occupatedPorts = appState.getOccupatedPorts();
-        chatInfoList=appState.getChatInfoList();
+        chatInfoList = appState.getChatInfoList();
     }
 
     public static void unUsePort(int PORT) {
@@ -85,12 +95,91 @@ public class Info {
      * Embeded class for Call Info and data.
      */
     public static class Call {
+        public static final int CALL_PORT = getAvailableCallPort();
+        private static boolean inCall = false;
+        static app.javachat.Calls.Call call;
+        public static final int CALL_LISTENER_PORT = 8867;
         public static final int BUFFER_SIZE = 512;
         public static final int SAMPLE_RATE = 44000;
         public static final int SAMPLE_SIZE_BITS = 16;
 
+        /**
+         * Searches for a port and returns it, saving his index on indexOfCallPort
+         *
+         * @return port
+         */
+        public static int getAvailableCallPort() {
+            int port = 55000;
+            for (int i = 55000; i < 55300; i++) {
+                if (Info.isPortFree(i)) {
+                    port = i;
+                    break;
+                }
+            }
+            Info.usePort(port);
+            return port;
+        }
+
         public static AudioFormat getAudioFormat() {
             return new AudioFormat(Info.Call.SAMPLE_RATE, Info.Call.SAMPLE_SIZE_BITS, 1, true, true);
+        }
+
+        public synchronized static boolean isInCall() {
+            return inCall;
+        }
+
+        public synchronized static void setInCall(boolean inCall) {
+            Call.inCall = inCall;
+        }
+
+        public static app.javachat.Calls.Call getCall() {
+            return call;
+        }
+
+        public static void setCall(app.javachat.Calls.Call call) {
+            Call.call = call;
+        }
+
+        public static void startCallWindow() {
+            try {
+                FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("call-window.fxml"));
+
+                Stage callWindow = new Stage();
+                callWindow.initModality(Modality.WINDOW_MODAL);
+                callWindow.setResizable(false);
+                callWindow.setTitle("Llamada con " + call.getOtherUser().getUsername());
+
+                CallWindowController callWindowController = new CallWindowController();
+                loader.setController(callWindowController);
+                Parent root = loader.load();
+
+
+                Scene scene = new Scene(root);
+                callWindow.setScene(scene);
+                callWindow.setAlwaysOnTop(true);
+                callWindow.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        public static void createIncomingCallWindow() {
+            try {
+                FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("incoming-call-view.fxml"));
+                IncomingCallViewController controller = new IncomingCallViewController();
+                loader.setController(controller);
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.setResizable(false);
+
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

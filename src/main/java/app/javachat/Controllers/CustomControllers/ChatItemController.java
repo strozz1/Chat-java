@@ -3,11 +3,11 @@ package app.javachat.Controllers.CustomControllers;
 import app.javachat.Calls.Call;
 import app.javachat.Calls.CallRequest;
 import app.javachat.Chats.Chat;
-import app.javachat.Chats.SimpleChat;
 import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.Controllers.ViewControllers.IncomingCallViewController;
 import app.javachat.Logger.Log;
 import app.javachat.MainApplication;
+import app.javachat.Models.ChatInfo;
 import app.javachat.Models.Message;
 import app.javachat.Models.User;
 import app.javachat.Utilities.Info;
@@ -26,12 +26,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.time.LocalDateTime;
 
+import static app.javachat.Utilities.Info.Call.startCallWindow;
 
-public class ChatItemController{
-    private Call call;
+
+public class ChatItemController {
+    private int callListenerPort;
     private User otherUser;
     @FXML
     private TextField chatInput;
@@ -50,17 +54,18 @@ public class ChatItemController{
     public ChatItemController() {
     }
 
-    public ChatItemController(Chat chat, Call call, User otherUser) {
-        this.otherUser = otherUser;
+    public ChatItemController(Chat chat, ChatInfo chatInfo) {
+        this.otherUser = chatInfo.getUser();
         this.chat = chat;
-        this.call = call;
+        this.callListenerPort = chatInfo.getCallListenerPort();
     }
 
     @FXML
     void initialize() {
         headerUsername.setText(otherUser.getUsername());
         btnLlamar.setOnMouseClicked(mouseEvent -> {
-            call.sendCallRequest(false, false);
+            if (!Info.Call.isInCall())
+                sendCallRequest();
         });
         btnSendMessage.setOnMouseClicked(mouseEvent -> {
             onSendMessage();
@@ -74,37 +79,24 @@ public class ChatItemController{
         });
     }
 
+    private void sendCallRequest() {
+        try {
+            Socket socket = new Socket(otherUser.getIP(), callListenerPort);
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(new CallRequest(true, false, false));
+            outputStream.close();
+        } catch (IOException e) {
+            Log.error(e.getMessage());
+        }
+
+    }
+
     private void onSendMessage() {
         String message = chatInput.getText();
         new Thread(() -> {
             sendNewMessage(message);
         }).start();
         chatInput.setText("");
-    }
-
-
-    private void startCallWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("call-window.fxml"));
-
-            callWindow = new Stage();
-            callWindow.initModality(Modality.WINDOW_MODAL);
-            callWindow.setResizable(false);
-            callWindow.setTitle("Llamada con " + otherUser.getUsername());
-
-            CallWindowController callWindowController = new CallWindowController(call);
-            loader.setController(callWindowController);
-            Parent root = loader.load();
-
-
-            Scene scene = new Scene(root);
-            callWindow.setScene(scene);
-            callWindow.setAlwaysOnTop(true);
-            callWindow.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void sendNewMessage(String message) {
@@ -125,53 +117,6 @@ public class ChatItemController{
         });
         thread.setDaemon(true);
         thread.start();
-    }
-
-
-    public void startListeningForCalls() {
-        Thread thread = new Thread(() -> {
-            notCalled = true;
-            while (notCalled) {
-                Log.show("Escuchando posibles llamadas");
-                CallRequest callRequest = call.listenForIncomingCalls();
-                Log.show("llamada encontrada");
-                if (callRequest != null) {
-                    // Si el otro es el que inicia, creamos la ventana de nueva llamada
-                    if (!callRequest.isResponse()) {
-                        Platform.runLater(() -> createIncomingCallWindow(call));
-                    } else {
-                        if (callRequest.isAccept()) {
-                            Platform.runLater(() -> startCallWindow());
-                        } else callWindow.close();
-
-                    }
-                    notCalled = false;
-                }
-            }
-
-        });
-        thread.setDaemon(true);
-        thread.start();
-    }
-
-
-    private void createIncomingCallWindow(Call call) {
-        try {
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("incoming-call-view.fxml"));
-            IncomingCallViewController controller = new IncomingCallViewController(call);
-            loader.setController(controller);
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
-
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public Chat getChat() {

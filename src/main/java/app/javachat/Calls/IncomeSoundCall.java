@@ -26,6 +26,7 @@ public class IncomeSoundCall extends Thread  implements Serializable {
             getAudio();
         } catch (IOException | LineUnavailableException e) {
             call.endCall();
+            this.notify();
         }
     }
 

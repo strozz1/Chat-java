@@ -1,6 +1,7 @@
 package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Calls.Call;
+import app.javachat.Calls.CallListener;
 import app.javachat.Chats.Chat;
 import app.javachat.Chats.ChatListener;
 import app.javachat.Chats.ChatRequest;
@@ -39,11 +40,39 @@ public class MainController {
 
     @FXML
     void initialize() {
-        ChatListener chatListener = new ChatListener(this);
-        chatListener.setDaemon(true);
-        chatListener.start();
-        usernameLeftLabel.textProperty().bind(Info.username);
         loadStoredChats();
+        usernameLeftLabel.textProperty().bind(Info.username);
+        startCallsAndChatsListeners();
+    }
+
+    private void startCallsAndChatsListeners() {
+        ChatListener chatListener = new ChatListener(this);
+        CallListener callListener = new CallListener();
+        Thread callListenerThread = new Thread(() -> {
+            while (true) {
+                callListener.listenCallsRequests();
+            }
+        });
+        Thread callThread = new Thread(() -> {
+            while (true) {
+                callListener.listenForIncomingCalls();
+                if (Info.Call.isInCall()) {
+                    try {
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        callThread.setDaemon(true);
+        callListenerThread.setDaemon(true);
+        chatListener.setDaemon(true);
+
+        chatListener.start();
+        callListenerThread.start();
+        callThread.start();
     }
 
     private void loadStoredChats() {
@@ -52,8 +81,7 @@ public class MainController {
             ChatRequest chatRequest = new ChatRequest(info.getUser(), true);
             chatRequest.setChatPort(info.getOtherChatPort());
             Chat chat = new SimpleChat(chatRequest, info.getLocalChatPort());
-            Call call = new Call(info.getLocalCallPort(), info.getUser(), info.getOtherCallPort());
-            ChatItem chatItem = new ChatItem(chat, call, info.getUser());
+            ChatItem chatItem = new ChatItem(chat, info);
             LeftChatItem leftChatItem = new LeftChatItem(chatItem);
             leftChatItem.setMainController(this);
             lateralMenu.getChildren().add(leftChatItem);

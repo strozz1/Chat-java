@@ -3,6 +3,7 @@ package app.javachat.Controllers.ViewControllers;
 import app.javachat.Calls.Call;
 import app.javachat.Logger.Log;
 import app.javachat.Models.User;
+import app.javachat.Utilities.Info;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,7 +16,6 @@ import java.time.LocalTime;
 
 public class CallWindowController {
     private User localUser, otherUser;
-    private Call call;
     @FXML
     private Button btnEndCall;
     @FXML
@@ -27,15 +27,9 @@ public class CallWindowController {
 
 
     public CallWindowController() {
-
-    }
-
-
-    public CallWindowController(Call call) {
-        this.call = call;
-        this.call.setController(this);
-        call.startCall();
-        otherUser = call.getOtherUser();
+        Info.Call.getCall().setController(this);
+        Info.Call.getCall().startCall();
+        otherUser = Info.Call.getCall().getOtherUser();
     }
 
     @FXML
@@ -51,24 +45,19 @@ public class CallWindowController {
     }
 
     private void endCall() {
-        call.endCall();
+        Info.Call.getCall().endCall();
         cerrarVentana();
         stopTimer();
     }
 
 
     public void cerrarVentana() {
+        Info.Call.setInCall(false);
         Platform.runLater(() -> {
             Stage stage = (Stage) labelTiempoLlamada.getScene().getWindow();
             stage.close();
         });
     }
-
-    public void closeWindow() {
-        Stage thisStage = (Stage) btnEndCall.getScene().getWindow();
-        thisStage.close();
-    }
-
     void startCallTimer() {
         isCallOnline=true;
        Thread thread= new Thread(this::timer);

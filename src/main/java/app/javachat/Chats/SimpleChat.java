@@ -20,7 +20,7 @@ public class SimpleChat implements Chat, Serializable {
     public SimpleChat(ChatRequest chatRequest, int localPort) {
         Log.show("Chat en el puerto "+localPort);
         this.OTHER_PORT = chatRequest.getChatPort();
-        this.otherUser = chatRequest.getSender();
+        this.otherUser = chatRequest.getOtherUser();
         this.LOCAL_PORT = localPort;
         try {
             //Creamos el server local para escuchar mensajes

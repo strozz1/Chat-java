@@ -1,6 +1,5 @@
 package app.javachat.Chats;
 
-import app.javachat.Calls.Call;
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Controllers.ViewControllers.MainController;
@@ -41,11 +40,11 @@ public class ChatListener extends Thread {
     public void run() {
         while (true) {
             Log.show("Listening for new incoming chats");
-            listenForNewChats();
+            listenChats();
         }
     }
 
-    private void listenForNewChats() {
+    private void listenChats() {
 
         try {
             Socket inputServer = localServer.accept();
@@ -56,29 +55,25 @@ public class ChatListener extends Thread {
             inputStream.close();
 
             if (objectRead instanceof ChatRequest othersChatRequest) {
-                User otherUser = othersChatRequest.getSender();
+                User otherUser = othersChatRequest.getOtherUser();
                 selfChatRequest = new ChatRequest(Info.localUser, true);
                 //Si no es una respuesta, simplemente mandales una respuesta
                 int indexOfChatPort, indexOfCallPort;
                 if (!othersChatRequest.isAccept()) {
                     indexOfChatPort = othersChatRequest.getIndexOfChatPort();
-                    indexOfCallPort = othersChatRequest.getIndexOfCallPort();
 
                     // When we receive a new chat request, we need to tell the other user which index is he using for his chats.
                     selfChatRequest.setIndexOfChatPort(indexOfChatPort);
-                    //Same thing for Call port
-                    selfChatRequest.setIndexOfCallPort(indexOfCallPort);
 
-                    enviarChatRequest(othersChatRequest.getSender().getIP(), othersChatRequest.getChatListenerPort(), selfChatRequest);
+                    enviarChatRequest(othersChatRequest.getOtherUser().getIP(), othersChatRequest.getChatListenerPort(), selfChatRequest);
 
                     //creamos nuevo chat pasandole el request del otro, nuestro puerto de chat y nuestro puerto de llamada
-                    createNewChat(othersChatRequest, selfChatRequest.getChatPort(), otherUser, selfChatRequest.getCallPort());
+                    createNewChat(othersChatRequest, selfChatRequest.getChatPort(), otherUser);
 
                 } else {
                     // Si es una respuesta de chat(isAccept es true) creamos el chat pasandole el chat request,
                     indexOfChatPort = othersChatRequest.getIndexOfChatPort();
-                    indexOfCallPort = othersChatRequest.getIndexOfCallPort();
-                    createNewChat(othersChatRequest, Info.getPort(indexOfChatPort), otherUser, Info.getPort(indexOfCallPort));
+                    createNewChat(othersChatRequest, Info.getPort(indexOfChatPort), otherUser);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -87,18 +82,16 @@ public class ChatListener extends Thread {
         }
     }
 
-    private void createNewChat(ChatRequest othersChatRequest, int selfPort, User otherUser, int selfCallPort) {
+    private void createNewChat(ChatRequest othersChatRequest, int selfPort, User otherUser) {
         ChatInfo chatInfo = new ChatInfo();
         chatInfo.setLocalChatPort(selfPort);
-        chatInfo.setLocalCallPort(selfCallPort);
         chatInfo.setOtherChatPort(othersChatRequest.getChatPort());
-        chatInfo.setOtherCallPort(othersChatRequest.getCallPort());
+        chatInfo.setCallListenerPort(othersChatRequest.getCallListenerPort());
         chatInfo.setUser(otherUser);
         if (!Info.checkIfChatExist(chatInfo)) {
 
             Chat chat = new SimpleChat(othersChatRequest, selfPort);
-            Call call = new Call(selfCallPort, otherUser, othersChatRequest.getCallPort());
-            ChatItem chatItem = new ChatItem(chat, call, othersChatRequest.getSender());
+            ChatItem chatItem = new ChatItem(chat, chatInfo);
 
             LeftChatItem leftChatItem = new LeftChatItem(chatItem);
             leftChatItem.setMainController(mainController);

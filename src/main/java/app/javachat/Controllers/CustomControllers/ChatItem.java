@@ -4,6 +4,7 @@ import app.javachat.Calls.Call;
 import app.javachat.Chats.Chat;
 import app.javachat.Chats.SimpleChat;
 import app.javachat.MainApplication;
+import app.javachat.Models.ChatInfo;
 import app.javachat.Models.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,13 +24,12 @@ public class ChatItem extends BorderPane implements Serializable {
         load(controller);
     }
 
-    public ChatItem(Chat chat, Call call, User otherUser) {
+    public ChatItem(Chat chat, ChatInfo chatInfo) {
         super();
-        this.otherUser = otherUser;
-        controller = new ChatItemController(chat, call, otherUser);
+        this.otherUser = chatInfo.getUser();
+        controller = new ChatItemController(chat,chatInfo);
         load(controller);
         controller.startListeningForMessages();
-        controller.startListeningForCalls();
     }
 
     private void load(ChatItemController controller) {

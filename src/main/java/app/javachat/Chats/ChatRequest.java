@@ -5,45 +5,37 @@ import app.javachat.Models.User;
 
 import java.io.Serializable;
 
+import static app.javachat.Utilities.Info.Call.getAvailableCallPort;
+
 public class ChatRequest implements Serializable {
-    private final User sender;
+    private final User otherUser;
     private int chatPort;
     private final int chatListenerPort;
     private final boolean accept;
-    private final int callPort;
+    private final int callListenerPort;
 
     //This will be use to see where is my port in my local list.
-    private int indexOfChatPort,indexOfCallPort;
+    private int indexOfChatPort;
 
     public ChatRequest(User sender) {
-        this.sender = sender;
+        this.otherUser = sender;
         this.chatPort = getAvailableChatPort();
         this.accept= false;
         this.chatListenerPort= Info.NEW_CHAT_LISTENER_PORT;
-        this.callPort = getAvailableCallPort();
+        this.callListenerPort = getAvailableCallPort();
 
 
     }
     public ChatRequest(User sender,boolean accept) {
-        this.sender = sender;
+        this.otherUser = sender;
         this.chatPort = getAvailableChatPort();
         this.accept=accept;
         this.chatListenerPort= Info.NEW_CHAT_LISTENER_PORT;
-        this.callPort = getAvailableCallPort();
-
-
+        this.callListenerPort = getAvailableCallPort();
     }
 
-    public int getIndexOfCallPort() {
-        return indexOfCallPort;
-    }
-
-    public int getCallPort() {
-        return callPort;
-    }
-
-    public void setIndexOfCallPort(int indexOfCallPort) {
-        this.indexOfCallPort = indexOfCallPort;
+    public int getCallListenerPort() {
+        return callListenerPort;
     }
 
     /**
@@ -63,25 +55,11 @@ public class ChatRequest implements Serializable {
         return port;
     }
 
-    /**
-     * Searches for a port and returns it, saving his index on indexOfCallPort
-     * @return
-     */
-    private int getAvailableCallPort() {
-        int port=55000;
-        for (int i = 55000; i < 55300; i++) {
-            if (Info.isPortFree(i)) {
-                port = i;
-                break;
-            }
-        }
-        this.indexOfCallPort =Info.usePort(port);
-        return port;
-    }
 
 
-    public User getSender() {
-        return sender;
+
+    public User getOtherUser() {
+        return otherUser;
     }
 
     public int getChatPort() {

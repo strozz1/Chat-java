@@ -1,14 +1,11 @@
 package app.javachat.Models;
 
-import app.javachat.Calls.Call;
-import app.javachat.Chats.Chat;
-
 import java.io.Serializable;
 
 public class ChatInfo implements Serializable {
     private User user;
-    private int otherChatPort,otherCallPort;
-    private int localChatPort,localCallPort;
+    private int otherChatPort, callListenerPort;
+    private int localChatPort;
 
     public User getUser() {
         return user;
@@ -26,12 +23,12 @@ public class ChatInfo implements Serializable {
         this.otherChatPort = otherChatPort;
     }
 
-    public int getOtherCallPort() {
-        return otherCallPort;
+    public int getCallListenerPort() {
+        return callListenerPort;
     }
 
-    public void setOtherCallPort(int otherCallPort) {
-        this.otherCallPort = otherCallPort;
+    public void setCallListenerPort(int callListenerPort) {
+        this.callListenerPort = callListenerPort;
     }
 
     public int getLocalChatPort() {
@@ -41,23 +38,13 @@ public class ChatInfo implements Serializable {
     public void setLocalChatPort(int localChatPort) {
         this.localChatPort = localChatPort;
     }
-
-    public int getLocalCallPort() {
-        return localCallPort;
-    }
-
-    public void setLocalCallPort(int localCallPort) {
-        this.localCallPort = localCallPort;
-    }
-
     @Override
     public String toString() {
         return "ChatInfo{" +
                 "user=" + user +
                 ", otherChatPort=" + otherChatPort +
-                ", otherCallPort=" + otherCallPort +
+                ", otherCallPort=" + callListenerPort +
                 ", localChatPort=" + localChatPort +
-                ", localCallPort=" + localCallPort +
                 '}';
     }
 }
