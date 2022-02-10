@@ -18,10 +18,11 @@ public class SimpleChat implements Chat, Serializable {
 
 
     public SimpleChat(ChatRequest chatRequest, int localPort) {
-        Log.show("Chat en el puerto "+localPort);
         this.OTHER_PORT = chatRequest.getChatPort();
         this.otherUser = chatRequest.getOtherUser();
         this.LOCAL_PORT = localPort;
+        Log.show("Nuevo chat en " + otherUser.getIP() + ":" + OTHER_PORT, "SimpleChat");
+        Log.show("Escuchando chat en " + localPort, "SimpleChat");
         try {
             //Creamos el server local para escuchar mensajes
             serverLocal = new ServerSocket(LOCAL_PORT);
@@ -31,10 +32,9 @@ public class SimpleChat implements Chat, Serializable {
     }
 
 
-
     @Override
     public void sendMessage(Message message) {
-        Log.show("Enviar msg a "+OTHER_PORT);
+        Log.show("Sending msg to " + otherUser.getIP() + ":" + OTHER_PORT, "SimpleChat");
         Socket socket = null;
         ObjectOutputStream outputStream = null;
         try {
@@ -54,9 +54,7 @@ public class SimpleChat implements Chat, Serializable {
             } catch (IOException e) {
                 Log.error(e.getMessage());
             }
-
         }
-
     }
 
     @Override
@@ -67,14 +65,12 @@ public class SimpleChat implements Chat, Serializable {
 
         try {
             //Socket del otro user.
-            Log.show("escuhando a chat puerto "+serverLocal.getLocalPort());
             otherUserSocket = serverLocal.accept();
-            Log.show("Leyendo objeto recibido.");
             inputStream = new ObjectInputStream(otherUserSocket.getInputStream());
 
 
             inputObject = inputStream.readObject();
-            Log.show(inputObject.toString());
+            Log.show("New message" + inputObject.toString(), "SimpleChat");
             if (inputObject instanceof Message) {
                 return (Message) inputObject;
             }

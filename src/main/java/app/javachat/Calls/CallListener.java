@@ -31,9 +31,9 @@ public class CallListener {
 
     public void listenCallsRequests() {
         try {
-            Log.show("Listening for new call requests", "Call Listener");
+            Log.show("Listening for new call requests  at port "+ CALL_LISTENER_PORT, "Call Listener");
             Socket inputServer = localServer.accept();
-            Log.show("New call request.", "Call Listener");
+            Log.show("New income call request.", "Call Listener");
             ObjectInputStream inputStream = new ObjectInputStream(inputServer.getInputStream());
             Object objectRead = inputStream.readObject();
             inputStream.close();
@@ -88,6 +88,7 @@ public class CallListener {
     public void listenForIncomingCalls() {
         try {
             callServer = new ServerSocket(CALL_PORT);
+            Log.show("Listening for new incoming calls at port "+ CALL_PORT,"Call Listener");
 
             Socket socketAccept = callServer.accept();
             ObjectInputStream inputStream = new ObjectInputStream(socketAccept.getInputStream());

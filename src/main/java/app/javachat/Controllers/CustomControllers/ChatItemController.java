@@ -65,7 +65,7 @@ public class ChatItemController {
         headerUsername.setText(otherUser.getUsername());
         btnLlamar.setOnMouseClicked(mouseEvent -> {
             if (!Info.Call.isInCall())
-                sendCallRequest();
+                new Thread(this::sendCallRequest).start();
         });
         btnSendMessage.setOnMouseClicked(mouseEvent -> {
             onSendMessage();
@@ -81,6 +81,8 @@ public class ChatItemController {
 
     private void sendCallRequest() {
         try {
+            Log.show("Sending call request at"+otherUser.getIP()+":"+ callListenerPort,"ChatItemController");
+
             Socket socket = new Socket(otherUser.getIP(), callListenerPort);
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             outputStream.writeObject(new CallRequest(true, false, false));

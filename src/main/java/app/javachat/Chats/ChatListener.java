@@ -39,7 +39,7 @@ public class ChatListener extends Thread {
     @Override
     public void run() {
         while (true) {
-            Log.show("Listening for new incoming chats");
+            Log.show("Listening for new incoming chats at port "+ Info.NEW_CHAT_LISTENER_PORT,"Chat Listener");
             listenChats();
         }
     }
@@ -48,7 +48,7 @@ public class ChatListener extends Thread {
 
         try {
             Socket inputServer = localServer.accept();
-            Log.show("New chat came!");
+            Log.show("New chat incoming.","Chat Listener");
             ObjectInputStream inputStream = new ObjectInputStream(inputServer.getInputStream());
             Object objectRead = inputStream.readObject();
 
