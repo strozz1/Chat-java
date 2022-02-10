@@ -69,7 +69,7 @@ public class CallListener {
      * @throws IOException
      */
     private void sendCallResponse(CallRequest callRequest) throws IOException {
-        boolean isInCall = Info.Call.isInCall();
+        boolean isInCall = !Info.Call.isInCall();
         CallRequest selfCallRequest = new CallRequest(isInCall, true, false);
 
         String ip = callRequest.getUser().getIP();

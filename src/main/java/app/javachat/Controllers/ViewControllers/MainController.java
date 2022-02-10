@@ -54,14 +54,14 @@ public class MainController {
             }
         });
         Thread callThread = new Thread(() -> {
-            while (true) {
+//            while (true) {
                 callListener.listenForIncomingCalls();
                 if (Info.Call.isInCall()) {
                     try {
                         this.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
+//                    }
                 }
             }
         });

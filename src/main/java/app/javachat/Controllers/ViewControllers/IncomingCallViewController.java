@@ -28,6 +28,7 @@ public class IncomingCallViewController {
     private Stage callWindow;
 
     public IncomingCallViewController() {
+        user= Info.Call.getCall().getOtherUser();
     }
 
 
