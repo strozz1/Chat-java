@@ -88,26 +88,24 @@ public class CallListener {
 
         try {
             callServer = new ServerSocket(CALL_PORT);
+            callServer.setReuseAddress(true);
             Log.show("Listening for new incoming calls at port "+ CALL_PORT,"Call Listener");
 
             Socket socketAccept = callServer.accept();
             ObjectInputStream inputStream = new ObjectInputStream(socketAccept.getInputStream());
             CallRequest callRequest = (CallRequest) inputStream.readObject();
-            Call call = new Call(CALL_PORT, callRequest.getUser(), callRequest.getCallPort());
-            Info.Call.setLocalCall(call);
+            inputStream.close();
+            callServer.close();
             // If accept, create call window, otherwise create new call incoming window.
             if (callRequest.isAccept()) {
                 Info.Call.setInCall(true);
                 Platform.runLater(Info.Call::startCallWindow);
             } else {
+                Call call = new Call(CALL_PORT, callRequest.getUser(), callRequest.getCallPort());
+                Info.Call.setLocalCall(call);
                 Platform.runLater(Info.Call::createIncomingCallWindow);
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            callServer.close();
-        } catch (IOException e) {
             e.printStackTrace();
         }
 

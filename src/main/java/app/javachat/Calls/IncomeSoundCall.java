@@ -41,8 +41,11 @@ public class IncomeSoundCall extends Thread  implements Serializable {
         this.call=call;
         try {
             socket = new DatagramSocket(localPort);
+            socket.setReuseAddress(true);
+
             socket.setSoTimeout(1500);
         } catch (IOException e) {
+            e.printStackTrace();
             Log.error(e.getMessage(), "IncomeSoundCall");
         }
 

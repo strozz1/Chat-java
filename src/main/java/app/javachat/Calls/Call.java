@@ -14,7 +14,7 @@ import java.net.Socket;
 public class Call implements Serializable {
     private final int otherPort;
     private int localPort;
-    private User localUser, otherUser;
+    private User otherUser;
     private ServerSocket serverListener;
     private OutcomeSoundCall outcomeSoundCall;
     private IncomeSoundCall incomeSoundCall;
@@ -25,26 +25,10 @@ public class Call implements Serializable {
         this.otherUser = otherUser;
         this.otherPort = otherPort;
 
-        incomeSoundCall = new IncomeSoundCall(localPort + 1, this);
-        outcomeSoundCall = new OutcomeSoundCall(otherUser, otherPort + 1, this);
+        incomeSoundCall = new IncomeSoundCall(localPort+1, this);
+        outcomeSoundCall = new OutcomeSoundCall(otherUser, otherPort+1, this);
 
     }
-
-
-    public CallRequest listenForIncomingCalls() {
-        CallRequest callRequest = null;
-        try {
-            serverListener = new ServerSocket(localPort);
-            //Recivimos el call request del otro usuario
-            Socket socketAccept = serverListener.accept();
-            ObjectInputStream inputStream = new ObjectInputStream(socketAccept.getInputStream());
-            callRequest = (CallRequest) inputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return callRequest;
-    }
-
 
     /**
      * Initialize call. Only call if state is disconnected.
@@ -119,10 +103,6 @@ public class Call implements Serializable {
 
     public int getLocalPort() {
         return localPort;
-    }
-
-    public User getLocalUser() {
-        return localUser;
     }
 
     public void closeServerListener() {
