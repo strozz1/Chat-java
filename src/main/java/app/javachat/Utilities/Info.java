@@ -16,11 +16,14 @@ import javafx.stage.Stage;
 
 import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Info {
     public static User localUser;
+    public static Path profilePictureFile=LocalDataManager.userFolder.resolve("profile.png");
     public static StringProperty username = new SimpleStringProperty("");
     public static final int NEW_CHAT_LISTENER_PORT = 867;
     public static final String APP_NAME = "MensajeriaApp";

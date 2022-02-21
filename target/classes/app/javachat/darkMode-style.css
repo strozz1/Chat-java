@@ -1,0 +1,42 @@
+.primaryColor{
+    -fx-background-color: #2d2d2d;
+}
+.secondaryColor{
+    -fx-background-color: #484848;
+}
+.thirdColor{
+     -fx-background-color: #333333;
+ }
+
+
+.roundButton{
+-fx-background-radius: 100;
+}
+.themeButton{
+    -fx-background-color: #f8f8f8;
+}
+.textColor{
+    -fx-text-fill: #efefef;
+}
+.textColor2{
+    -fx-text-fill: #969696;
+}
+.addButton{
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 90;
+    -fx-background-radius: 90;
+    -fx-border-color: #ffffff;
+    -fx-text-fill: black;
+
+}
+
+.message{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: black;
+}
+.messageText{
+    -fx-text-fill: #2d2d2d;
+}
+.circle{
+    -fx-stroke: white;
+}

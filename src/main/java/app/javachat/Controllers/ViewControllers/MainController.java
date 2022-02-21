@@ -15,14 +15,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 public class MainController {
@@ -33,6 +40,8 @@ public class MainController {
     private Label usernameLeftLabel;
     @FXML
     private BorderPane parent;
+    @FXML
+    private Circle circle;
 
     public MainController() {
 
@@ -55,8 +64,8 @@ public class MainController {
         });
         Thread callThread = new Thread(() -> {
 //            while (true) {
-                callListener.listenForIncomingCalls();
-                if (Info.Call.isInCall()) {
+            callListener.listenForIncomingCalls();
+            if (Info.Call.isInCall()) {
 
             }
         });
@@ -71,6 +80,15 @@ public class MainController {
     }
 
     private void loadStoredChats() {
+        if (Files.exists(Info.profilePictureFile)) {
+            Image img = new Image(Info.profilePictureFile.toString());
+            circle.setFill(new ImagePattern(img));
+        } else {
+           String file="file:src/main/resources/app/javachat/images/default.png";
+            circle.setFill(new ImagePattern(new Image(file)));
+        }
+        circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
+
         List<ChatInfo> chats = Info.chatInfoList;
         chats.forEach(info -> {
             ChatRequest chatRequest = new ChatRequest(info.getUser(), true);
@@ -80,6 +98,8 @@ public class MainController {
             LeftChatItem leftChatItem = new LeftChatItem(chatItem);
             leftChatItem.setMainController(this);
             lateralMenu.getChildren().add(leftChatItem);
+
+
         });
     }
 

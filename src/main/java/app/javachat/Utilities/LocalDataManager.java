@@ -18,7 +18,7 @@ public class LocalDataManager {
     private static final String FILE_NAME = "userData.conf";
     private static final String APP_FOLDER = System.getProperty("user.home");
 
-    private static final Path userFolder = Paths.get(APP_FOLDER).resolve(APP_NAME);
+    public static final Path userFolder = Paths.get(APP_FOLDER).resolve(APP_NAME);
     private static final Path userDataFile = userFolder.resolve(FILE_NAME);
 
     public static void saveState() {
@@ -63,7 +63,9 @@ public class LocalDataManager {
 
         try {
             BufferedWriter bufferedWriter= new BufferedWriter(new FileWriter(new File("a.png")));
-            Files.delete(userFolder.resolve("profile.png"));
+            Path resolve = userFolder.resolve("profile.png");
+            if(Files.exists(resolve))
+            Files.delete(resolve);
             Files.copy(Paths.get(file.getPath()),userFolder.resolve("profile.png"));
         } catch (IOException e) {
             e.printStackTrace();

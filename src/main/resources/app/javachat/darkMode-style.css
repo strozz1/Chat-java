@@ -37,3 +37,6 @@
 .messageText{
     -fx-text-fill: #2d2d2d;
 }
+.circle{
+    -fx-stroke: white;
+}
