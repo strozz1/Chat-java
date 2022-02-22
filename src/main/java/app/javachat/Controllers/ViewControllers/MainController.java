@@ -41,7 +41,7 @@ public class MainController {
     @FXML
     private BorderPane parent;
     @FXML
-    private Circle circle;
+    public Circle circle;
 
     public MainController() {
 
@@ -81,7 +81,8 @@ public class MainController {
 
     private void loadStoredChats() {
         if (Files.exists(Info.profilePictureFile)) {
-            Image img = new Image(Info.profilePictureFile.toString());
+            System.out.println(Info.profilePictureFile.toString());
+            Image img = new Image("file:"+Info.profilePictureFile.toString());
             circle.setFill(new ImagePattern(img));
         } else {
            String file="file:src/main/resources/app/javachat/images/default.png";

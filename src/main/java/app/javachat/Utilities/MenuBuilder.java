@@ -1,6 +1,7 @@
 package app.javachat.Utilities;
 
 import app.javachat.Controllers.ViewControllers.LoggerWindowController;
+import app.javachat.Controllers.ViewControllers.MainController;
 import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
@@ -10,7 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -26,8 +31,10 @@ public class MenuBuilder {
     private static MenuBar menuBar;
     private static boolean isLightMode = false;
     private static BorderPane root;
+    private static MainController controller;
 
-    public static void createMenu(BorderPane root) {
+    public static void createMenu(BorderPane root, MainController controller1) {
+        controller = controller1;
         MenuBuilder.root = root;
         menuBar = new MenuBar();
 
@@ -62,6 +69,20 @@ public class MenuBuilder {
             File file = fileChooser.showOpenDialog(stage);
             if(file !=null){
                 LocalDataManager.savePhoto(file);
+
+
+                if (Files.exists(Info.profilePictureFile)) {
+                    System.out.println(Info.profilePictureFile.toString());
+                    Image img = new Image("file:"+Info.profilePictureFile.toString());
+                   controller.circle.setFill(new ImagePattern(img));
+                } else {
+                    String fileName="file:src/main/resources/app/javachat/images/default.png";
+                    controller.circle.setFill(new ImagePattern(new Image(fileName)));
+                }
+                controller.circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
+
+
+
             }
         });
 

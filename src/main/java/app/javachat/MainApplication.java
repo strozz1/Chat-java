@@ -26,7 +26,7 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         root = fxmlLoader.load();
         setStage();
-        MenuBuilder.createMenu(root);
+        MenuBuilder.createMenu(root,fxmlLoader.getController());
 
         stage.show();
 
