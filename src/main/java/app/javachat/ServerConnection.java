@@ -45,11 +45,11 @@ public class ServerConnection {
 
     public void listen() {
         socket.on("message", (msg) -> {
-            messageManager.manage((String) msg[0]);
+            messageManager.manage(String.valueOf(msg[0]));
         });
         socket.on("message-list", (msg) -> {
-            //todo message list returned
-            //messageManager.manage((String) msg[0]);
+//            todo message list returned
+//            messageManager.manage((String[]) msg[0]);
         });
     }
 
@@ -69,7 +69,7 @@ public class ServerConnection {
 
         ServerConnection server = new ServerConnection();
         server.connect();
-        if (server.login("juan", "123")) {
+        if (server.login("Juan", "123")) {
             server.listen();
         }
     }

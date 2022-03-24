@@ -6,6 +6,7 @@ module app.javachat {
     requires socket.io.client;
     requires com.fasterxml.jackson.databind;
     requires engine.io.client;
+    requires json;
 
     opens app.javachat to javafx.fxml;
     exports app.javachat;
