@@ -15,6 +15,7 @@ public class IncomeSoundCall extends Thread  implements Serializable {
     private final Call call;
     private boolean listening;
 
+
     private DatagramPacket datagramPacket;
     private DatagramSocket socket;
     private SourceDataLine sourceDataLine;
@@ -70,6 +71,8 @@ public class IncomeSoundCall extends Thread  implements Serializable {
 
         }
     }
+
+
 
 }
 

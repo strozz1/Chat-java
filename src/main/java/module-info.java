@@ -3,6 +3,9 @@ module app.javachat {
     requires javafx.fxml;
     requires java.logging;
     requires java.desktop;
+    requires socket.io.client;
+    requires com.fasterxml.jackson.databind;
+    requires engine.io.client;
 
     opens app.javachat to javafx.fxml;
     exports app.javachat;
