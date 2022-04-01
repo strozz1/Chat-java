@@ -44,8 +44,8 @@ public class MessageItemController{
             messageVBox.nodeOrientationProperty().set(NodeOrientation.RIGHT_TO_LEFT);
         }
         DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm - d MMM");
-        labelDate.setText(message.getHoraEnvio().format(format));
-        labelUser.setText(message.getSender().getUsername());
+        labelDate.setText(message.getHoraEnvio());
+        labelUser.setText(message.getSender());
         labelMessage.setText(message.getContent());
     }
 }

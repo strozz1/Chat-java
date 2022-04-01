@@ -5,11 +5,14 @@ import app.javachat.Calls.CallRequest;
 import app.javachat.Chats.Chat;
 import app.javachat.Controllers.ViewControllers.CallWindowController;
 import app.javachat.Controllers.ViewControllers.IncomingCallViewController;
+import static app.javachat.Utilities.Info.getMapFromJson;
+
 import app.javachat.Logger.Log;
 import app.javachat.MainApplication;
 import app.javachat.Models.ChatInfo;
 import app.javachat.Models.Message;
 import app.javachat.Models.User;
+import app.javachat.SimpleRoom;
 import app.javachat.Utilities.Info;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -30,6 +33,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 import static app.javachat.Utilities.Info.Call.startCallWindow;
 
@@ -47,22 +51,20 @@ public class ChatItemController {
     private Label headerUsername;
     @FXML
     private Button btnLlamar, btnSendMessage;
-    private Chat chat;
+    private SimpleRoom room;
     private Stage callWindow;
     private boolean notCalled;
 
     public ChatItemController() {
     }
 
-    public ChatItemController(Chat chat, ChatInfo chatInfo) {
-        this.otherUser = chatInfo.getUser();
-        this.chat = chat;
-        this.callListenerPort = chatInfo.getCallListenerPort();
+    public ChatItemController(SimpleRoom room) {
+        this.room = room;
     }
 
     @FXML
     void initialize() {
-        headerUsername.setText(otherUser.getUsername());
+        headerUsername.setText(room.getUsername());
         btnLlamar.setOnMouseClicked(mouseEvent -> {
             if (!Info.Call.isInCall())
                 new Thread(this::sendCallRequest).start();
@@ -102,26 +104,21 @@ public class ChatItemController {
     }
 
     private void sendNewMessage(String message) {
-        Message msg = new Message(message, Info.localUser, LocalDateTime.now());
-        Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(msg, true)));
-        chat.sendMessage(msg);
+//        Message msg = new Message(message, Info.localUser, );
+//        Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(msg, true)));
+//        chat.sendMessage(msg);
 
     }
 
-    public void startListeningForMessages() {
-        Thread thread = new Thread(() -> {
-            while (true) {
-                Message message = chat.receiveMessage();
-                if (message != null)
-                    Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, false)));
-            }
 
-        });
-        thread.setDaemon(true);
-        thread.start();
+    public void addMessage(HashMap<String, Object> msg) {
+        room.addMessage(msg);
+        System.out.println(msg);
+        Message message= new Message((String) msg.get("content"), (String) msg.get("sender"),"ahora");
+        Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, false)));
     }
 
-    public Chat getChat() {
-        return chat;
+    public String getUsername() {
+        return room.getUsername();
     }
 }

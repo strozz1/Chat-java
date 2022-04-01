@@ -67,7 +67,7 @@ public class SalaServidor {
                         objectWriter.writeObject(object);  //Escribimos el objeto.
                         Log.show("Mensaje enviado a " + user.getUsername() + " con IP " + user.getIP() + ".","SERVER");
                     } catch (Exception e) {
-                        Log.error("Mensaje no enviado a " + ((Message) object).getSender().getUsername() + ", es posible que se halla desconectado.","SERVER");
+                        Log.error("Mensaje no enviado a " + ((Message) object).getSender() + ", es posible que se halla desconectado.","SERVER");
                     }
                 }
             }
@@ -117,8 +117,9 @@ public class SalaServidor {
                 } else {
                     Log.show("El objeto es de tipo Mensaje." + objectRecibido,"SERVER");
                     addMensaje((Message) objectRecibido);
-                    if (!salaModel.getListUsuarios().contains(((Message) objectRecibido).getSender()))
-                        addUsuario(((Message) objectRecibido).getSender());
+                    if (!salaModel.getListUsuarios().contains(((Message) objectRecibido).getSender())) {
+//                        addUsuario(((Message) objectRecibido).getSender());
+                    }
                 }
                 //Enviamos el mensaje
                 enviarMensaje(objectRecibido);

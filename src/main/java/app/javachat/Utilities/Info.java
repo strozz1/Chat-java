@@ -6,6 +6,10 @@ import app.javachat.MainApplication;
 import app.javachat.Models.AppState;
 import app.javachat.Models.ChatInfo;
 import app.javachat.Models.User;
+import app.javachat.SimpleRoom;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Info {
@@ -28,6 +33,7 @@ public class Info {
     public static final int NEW_CHAT_LISTENER_PORT = 867;
     public static final String APP_NAME = "MensajeriaApp";
     public static List<ChatInfo> chatInfoList = new ArrayList<>();
+    public static HashMap<String,SimpleRoom> rooms = new HashMap<>();
     private static List<Integer> occupatedPorts = new ArrayList<>(NEW_CHAT_LISTENER_PORT);
 
 
@@ -64,6 +70,17 @@ public class Info {
 
         occupatedPorts = appState.getOccupatedPorts();
         chatInfoList = appState.getChatInfoList();
+    }
+    public static HashMap<String, Object> getMapFromJson(String json) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {
+            };
+            return mapper.readValue(json, typeRef);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void unUsePort(int PORT) {

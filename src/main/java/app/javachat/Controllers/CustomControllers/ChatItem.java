@@ -6,12 +6,14 @@ import app.javachat.Chats.SimpleChat;
 import app.javachat.MainApplication;
 import app.javachat.Models.ChatInfo;
 import app.javachat.Models.User;
+import app.javachat.SimpleRoom;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class ChatItem extends BorderPane implements Serializable {
     private User otherUser;
@@ -24,12 +26,10 @@ public class ChatItem extends BorderPane implements Serializable {
         load(controller);
     }
 
-    public ChatItem(Chat chat, ChatInfo chatInfo) {
+    public ChatItem(SimpleRoom chat) {
         super();
-        this.otherUser = chatInfo.getUser();
-        controller = new ChatItemController(chat,chatInfo);
+        controller = new ChatItemController(chat);
         load(controller);
-        controller.startListeningForMessages();
     }
 
     private void load(ChatItemController controller) {
@@ -48,11 +48,8 @@ public class ChatItem extends BorderPane implements Serializable {
         return controller;
     }
 
-    public Chat getChat() {
-        return controller.getChat();
-    }
 
-    public User getOtherUser() {
-        return otherUser;
+    public void addMessage(HashMap<String, Object> msg) {
+        controller.addMessage(msg);
     }
 }

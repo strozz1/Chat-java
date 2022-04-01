@@ -1,7 +1,6 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Controllers.ViewControllers.MainController;
-import app.javachat.Models.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -12,7 +11,7 @@ public class LeftChatItemController{
 
     private MainController mainController;
     private static BorderPane parent;
-    private User otherUser;
+    private String user;
     private ChatItem chatItem;
     @FXML
     private Label leftmenuUserLabel;
@@ -24,14 +23,14 @@ public class LeftChatItemController{
 
     public LeftChatItemController(ChatItem chatItem) {
         this.chatItem = chatItem;
-        this.otherUser = chatItem.getOtherUser();
+        this.user = chatItem.getController().getUsername();
     }
 
 
     @FXML
     void initialize() {
 
-        leftmenuUserLabel.setText(otherUser.getUsername());
+        leftmenuUserLabel.setText(user);
         leftChatContainer.setOnMouseClicked(mouseEvent -> {
 
             //Cargar Parent

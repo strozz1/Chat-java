@@ -11,24 +11,42 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static app.javachat.Utilities.Info.getMapFromJson;
+
 public class ServerConnection {
     private final String serverURI = Properties.getProperty("server-uri");
     private Socket socket;
-    private MessageManager messageManager;
+    private final Manager manager;
 
-    public ServerConnection() {
-        messageManager = new MessageManager();
+    /**
+     * Creates a connection from a properties file
+     *
+     * @param manager Manager in charge of perfom actions when a message arrives
+     */
+    public ServerConnection(Manager manager) {
+        this.manager = manager;
     }
 
     public void connect() {
+        Log.show("Starting connection with the server","Server connection");
+
         URI uri = URI.create(serverURI);
         IO.Options options = IO.Options.builder().build();
 
         this.socket = IO.socket(uri, options).connect();
-        Log.show("Connected successfully to the server, waiting for auth", "ServerConnection");
+        socket.on("connect_error", err -> {
+            try {
+                throw  new ConnectionException();
+            } catch (ConnectionException e) {
+                Log.error(e.getMessage(),"ServerConnection");
+            }
+        });
     }
 
-    public boolean login(String username, String password) {
+    public boolean login(String username, String password) throws SocketNotInitializedException {
+        Log.show("Trying to login","Server connection");
+
+        if (socket == null) throw new SocketNotInitializedException();
         AtomicInteger code = new AtomicInteger(0);
         if (!username.equals("") && !password.equals("")) {
             socket.emit("login", new String[]{username, password}, objects -> {
@@ -37,40 +55,29 @@ public class ServerConnection {
                 code.set(res);
             });
             while (true) if (code.get() != 0) break;
-            if (code.get() == 200) return true;
+            return code.get() == 200;
 
         }
         return false;
     }
 
+    /**
+     * Start listening for incoming messages
+     */
     public void listen() {
+        Log.show("listening for messages","Server connection");
         socket.on("message", (msg) -> {
-            messageManager.manage(String.valueOf(msg[0]));
-        });
-        socket.on("message-list", (msg) -> {
-//            todo message list returned
-//            messageManager.manage((String[]) msg[0]);
+            manager.manage(String.valueOf(msg[0]));
         });
     }
 
-    public static HashMap<String, Object> getMapFromJson(String json) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {
-            };
-            return mapper.readValue(json, typeRef);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SocketNotInitializedException {
 
-        ServerConnection server = new ServerConnection();
-        server.connect();
-        if (server.login("Juan", "123")) {
-            server.listen();
-        }
+//        ServerConnection server = new ServerConnection(new MessageManager());
+//        server.connect();
+//        if (server.login("Juan", "123")) {
+//            server.listen();
+//        }
     }
 }

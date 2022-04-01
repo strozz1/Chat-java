@@ -89,16 +89,16 @@ public class ChatListener extends Thread {
         chatInfo.setCallListenerPort(othersChatRequest.getCallListenerPort());
         chatInfo.setUser(otherUser);
         if (!Info.checkIfChatExist(chatInfo)) {
-
-            Chat chat = new SimpleChat(othersChatRequest, selfPort);
-            ChatItem chatItem = new ChatItem(chat, chatInfo);
-
-            LeftChatItem leftChatItem = new LeftChatItem(chatItem);
-            leftChatItem.setMainController(mainController);
-
-            //Add chat to left side
-            Platform.runLater(() -> lateralChatMenu.getChildren().add(leftChatItem));
-            Info.addChat(chatInfo);
+//
+//            Chat chat = new SimpleChat(othersChatRequest, selfPort);
+//            ChatItem chatItem = new ChatItem(chat, chatInfo);
+//
+//            LeftChatItem leftChatItem = new LeftChatItem(chatItem);
+//            leftChatItem.setMainController(mainController);
+//
+//            //Add chat to left side
+//            Platform.runLater(() -> lateralChatMenu.getChildren().add(leftChatItem));
+//            Info.addChat(chatInfo);
 
         } else Log.error("El chat ya existe. Prueba uno distinto");
 

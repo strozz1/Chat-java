@@ -21,8 +21,7 @@ public class Properties {
         try(BufferedReader reader = new BufferedReader(new FileReader(propertiesFile))) {
             while ((line = reader.readLine()) != null) {
                 String[] property = line.split("->");
-                propertiesMap.put(property[0], property[1].trim());
-
+                propertiesMap.put(property[0].trim(), property[1].trim());
             }
         } catch (IOException e) {
             Log.error(e.getMessage(),"Properties");
@@ -31,8 +30,8 @@ public class Properties {
 
     /**
      *
-     * @param property The property to obtain
-     * @return the value of the property asked
+     * @param property The property name
+     * @return the value of the property asked for
      */
     public static String getProperty(String property) {
         return propertiesMap.get(property);

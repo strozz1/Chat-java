@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 
 public class Message implements Serializable {
     private final String content;
-    private final User sender;
-    private final LocalDateTime horaEnvio;
+    private final String sender;
+    private final String horaEnvio;
 
-    public Message(String content, User sender, LocalDateTime horaEnvio) {
+    public Message(String content, String sender, String horaEnvio) {
         this.content = content;
         this.sender = sender;
         this.horaEnvio = horaEnvio;
@@ -19,19 +19,19 @@ public class Message implements Serializable {
     }
 
 
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
 
-    public LocalDateTime getHoraEnvio() {
+    public String getHoraEnvio() {
         return horaEnvio;
     }
 
 
     @Override
     public String toString() {
-        return sender.getUsername() +
+        return sender +
                 ":  " + content;
     }
 }

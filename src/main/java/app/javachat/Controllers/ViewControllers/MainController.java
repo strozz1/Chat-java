@@ -1,6 +1,6 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.Calls.Call;
+import app.javachat.*;
 import app.javachat.Calls.CallListener;
 import app.javachat.Chats.Chat;
 import app.javachat.Chats.ChatListener;
@@ -8,7 +8,7 @@ import app.javachat.Chats.ChatRequest;
 import app.javachat.Chats.SimpleChat;
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
-import app.javachat.MainApplication;
+import app.javachat.Logger.Log;
 import app.javachat.Models.ChatInfo;
 import app.javachat.Utilities.Info;
 import javafx.fxml.FXML;
@@ -20,19 +20,20 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.scene.paint.Color;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainController {
+    private HashMap<String, LeftChatItem> chats;
 
     @FXML
     private VBox lateralMenu;
@@ -44,64 +45,32 @@ public class MainController {
     public Circle circle;
 
     public MainController() {
-
+        chats = new HashMap<>();
     }
 
     @FXML
     void initialize() {
-        loadStoredChats();
+        startConnection();
+        loadStoredChats(); //todo
         usernameLeftLabel.textProperty().bind(Info.username);
-        startCallsAndChatsListeners();
     }
 
-    private void startCallsAndChatsListeners() {
-        ChatListener chatListener = new ChatListener(this);
-        CallListener callListener = new CallListener();
-        Thread callListenerThread = new Thread(() -> {
-            while (true) {
-                callListener.listenCallsRequests();
-            }
-        });
-        Thread callThread = new Thread(() -> {
-//            while (true) {
-            callListener.listenForIncomingCalls();
-            if (Info.Call.isInCall()) {
-
-            }
-        });
-
-        callThread.setDaemon(true);
-        callListenerThread.setDaemon(true);
-        chatListener.setDaemon(true);
-
-        chatListener.start();
-        callListenerThread.start();
-        callThread.start();
+    private void startConnection() {
+        ServerConnection serverConnection = new ServerConnection(new MessageManager(this));
+        serverConnection.connect();
+        boolean login = false;
+        try {
+            login = serverConnection.login("Juan", "123");
+            if (login) serverConnection.listen();
+        } catch (SocketNotInitializedException e) {
+            Log.error(e.getMessage(), "MainController");
+        }
     }
+
+
 
     private void loadStoredChats() {
-        if (Files.exists(Info.profilePictureFile)) {
-            System.out.println(Info.profilePictureFile.toString());
-            Image img = new Image("file:"+Info.profilePictureFile.toString());
-            circle.setFill(new ImagePattern(img));
-        } else {
-           String file="file:src/main/resources/app/javachat/images/default.png";
-            circle.setFill(new ImagePattern(new Image(file)));
-        }
-        circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
 
-        List<ChatInfo> chats = Info.chatInfoList;
-        chats.forEach(info -> {
-            ChatRequest chatRequest = new ChatRequest(info.getUser(), true);
-            chatRequest.setChatPort(info.getOtherChatPort());
-            Chat chat = new SimpleChat(chatRequest, info.getLocalChatPort());
-            ChatItem chatItem = new ChatItem(chat, info);
-            LeftChatItem leftChatItem = new LeftChatItem(chatItem);
-            leftChatItem.setMainController(this);
-            lateralMenu.getChildren().add(leftChatItem);
-
-
-        });
     }
 
 
@@ -126,5 +95,17 @@ public class MainController {
 
     public BorderPane getParent() {
         return parent;
+    }
+
+    public void createNewLateralChatContainer(String username,SimpleRoom room) {
+        ChatItem item = new ChatItem(room);
+        LeftChatItem leftChatItem = new LeftChatItem(item);
+        chats.put(username,leftChatItem);
+        leftChatItem.setMainController(this);
+            lateralMenu.getChildren().add(leftChatItem);
+    }
+
+    public LeftChatItem getChat(String username) {
+        return chats.get(username);
     }
 }
