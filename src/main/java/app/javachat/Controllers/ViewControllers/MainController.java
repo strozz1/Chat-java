@@ -11,6 +11,9 @@ import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Logger.Log;
 import app.javachat.Models.ChatInfo;
 import app.javachat.Utilities.Info;
+import app.javachat.Utilities.MessageSenderService;
+import io.socket.client.Socket;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -57,10 +60,12 @@ public class MainController {
 
     private void startConnection() {
         ServerConnection serverConnection = new ServerConnection(new MessageManager(this));
+        MessageSenderService.setSocket(serverConnection.getSocket());
+
         serverConnection.connect();
         boolean login = false;
         try {
-            login = serverConnection.login("Juan", "123");
+            login = serverConnection.login("Pepe", "123");
             if (login) serverConnection.listen();
         } catch (SocketNotInitializedException e) {
             Log.error(e.getMessage(), "MainController");
@@ -102,7 +107,7 @@ public class MainController {
         LeftChatItem leftChatItem = new LeftChatItem(item);
         chats.put(username,leftChatItem);
         leftChatItem.setMainController(this);
-            lateralMenu.getChildren().add(leftChatItem);
+            Platform.runLater(()->lateralMenu.getChildren().add(leftChatItem));
     }
 
     public LeftChatItem getChat(String username) {

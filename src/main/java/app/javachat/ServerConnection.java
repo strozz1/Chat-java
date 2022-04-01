@@ -71,13 +71,7 @@ public class ServerConnection {
         });
     }
 
-
-    public static void main(String[] args) throws SocketNotInitializedException {
-
-//        ServerConnection server = new ServerConnection(new MessageManager());
-//        server.connect();
-//        if (server.login("Juan", "123")) {
-//            server.listen();
-//        }
+    public Socket getSocket() {
+        return socket;
     }
 }

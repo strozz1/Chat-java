@@ -34,6 +34,7 @@ public class Info {
     public static final String APP_NAME = "MensajeriaApp";
     public static List<ChatInfo> chatInfoList = new ArrayList<>();
     public static HashMap<String,SimpleRoom> rooms = new HashMap<>();
+    public static MessageSenderService messageSender;
     private static List<Integer> occupatedPorts = new ArrayList<>(NEW_CHAT_LISTENER_PORT);
 
 
@@ -61,6 +62,8 @@ public class Info {
 
         return appState;
     }
+
+
 
     public static void loadState() {
         AppState appState = LocalDataManager.loadState();
