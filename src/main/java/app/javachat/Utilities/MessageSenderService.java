@@ -9,7 +9,7 @@ public class MessageSenderService {
         MessageSenderService.socket =socket;
     }
 
-    public static void sendMessageToServer(String jsonMessage){
+    public static void sendMessage(String jsonMessage){
         socket.emit("message",jsonMessage);
     }
 }

@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+import java.util.HashMap;
+
 
 public class LeftChatItemController{
 
@@ -46,5 +48,9 @@ public class LeftChatItemController{
 
     public ChatItem getChatItem() {
         return chatItem;
+    }
+
+    public void addMessage(HashMap<String, Object> message) {
+        chatItem.addMessage(message);
     }
 }

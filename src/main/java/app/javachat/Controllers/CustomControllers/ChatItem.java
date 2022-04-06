@@ -1,10 +1,6 @@
 package app.javachat.Controllers.CustomControllers;
 
-import app.javachat.Calls.Call;
-import app.javachat.Chats.Chat;
-import app.javachat.Chats.SimpleChat;
 import app.javachat.MainApplication;
-import app.javachat.Models.ChatInfo;
 import app.javachat.Models.User;
 import app.javachat.SimpleRoom;
 import javafx.fxml.FXMLLoader;

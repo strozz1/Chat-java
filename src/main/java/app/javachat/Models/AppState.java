@@ -1,7 +1,5 @@
 package app.javachat.Models;
 
-import app.javachat.Controllers.CustomControllers.LeftChatItem;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,20 +8,20 @@ import java.util.Objects;
 public class AppState implements Serializable {
     private User user;
     private List<Integer> occupatedPorts;
-    private List<ChatInfo> chatInfoList;
+    private List<ChaDataContainer> chaDataContainerList;
 
-    public List<ChatInfo> getChatInfoList() {
-        return chatInfoList;
+    public List<ChaDataContainer> getChatInfoList() {
+        return chaDataContainerList;
     }
 
-    public void setChatInfoList(List<ChatInfo> chatInfoList) {
-        this.chatInfoList = chatInfoList;
+    public void setChatInfoList(List<ChaDataContainer> chaDataContainerList) {
+        this.chaDataContainerList = chaDataContainerList;
     }
 
     public AppState() {
         this.user = new User("Default");
         this.occupatedPorts = new ArrayList<>();
-        this.chatInfoList= new ArrayList<>();
+        this.chaDataContainerList = new ArrayList<>();
     }
 
 

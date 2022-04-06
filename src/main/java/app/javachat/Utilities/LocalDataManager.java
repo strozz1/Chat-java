@@ -1,5 +1,6 @@
 package app.javachat.Utilities;
 
+import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Logger.Log;
 import app.javachat.Models.AppState;
 
@@ -9,6 +10,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import static app.javachat.Utilities.Info.APP_NAME;
 
@@ -22,28 +24,28 @@ public class LocalDataManager {
     private static final Path userDataFile = userFolder.resolve(FILE_NAME);
 
     public static void saveState() {
-        Log.show("Saving user data to local store");
+        Log.show("Saving user data to local store","LocalDataManager");
         createFiles();
-        AppState appState = Info.saveState();
         try (ObjectOutputStream writer = new ObjectOutputStream(Files.newOutputStream(userDataFile))) {
-            writer.writeObject(appState);
+            writer.writeObject(Info.rooms);
         } catch (IOException e) {
             Log.error(e.getMessage(), "ChatFileManager");
         }
     }
 
 
-    public static AppState loadState() {
+    public static void loadState() {
         Log.show("Loading user data from local store");
         createFiles();
 
-        AppState appState = new AppState();
+
         try (ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(userDataFile))) {
-            appState = (AppState) reader.readObject();
+            HashMap<String, LeftChatItem> appState = (HashMap<String, LeftChatItem>) reader.readObject();
+            Info.rooms=appState;
         } catch (IOException | ClassNotFoundException e) {
             Log.error(e.getMessage(), "ChatFileManager");
+            Info.rooms=new HashMap<>();
         }
-        return appState;
 
     }
 

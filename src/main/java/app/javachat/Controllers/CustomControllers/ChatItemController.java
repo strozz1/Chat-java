@@ -1,5 +1,6 @@
 package app.javachat.Controllers.CustomControllers;
 
+import app.javachat.Logger.Log;
 import app.javachat.Models.Message;
 import app.javachat.SimpleRoom;
 import app.javachat.Utilities.Info;
@@ -89,7 +90,7 @@ public class ChatItemController {
         Message msg = new Message(message, username, LocalDateTime.now().toString());
         Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(msg, true)));
         String jsonMessage=parseMessageToJSON(message,username,Info.username.getValue());
-        MessageSenderService.sendMessageToServer(jsonMessage);
+        MessageSenderService.sendMessage(jsonMessage);
 
     }
 
@@ -98,7 +99,7 @@ public class ChatItemController {
 
     public void addMessage(HashMap<String, Object> msg) {
         room.addMessage(msg);
-        System.out.println(msg);
+        Log.show("Message received. "+msg,"ChatItemController");
         Message message= new Message((String) msg.get("content"), (String) msg.get("sender"),"ahora");
         Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, false)));
     }

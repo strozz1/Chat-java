@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class LeftChatItem extends AnchorPane implements Serializable {
     private LeftChatItemController controller;
@@ -48,5 +49,9 @@ public class LeftChatItem extends AnchorPane implements Serializable {
     }
     public ChatItem getChatItem(){
         return controller.getChatItem();
+    }
+
+    public void addMessage(HashMap<String, Object> message) {
+        controller.addMessage(message);
     }
 }

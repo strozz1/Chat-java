@@ -8,8 +8,6 @@ public class MessageJSONBuilder {
                 "\"username\": \""+username+"\"," +
                 "\"sender\": \""+sender+"\","+
                 "\"content\": \""+message+"\"}}";
-
         return jsonParsed;
-
     }
 }

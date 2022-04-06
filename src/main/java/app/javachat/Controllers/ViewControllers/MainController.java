@@ -1,42 +1,28 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.*;
-import app.javachat.Calls.CallListener;
-import app.javachat.Chats.Chat;
-import app.javachat.Chats.ChatListener;
-import app.javachat.Chats.ChatRequest;
-import app.javachat.Chats.SimpleChat;
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Logger.Log;
-import app.javachat.Models.ChatInfo;
+import app.javachat.*;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
-import io.socket.client.Socket;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
-import java.util.List;
 
 public class MainController {
-    private HashMap<String, LeftChatItem> chats;
 
     @FXML
     private VBox lateralMenu;
@@ -48,7 +34,7 @@ public class MainController {
     public Circle circle;
 
     public MainController() {
-        chats = new HashMap<>();
+
     }
 
     @FXML
@@ -63,15 +49,14 @@ public class MainController {
         MessageSenderService.setSocket(serverConnection.getSocket());
 
         serverConnection.connect();
-        boolean login = false;
+        boolean login;
         try {
-            login = serverConnection.login("Pepe", "123");
+            login = serverConnection.login("pepe", "123");
             if (login) serverConnection.listen();
         } catch (SocketNotInitializedException e) {
             Log.error(e.getMessage(), "MainController");
         }
     }
-
 
 
     private void loadStoredChats() {
@@ -91,7 +76,6 @@ public class MainController {
 
     public void onAddChat(MouseEvent mouseEvent) throws IOException {
         openAddChatView();
-
     }
 
     public VBox getLateralMenu() {
@@ -102,15 +86,14 @@ public class MainController {
         return parent;
     }
 
-    public void createNewLateralChatContainer(String username,SimpleRoom room) {
+    public void createNewLateralChatContainer(String username) {
+        SimpleRoom room = new SimpleRoom(username);
         ChatItem item = new ChatItem(room);
         LeftChatItem leftChatItem = new LeftChatItem(item);
-        chats.put(username,leftChatItem);
         leftChatItem.setMainController(this);
-            Platform.runLater(()->lateralMenu.getChildren().add(leftChatItem));
+
+        Info.saveChatItemToCOntainer(username,leftChatItem);
+        Platform.runLater(() -> lateralMenu.getChildren().add(leftChatItem));
     }
 
-    public LeftChatItem getChat(String username) {
-        return chats.get(username);
-    }
 }
