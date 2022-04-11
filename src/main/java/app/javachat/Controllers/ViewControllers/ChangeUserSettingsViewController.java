@@ -33,7 +33,6 @@ public class ChangeUserSettingsViewController {
     }
     private void changeUsername(Event event) {
         String newUsername = inputTextChangeUsername.getText();
-        Info.localUser.setUsername(newUsername);
         Info.username.setValue(newUsername);
         closeWindow(event);
     }

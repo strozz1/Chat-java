@@ -18,6 +18,7 @@ public class MessageManager implements Manager {
     @Override
     public void manage(Object msg) {
         HashMap<String, Object> mapFromJson = getMapFromJson((String) msg);
+
         if (mapFromJson.get("type").equals("message")) {
             HashMap<String, Object> message = (HashMap<String, Object>) mapFromJson.get("content");
             String username = (String) message.get("sender");
@@ -29,10 +30,30 @@ public class MessageManager implements Manager {
             item.addMessage(message);
 
 
+        }else if(mapFromJson.get("type").equals("room-message")){
+            HashMap<String, Object> message = (HashMap<String, Object>) mapFromJson.get("content");
+            String roomId= (String) message.get("id");
+            LeftChatItem leftChatItemInfo= Info.rooms.get(roomId);
+            if(leftChatItemInfo !=null){
+                leftChatItemInfo.addMessage(message);
+            }else{
+                //todo
+            }
+        }else if(mapFromJson.get("type").equals("room")){
+            HashMap<String, Object> room = (HashMap<String, Object>) mapFromJson.get("content");
+            String roomId= (String) room.get("id");
+            String roomName= (String) room.get("name");
+            LeftChatItem leftChatItemInfo= Info.rooms.get(roomId);
+            if(leftChatItemInfo ==null) {
+                createNewRoomItem(roomId,roomName);
+            }
         }
     }
 
     private void createNewChatItem(String sender) {
         controller.createNewLateralChatContainer(sender);
+    }
+    private void createNewRoomItem(String id,String name) {
+        controller.createNewLateralRoomContainer(id,name);
     }
 }

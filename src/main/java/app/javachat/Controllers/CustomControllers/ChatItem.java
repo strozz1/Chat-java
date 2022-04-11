@@ -1,6 +1,7 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.MainApplication;
+import app.javachat.Models.Room;
 import app.javachat.Models.User;
 import app.javachat.SimpleRoom;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +23,7 @@ public class ChatItem extends BorderPane implements Serializable {
         load(controller);
     }
 
-    public ChatItem(SimpleRoom chat) {
+    public ChatItem(Room chat) {
         super();
         controller = new ChatItemController(chat);
         load(controller);

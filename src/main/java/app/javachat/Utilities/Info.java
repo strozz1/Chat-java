@@ -1,12 +1,7 @@
 package app.javachat.Utilities;
 
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
-import app.javachat.Controllers.ViewControllers.CallWindowController;
-import app.javachat.Controllers.ViewControllers.IncomingCallViewController;
 import app.javachat.MainApplication;
-import app.javachat.Models.AppState;
-import app.javachat.Models.ChaDataContainer;
-import app.javachat.SimpleRoom;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +23,7 @@ import java.util.List;
 public class Info {
     public static boolean userIsLogged;
     public static Path profilePictureFile=LocalDataManager.userFolder.resolve("profile.png");
-    public static StringProperty username = new SimpleStringProperty("");
+    public static StringProperty username = new SimpleStringProperty("pepe");
     public static final String APP_NAME = "MensajeriaApp";
     public static HashMap<String,LeftChatItem> rooms = new HashMap<>();
     public static MessageSenderService messageSender;
@@ -78,8 +73,8 @@ public class Info {
                 callWindow.setResizable(false);
 //                callWindow.setTitle("Llamada con " + localCall.getOtherUser().getUsername());
 
-                CallWindowController callWindowController = new CallWindowController();
-                loader.setController(callWindowController);
+//                CallWindowController callWindowController = new CallWindowController();
+//                loader.setController(callWindowController);
                 Parent root = loader.load();
 
 
@@ -92,23 +87,23 @@ public class Info {
                 e.printStackTrace();
             }
         }
-        public static void createIncomingCallWindow() {
-            try {
-                FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("incoming-call-view.fxml"));
-                IncomingCallViewController controller = new IncomingCallViewController();
-                loader.setController(controller);
-                Parent root = loader.load();
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.setResizable(false);
-
-                stage.show();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        public static void createIncomingCallWindow() {
+//            try {
+//                FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("incoming-call-view.fxml"));
+//                IncomingCallViewController controller = new IncomingCallViewController();
+//                loader.setController(controller);
+//                Parent root = loader.load();
+//                Scene scene = new Scene(root);
+//                Stage stage = new Stage();
+//                stage.setScene(scene);
+//                stage.initModality(Modality.WINDOW_MODAL);
+//                stage.setResizable(false);
+//
+//                stage.show();
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }

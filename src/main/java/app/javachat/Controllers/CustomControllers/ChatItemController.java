@@ -1,8 +1,9 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Logger.Log;
+import app.javachat.Models.GroupRoom;
 import app.javachat.Models.Message;
-import app.javachat.SimpleRoom;
+import app.javachat.Models.Room;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
 import javafx.application.Platform;
@@ -18,7 +19,7 @@ import javafx.stage.Stage;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-import static app.javachat.Utilities.MessageJSONBuilder.parseMessageToJSON;
+import static app.javachat.Utilities.JSONBuilder.parseMessageToJSON;
 
 
 public class ChatItemController {
@@ -33,21 +34,23 @@ public class ChatItemController {
     private Label headerUsername;
     @FXML
     private Button btnLlamar, btnSendMessage;
-    private SimpleRoom room;
+    private Room room;
     private Stage callWindow;
-    private boolean notCalled;
+    private boolean isGroupRoom;
 
     public ChatItemController() {
     }
 
-    public ChatItemController(SimpleRoom room) {
+    public ChatItemController(Room room) {
         this.room = room;
-
+        if (room instanceof GroupRoom) isGroupRoom = true;
     }
 
     @FXML
     void initialize() {
-        headerUsername.setText(room.getUsername());
+        if (isGroupRoom) headerUsername.setText(((GroupRoom) room).getName());
+        else headerUsername.setText(room.getId());
+
 //        btnLlamar.setOnMouseClicked(mouseEvent -> {
 //            if (!Info.Call.isInCall())
 //                new Thread(this::sendCallRequest).start();
@@ -79,32 +82,32 @@ public class ChatItemController {
 
     private void onSendMessageButton() {
         String message = chatInput.getText();
-        if(message.equals("")) return;
+        if (message.equals("")) return;
         new Thread(() -> {
-            sendMessageToServer(message,room.getUsername());
+            sendMessageToServer(message, room.getId());
         }).start();
         chatInput.setText("");
     }
 
     private void sendMessageToServer(String message, String username) {
-        Message msg = new Message(message, username, LocalDateTime.now().toString());
+        Message msg = new Message(message, Info.username.getValue(), LocalDateTime.now().toString());
         Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(msg, true)));
-        String jsonMessage=parseMessageToJSON(message,username,Info.username.getValue());
+        String type= (isGroupRoom?"room-message":"message");
+        String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(),type);
         MessageSenderService.sendMessage(jsonMessage);
 
     }
 
 
-
-
     public void addMessage(HashMap<String, Object> msg) {
         room.addMessage(msg);
-        Log.show("Message received. "+msg,"ChatItemController");
-        Message message= new Message((String) msg.get("content"), (String) msg.get("sender"),"ahora");
+        Log.show("Message received. " + msg, "ChatItemController");
+        Message message = new Message((String) msg.get("content"), (String) msg.get("sender"), "ahora");
         Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, false)));
     }
 
-    public String getUsername() {
-        return room.getUsername();
+    public String getId() {
+        if (isGroupRoom) return ((GroupRoom) room).getName();
+        return room.getId();
     }
 }

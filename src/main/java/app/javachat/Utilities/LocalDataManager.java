@@ -2,8 +2,6 @@ package app.javachat.Utilities;
 
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Logger.Log;
-import app.javachat.Models.AppState;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;

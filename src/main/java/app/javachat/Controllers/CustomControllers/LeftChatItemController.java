@@ -25,7 +25,7 @@ public class LeftChatItemController{
 
     public LeftChatItemController(ChatItem chatItem) {
         this.chatItem = chatItem;
-        this.user = chatItem.getController().getUsername();
+        this.user = chatItem.getController().getId();
     }
 
 

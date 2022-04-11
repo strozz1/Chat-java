@@ -12,7 +12,7 @@ import java.net.DatagramSocket;
 import static app.javachat.Utilities.Info.Call.BUFFER_SIZE;
 
 public class IncomeSoundCall extends Thread  implements Serializable {
-    private final Call call;
+//    private final Call call;
     private boolean listening;
 
 
@@ -26,7 +26,7 @@ public class IncomeSoundCall extends Thread  implements Serializable {
             Log.show("Started receiving audio.", "In-CALL");
             getAudio();
         } catch (IOException | LineUnavailableException e) {
-            call.endCall();
+//            call.endCall();
         }
     }
 
@@ -38,19 +38,19 @@ public class IncomeSoundCall extends Thread  implements Serializable {
 
     }
 
-    public IncomeSoundCall(int localPort, Call call) {
-        this.call=call;
-        try {
-            socket = new DatagramSocket(localPort);
-            socket.setReuseAddress(true);
-
-            socket.setSoTimeout(1500);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.error(e.getMessage(), "IncomeSoundCall");
-        }
-
-    }
+//    public IncomeSoundCall(int localPort, Call call) {
+//        this.call=call;
+//        try {
+//            socket = new DatagramSocket(localPort);
+//            socket.setReuseAddress(true);
+//
+//            socket.setSoTimeout(1500);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Log.error(e.getMessage(), "IncomeSoundCall");
+//        }
+//
+//    }
 
     public void getAudio() throws IOException, LineUnavailableException {
         byte[] buffer = new byte[BUFFER_SIZE];

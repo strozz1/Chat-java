@@ -1,18 +1,16 @@
-package app.javachat;
+package app.javachat.Models;
 
-import app.javachat.Models.Room;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SimpleRoom implements Serializable, Room {
-    private String username;
+public class GroupRoom implements Room {
+    private String name, id;
     private List<HashMap<String, Object>> messages;
 
-    public SimpleRoom(String username) {
-        this.username = username;
+    public GroupRoom(String id, String name) {
+        this.id = id;
+        this.name = name;
         this.messages = new ArrayList<>();
 
     }
@@ -22,10 +20,15 @@ public class SimpleRoom implements Serializable, Room {
         messages.add(msg);
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String getId() {
-        return username;
+        return id;
     }
+
     @Override
     public List<HashMap<String, Object>> getMessages() {
         return messages;

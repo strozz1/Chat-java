@@ -4,6 +4,8 @@ import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Logger.Log;
 import app.javachat.*;
+import app.javachat.Models.GroupRoom;
+import app.javachat.Models.Room;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
 import javafx.application.Platform;
@@ -46,10 +48,11 @@ public class MainController {
 
     private void startConnection() {
         ServerConnection serverConnection = new ServerConnection(new MessageManager(this));
-        MessageSenderService.setSocket(serverConnection.getSocket());
 
         serverConnection.connect();
         boolean login;
+        MessageSenderService.setSocket(serverConnection.getSocket());
+
         try {
             login = serverConnection.login("pepe", "123");
             if (login) serverConnection.listen();
@@ -87,12 +90,21 @@ public class MainController {
     }
 
     public void createNewLateralChatContainer(String username) {
-        SimpleRoom room = new SimpleRoom(username);
+        Room room = new SimpleRoom(username);
         ChatItem item = new ChatItem(room);
         LeftChatItem leftChatItem = new LeftChatItem(item);
         leftChatItem.setMainController(this);
 
         Info.saveChatItemToCOntainer(username,leftChatItem);
+        Platform.runLater(() -> lateralMenu.getChildren().add(leftChatItem));
+    }
+    public void createNewLateralRoomContainer(String id,String name) {
+        GroupRoom room = new GroupRoom(id,name);
+        ChatItem item = new ChatItem(room);
+        LeftChatItem leftChatItem = new LeftChatItem(item);
+        leftChatItem.setMainController(this);
+
+        Info.saveChatItemToCOntainer(id,leftChatItem);
         Platform.runLater(() -> lateralMenu.getChildren().add(leftChatItem));
     }
 
