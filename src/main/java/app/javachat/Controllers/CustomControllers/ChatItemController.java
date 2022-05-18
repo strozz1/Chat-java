@@ -93,7 +93,8 @@ public class ChatItemController {
         Message msg = new Message(message, Info.username.getValue(), LocalDateTime.now().toString());
         Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(msg, true)));
         String type= (isGroupRoom?"room-message":"message");
-        String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(),type);
+        String id=(isGroupRoom? room.getId():"null");
+        String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(),type,id);
         MessageSenderService.sendMessage(jsonMessage);
 
     }

@@ -7,30 +7,30 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="164.0" prefWidth="296.0" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.ViewControllers.AddServerController">
+<VBox alignment="CENTER" prefHeight="164.0" prefWidth="296.0" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.ViewControllers.AddRoomController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <Label fx:id="welcomeText" text="Add new chat" />
+    <Label fx:id="welcomeText" text="Create new group" />
    <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
       <children>
-         <Label text="Address">
+         <Label text="Name">
             <HBox.margin>
                <Insets right="12.0" />
             </HBox.margin>
          </Label>
-         <TextField fx:id="inputTextAddress" text="192.168.1.38"/>
+         <TextField fx:id="inputRoomName" text="Room name haha" />
       </children>
    </HBox>
    <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
       <children>
-         <Label text="PORT">
+         <Label text="Users">
             <HBox.margin>
                <Insets right="12.0" />
             </HBox.margin>
          </Label>
-         <TextField fx:id="inputTextPort" text="867" onKeyPressed="#onKeyPressed"/>
+         <TextField fx:id="inputUsersList" onKeyPressed="#onKeyPressed" />
       </children>
    </HBox>
    <Button mnemonicParsing="false" onMouseClicked="#onAddNewChat" text="Create" />

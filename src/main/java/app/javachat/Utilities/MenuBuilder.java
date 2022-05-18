@@ -29,7 +29,6 @@ import java.nio.file.Files;
 
 public class MenuBuilder {
     private static MenuBar menuBar;
-    private static boolean isLightMode = false;
     private static BorderPane root;
     private static MainController controller;
 
@@ -155,28 +154,30 @@ public class MenuBuilder {
     }
 
     private static void onChangeThemeAction(MenuItem itemToggleMode) {
-        if (isLightMode) {
+        if (Info.themeType == ThemeTypes.LIGHT) {
             changeToDarkMode();
-            itemToggleMode.setText("Cambiar a modo claro");
+            itemToggleMode.setText("Cambiar a modo oscuro");
         } else {
             changeToLightMode();
-            itemToggleMode.setText("Cambiar a modo oscuro");
+            itemToggleMode.setText("Cambiar a modo claro");
 
         }
     }
 
 
     private static void changeToLightMode() {
-        root.getStylesheets().remove(MainApplication.class.getResource("darkMode-style.css").toExternalForm());
-        root.getStylesheets().add(MainApplication.class.getResource("lightMode-style.css").toExternalForm());
-        isLightMode = !isLightMode;
+        root.getStylesheets().clear();
+        Info.theme= MainApplication.class.getResource("lightMode-style.css").toExternalForm();
+        root.getStylesheets().add(Info.theme);
+        Info.themeType=ThemeTypes.LIGHT;
 
     }
 
     private static void changeToDarkMode() {
-        root.getStylesheets().remove(MainApplication.class.getResource("lightMode-style.css").toExternalForm());
-        root.getStylesheets().add(MainApplication.class.getResource("darkMode-style.css").toExternalForm());
-        isLightMode = !isLightMode;
+        Info.theme=MainApplication.class.getResource("darkMode-style.css").toExternalForm();
+        root.getStylesheets().clear();
+        root.getStylesheets().add(Info.theme);
+        Info.themeType=ThemeTypes.DARK;
     }
 
 

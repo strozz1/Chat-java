@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: app.javachat.Main_1
+Main-Class: app.javachat.MainApplication
 

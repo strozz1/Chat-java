@@ -3,13 +3,14 @@ package app.javachat.Utilities;
 import java.security.SecureRandom;
 
 public class JSONBuilder {
-    public static String parseMessageToJSON(String message, String username,String sender,String type) {
+    public static String parseMessageToJSON(String message, String username,String sender,String type,String id) {
         String jsonParsed="{" +
                 "\"type\":\""+type+"\"," +
                 "\"content\":{" +
                 "\"username\": \""+username+"\"," +
                 "\"sender\": \""+sender+"\","+
-                "\"content\": \""+message+"\"}}";
+                "\"content\": \""+message+"\","+
+                "\"id\": \""+id+"\"}}";
         return jsonParsed;
     }
     public static String parseRoomToJSON(String name, String[] users) {

@@ -3,6 +3,7 @@ package app.javachat;
 import app.javachat.Utilities.LocalDataManager;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MenuBuilder;
+import app.javachat.Utilities.ThemeTypes;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         LocalDataManager.loadState();
+        setTheme();
         this.stage = stage;
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
@@ -33,6 +35,20 @@ public class MainApplication extends Application {
         stage.setOnCloseRequest(e->{
             LocalDataManager.saveState();
         });
+    }
+
+    private void setTheme() {
+        String theme = Properties.getProperty("theme");
+        if(theme.equals("dark")){
+            Info.themeType=ThemeTypes.DARK;
+            Info.theme=MainApplication.class.getResource("darkMode-style.css").toExternalForm();
+        }else if(theme.equals("light")){
+            Info.themeType=ThemeTypes.LIGHT;
+            Info.theme= MainApplication.class.getResource("lightMode-style.css").toExternalForm();
+        }else{
+            Info.themeType=ThemeTypes.DARK;
+            Info.theme=MainApplication.class.getResource("darkMode-style.css").toExternalForm();
+        }
     }
 
     private void setStage() {

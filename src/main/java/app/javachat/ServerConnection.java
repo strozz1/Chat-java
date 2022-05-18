@@ -1,9 +1,6 @@
 package app.javachat;
 
 import app.javachat.Logger.Log;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
@@ -28,7 +25,7 @@ public class ServerConnection {
     }
 
     public void connect() {
-        Log.show("Starting connection with the server","Server connection");
+        Log.show("Starting connection with the server", this.getClass().getName());
 
         URI uri = URI.create(serverURI);
         IO.Options options = IO.Options.builder().build();
@@ -36,15 +33,15 @@ public class ServerConnection {
         this.socket = IO.socket(uri, options).connect();
         socket.on("connect_error", err -> {
             try {
-                throw  new ConnectionException();
+                throw new ConnectionException();
             } catch (ConnectionException e) {
-                Log.error(e.getMessage(),"ServerConnection");
+                Log.error(e.getMessage(), this.getClass().getName());
             }
         });
     }
 
     public boolean login(String username, String password) throws SocketNotInitializedException {
-        Log.show("Trying to login","Server connection");
+
 
         if (socket == null) throw new SocketNotInitializedException();
         AtomicInteger code = new AtomicInteger(0);
@@ -65,7 +62,7 @@ public class ServerConnection {
      * Start listening for incoming messages
      */
     public void listen() {
-        Log.show("listening for messages","Server connection");
+        Log.show("listening for messages", "Server connection");
         socket.on("message", (msg) -> {
             manager.manage(String.valueOf(msg[0]));
         });
@@ -73,5 +70,10 @@ public class ServerConnection {
 
     public Socket getSocket() {
         return socket;
+    }
+
+    public boolean checkLoginCredentials(String username, String password) throws SocketNotInitializedException {
+        Log.show("Login attempt for username " + username, this.getClass().getName());
+        return login(username, password);
     }
 }

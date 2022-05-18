@@ -14,6 +14,7 @@ public class MessageSenderService {
 
     public static void sendMessage(String jsonMessage){
         socket.emit("message",jsonMessage);
+        Log.show("Message sended.","MessageSenderService");
     }
 
     /**

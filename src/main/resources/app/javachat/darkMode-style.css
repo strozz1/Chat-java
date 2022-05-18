@@ -40,3 +40,6 @@
 .circle{
     -fx-stroke: white;
 }
+.transparentBackGround{
+    -fx-background-color: transparent;
+}

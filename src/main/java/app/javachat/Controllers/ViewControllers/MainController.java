@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class MainController {
 
@@ -34,41 +33,71 @@ public class MainController {
     private BorderPane parent;
     @FXML
     public Circle circle;
+    private ServerConnection serverConnection;
 
     public MainController() {
-
+        startConnection();
     }
 
+
     @FXML
-    void initialize() {
-        startConnection();
+    void initialize() throws IOException {
+        if (checkUserLogged()) {
+
+        } else {
+            openLoginWindow();
+
+        }
+
         loadStoredChats(); //todo
         usernameLeftLabel.textProperty().bind(Info.username);
     }
 
+
+
     private void startConnection() {
-        ServerConnection serverConnection = new ServerConnection(new MessageManager(this));
-
+        this.serverConnection = new ServerConnection(new MessageManager(this));
         serverConnection.connect();
-        boolean login;
         MessageSenderService.setSocket(serverConnection.getSocket());
+    }
 
-        try {
-            login = serverConnection.login("pepe", "123");
-            if (login) serverConnection.listen();
-        } catch (SocketNotInitializedException e) {
-            Log.error(e.getMessage(), "MainController");
-        }
+    private boolean checkUserLogged() {
+        return Info.userIsLogged;
     }
 
 
     private void loadStoredChats() {
+        // TODO: 18/05/2022
+    }
+    private void openLoginWindow() throws IOException {
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
+
+
+
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        LoginController controller = new LoginController();
+        controller.setServerConnection(serverConnection);
+        loader.setController(controller);
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(Info.theme);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.setScene(scene);
+
+        stage.setOnCloseRequest(close->{
+            Platform.exit();
+        });
+        stage.showAndWait();
+
+
 
     }
 
-
     public void openAddChatView() throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("add-server-view.fxml"));
+
+
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(loader.load());
@@ -95,16 +124,17 @@ public class MainController {
         LeftChatItem leftChatItem = new LeftChatItem(item);
         leftChatItem.setMainController(this);
 
-        Info.saveChatItemToCOntainer(username,leftChatItem);
+        Info.saveChatItemToCOntainer(username, leftChatItem);
         Platform.runLater(() -> lateralMenu.getChildren().add(leftChatItem));
     }
-    public void createNewLateralRoomContainer(String id,String name) {
-        GroupRoom room = new GroupRoom(id,name);
+
+    public void createNewLateralRoomContainer(String id, String name) {
+        GroupRoom room = new GroupRoom(id, name);
         ChatItem item = new ChatItem(room);
         LeftChatItem leftChatItem = new LeftChatItem(item);
         leftChatItem.setMainController(this);
 
-        Info.saveChatItemToCOntainer(id,leftChatItem);
+        Info.saveChatItemToCOntainer(id, leftChatItem);
         Platform.runLater(() -> lateralMenu.getChildren().add(leftChatItem));
     }
 
