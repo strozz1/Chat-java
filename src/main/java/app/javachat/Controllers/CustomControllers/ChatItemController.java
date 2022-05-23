@@ -15,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -96,7 +98,6 @@ public class ChatItemController {
         String id=(isGroupRoom? room.getId():"null");
         String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(),type,id);
         MessageSenderService.sendMessage(jsonMessage);
-
     }
 
 
@@ -110,5 +111,12 @@ public class ChatItemController {
     public String getId() {
         if (isGroupRoom) return ((GroupRoom) room).getName();
         return room.getId();
+    }
+
+    public void addMessage(JSONObject jsonObject) throws JSONException {
+        room.addMessage(jsonObject);
+        Log.show("Message received. " + jsonObject, "ChatItemController");
+        Message message = new Message((String) jsonObject.get("content"), (String) jsonObject.get("sender"), "ahora");
+        Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, false)));
     }
 }

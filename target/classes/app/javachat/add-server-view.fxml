@@ -6,32 +6,105 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="164.0" prefWidth="296.0" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.javachat.Controllers.ViewControllers.AddRoomController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
 
-    <Label fx:id="welcomeText" text="Create new group" />
-   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
-      <children>
-         <Label text="Name">
-            <HBox.margin>
-               <Insets right="12.0" />
-            </HBox.margin>
+<HBox styleClass="primaryColor" stylesheets="@darkMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="237.0" prefWidth="269.0" spacing="20.0">
+          <padding>
+              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+          </padding>
+      
+          <Label fx:id="welcomeText" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="354.0" styleClass="textColor" stylesheets="@darkMode-style.css" text="Add chat">
+            <font>
+               <Font name="System Bold" size="20.0" />
+            </font>
          </Label>
-         <TextField fx:id="inputRoomName" text="Room name haha" />
-      </children>
-   </HBox>
-   <HBox alignment="BASELINE_CENTER" prefHeight="0.0" prefWidth="200.0">
-      <children>
-         <Label text="Users">
-            <HBox.margin>
-               <Insets right="12.0" />
-            </HBox.margin>
-         </Label>
-         <TextField fx:id="inputUsersList" onKeyPressed="#onKeyPressed" />
-      </children>
-   </HBox>
-   <Button mnemonicParsing="false" onMouseClicked="#onAddNewChat" text="Create" />
-</VBox>
+         <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="200.0">
+            <children>
+               <Label styleClass="textColor" text="Name">
+                  <HBox.margin>
+                     <Insets right="12.0" />
+                  </HBox.margin>
+               </Label>
+               <TextField fx:id="userChat" text="pepe" />
+            </children>
+            <VBox.margin>
+               <Insets right="20.0" />
+            </VBox.margin>
+         </HBox>
+         <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="200.0">
+            <children>
+               <Label styleClass="textColor" text="Message">
+                  <HBox.margin>
+                     <Insets right="12.0" />
+                  </HBox.margin>
+               </Label>
+               <TextField fx:id="messageChat" />
+            </children>
+            <VBox.margin>
+               <Insets right="20.0" />
+            </VBox.margin>
+         </HBox>
+         <Button fx:id="addChat" mnemonicParsing="false" prefHeight="27.0" prefWidth="99.0" styleClass="addButton" text="Create">
+            <VBox.margin>
+               <Insets left="70.0" right="50.0" />
+            </VBox.margin>
+         </Button>
+      </VBox>
+      <VBox alignment="TOP_CENTER" prefHeight="164.0" prefWidth="296.0" spacing="20.0">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <children>
+            <Label fx:id="welcomeText1" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="30.0" prefWidth="265.0" styleClass="textColor" text="Create new group">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="200.0">
+               <children>
+                  <Label styleClass="textColor" text="Name">
+                     <HBox.margin>
+                        <Insets right="12.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="nameGroup" promptText="Type the room name" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="200.0">
+               <children>
+                  <Label styleClass="textColor" text="Users">
+                     <HBox.margin>
+                        <Insets right="12.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="userList" promptText="Separated by a coma" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="200.0">
+               <children>
+                  <Label styleClass="textColor" text="Message">
+                     <HBox.margin>
+                        <Insets right="12.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="messageGroup"  />
+               </children>
+            </HBox>
+            <Button fx:id="createGroup" mnemonicParsing="false"  prefHeight="25.0" prefWidth="90.0" styleClass="addButton" text="Create">
+               <VBox.margin>
+                  <Insets left="100.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</HBox>

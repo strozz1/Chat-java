@@ -5,6 +5,7 @@ import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MenuBuilder;
 import app.javachat.Utilities.ThemeTypes;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -34,6 +35,8 @@ public class MainApplication extends Application {
 
         stage.setOnCloseRequest(e->{
             LocalDataManager.saveState();
+            Platform.exit();
+
         });
     }
 

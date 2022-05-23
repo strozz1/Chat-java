@@ -76,4 +76,8 @@ public class ServerConnection {
         Log.show("Login attempt for username " + username, this.getClass().getName());
         return login(username, password);
     }
+
+    public boolean checkRegisterCredentials(String username, String email,String password) throws SocketNotInitializedException{
+        return false;
+    }
 }

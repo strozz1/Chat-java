@@ -1,5 +1,7 @@
 package app.javachat.Models;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,5 +34,10 @@ public class GroupRoom implements Room {
     @Override
     public List<HashMap<String, Object>> getMessages() {
         return messages;
+    }
+
+    @Override
+    public void addMessage(JSONObject jsonObject) {
+
     }
 }

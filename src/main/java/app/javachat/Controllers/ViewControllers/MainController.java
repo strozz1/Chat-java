@@ -43,10 +43,7 @@ public class MainController {
     void initialize() throws IOException, SocketNotInitializedException {
         if (!checkUserLogged()) {
             openLoginWindow();
-
         }
-
-
         loadStoredChats(); //todo
         usernameLeftLabel.textProperty().bind(Info.username);
     }
@@ -91,6 +88,8 @@ public class MainController {
         stage.setScene(scene);
 
         stage.setOnCloseRequest(close -> {
+            serverConnection.getSocket().disconnect();
+
             Platform.exit();
         });
         stage.showAndWait();
@@ -100,11 +99,15 @@ public class MainController {
 
     public void openAddChatView() throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("add-server-view.fxml"));
-
-
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
+        AddRoomController controller = new AddRoomController();
+        controller.setMainController(this);
+        controller.setServerConnection(serverConnection);
+        loader.setController(controller);
         Scene scene = new Scene(loader.load());
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(Info.theme);
         stage.initStyle(StageStyle.UTILITY);
         stage.setScene(scene);
         stage.showAndWait();
@@ -122,7 +125,7 @@ public class MainController {
         return parent;
     }
 
-    public void createNewLateralChatContainer(String username) {
+    public Room createNewLateralChatContainer(String username) {
         Room room = new SimpleRoom(username);
         ChatItem item = new ChatItem(room);
         LeftChatItem leftChatItem = new LeftChatItem(item);
@@ -130,6 +133,7 @@ public class MainController {
 
         Info.saveChatItemToCOntainer(username, leftChatItem);
         Platform.runLater(() -> lateralMenu.getChildren().add(leftChatItem));
+        return room;
     }
 
     public void createNewLateralRoomContainer(String id, String name) {

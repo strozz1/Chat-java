@@ -1,16 +1,24 @@
 package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Logger.Log;
+import app.javachat.MainApplication;
 import app.javachat.ServerConnection;
 import app.javachat.SocketNotInitializedException;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.LocalDataManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Border;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class LoginController {
@@ -38,18 +46,21 @@ public class LoginController {
             String password = inputPassword.getText();
             boolean loginValid = isLoginValid(username, password);
            if (loginValid){
-               boolean loginSucces = false;
+               boolean loginSuccess = false;
                try {
-                   loginSucces = checkLoginCredentials(username, password);
+                   loginSuccess = checkLoginCredentials(username, password);
                } catch (SocketNotInitializedException ex) {
                    ex.printStackTrace();
                }
-               if (loginSucces){
+               if (loginSuccess){
                    Info.userIsLogged=true;
                    LocalDataManager.saveUserCredentials(username,password);
                    closeLoginWindow();
                }else{
-                   // TODO: 18/05/2022
+                   inputUsername.setStyle("-fx-background-color: red");
+                   inputUsername.setText("");
+                   inputUsername.setStyle("-fx-text-inner-color: red;");
+                   loginButton.setText("aa");
                }
            }else{
                showInputError();
@@ -57,7 +68,11 @@ public class LoginController {
         });
         
         goRegisterButton.setOnMouseClicked(e->{
-            openRegisterWindow();
+            try {
+                openRegisterWindow();
+            } catch (IOException ex) {
+                Log.error(ex.getMessage());
+            }
         });
 
     }
@@ -71,8 +86,23 @@ public class LoginController {
         // TODO: 18/05/2022
     }
 
-    private void openRegisterWindow() {
-        // TODO: 18/05/2022
+    private void openRegisterWindow() throws IOException {
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("register-view.fxml"));
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        RegisterController controller = new RegisterController();
+        controller.setServerConnection(serverConnection);
+        loader.setController(controller);
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(Info.theme);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.setScene(scene);
+
+        stage.setOnCloseRequest(close -> {
+            Platform.exit();
+        });
+        stage.showAndWait();
     }
 
     // Verificacion input usuario correcto
@@ -83,35 +113,13 @@ public class LoginController {
         return (isPasswordValid && isUsernameValid);
     }
 
-    public boolean isRegisterValid(String username,String password,String email){
-        Pattern emailRegex = Pattern.compile("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b");
-        Pattern passwordRegex = Pattern.compile("\"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$\"");
-        Pattern usernameRegex = Pattern.compile("/^.{3,}$/");
 
-        boolean isUsernameValid = (!username.isEmpty() && usernameRegex.matcher(username).matches());
-        boolean isPasswordValid = (!password.isEmpty() && passwordRegex.matcher(password).matches());
-        boolean isEmailValid = (!email.isEmpty() && emailRegex.matcher(email).matches());
-
-        return (isPasswordValid && isUsernameValid && isEmailValid);
-    }
     // Verificar login y registro del usuario
     public boolean checkLoginCredentials(String username,String password) throws SocketNotInitializedException {
         return serverConnection.checkLoginCredentials(username,password);
     }
 
-//    public boolean checkRegisterCredentials(String username,String email){
-//        return x.checkRegisterCredentials(username,email);
-//    }
-//    // Controller method for register
-//    boolean isValid = isRegisterValid(username, password);
-//    if(isValid){
-//        boolean isRegisterCorrect = checkRegisterCredentials(username, email);
-//        if(isRegisterCorrect){
-//            registerSuccesful();
-//        }else{
-//            registerFailed();
-//        }
-//    }
+
 
     public void setServerConnection(ServerConnection serverConnection) {
         this.serverConnection = serverConnection;

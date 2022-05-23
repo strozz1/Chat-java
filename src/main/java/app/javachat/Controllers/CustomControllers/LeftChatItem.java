@@ -6,6 +6,7 @@ import app.javachat.Models.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -53,5 +54,10 @@ public class LeftChatItem extends AnchorPane implements Serializable {
 
     public void addMessage(HashMap<String, Object> message) {
         controller.addMessage(message);
+    }
+
+    public void addMessage(JSONObject jsonObject) {
+        controller.addMessage(jsonObject);
+
     }
 }

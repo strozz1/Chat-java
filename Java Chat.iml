@@ -18,6 +18,8 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:17.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:17.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:17.0.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.8" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.2" level="project" />
@@ -27,8 +29,6 @@
     <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:11.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.0" level="project" />
     <orderEntry type="library" name="Maven: com.konghq:unirest-objectmapper-jackson:3.13.6" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.4" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.4" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.28" level="project" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.11.4" level="project" />
     <orderEntry type="library" name="Maven: io.socket:socket.io-client:2.0.1" level="project" />

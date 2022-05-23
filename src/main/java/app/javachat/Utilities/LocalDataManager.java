@@ -18,10 +18,12 @@ public class LocalDataManager {
 
 
     private static final String FILE_NAME = "userData.conf";
+    private static final String CRED_NAME = "credentials.conf";
     private static final String APP_FOLDER = System.getProperty("user.home");
 
     public static final Path userFolder = Paths.get(APP_FOLDER).resolve(APP_NAME);
     private static final Path userDataFile = userFolder.resolve(FILE_NAME);
+    private static final Path userCredentialsFile = userFolder.resolve(CRED_NAME);
 
     public static void saveState() {
         Log.show("Saving user data to local store","LocalDataManager");
@@ -39,7 +41,6 @@ public class LocalDataManager {
         Log.show("Loading user data from local store");
         createFiles();
 
-
         try (ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(userDataFile))) {
             HashMap<String, LeftChatItem> appState = (HashMap<String, LeftChatItem>) reader.readObject();
             Info.rooms=appState;
@@ -53,7 +54,7 @@ public class LocalDataManager {
     private static void loadUserCredentials() {
         Properties properties= new Properties();
         try {
-            properties.load( new ObjectInputStream(Files.newInputStream(userDataFile)));
+            properties.load( new ObjectInputStream(Files.newInputStream(userCredentialsFile)));
             String username = properties.getProperty("username");
             String password = properties.getProperty("password");
             if(username != null ) Info.username.setValue(username);
@@ -68,7 +69,7 @@ public class LocalDataManager {
         properties.setProperty("username",username);
         properties.setProperty("password",password);
         try {
-            OutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(userDataFile,CREATE,TRUNCATE_EXISTING));
+            OutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(userCredentialsFile,CREATE,TRUNCATE_EXISTING));
             properties.store(outputStream,"comment");
 
         } catch (IOException e) {

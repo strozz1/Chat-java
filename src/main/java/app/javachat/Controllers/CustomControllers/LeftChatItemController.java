@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -52,5 +53,10 @@ public class LeftChatItemController{
 
     public void addMessage(HashMap<String, Object> message) {
         chatItem.addMessage(message);
+    }
+
+    public void addMessage(JSONObject jsonObject) {
+        chatItem.addMessage(jsonObject);
+
     }
 }
