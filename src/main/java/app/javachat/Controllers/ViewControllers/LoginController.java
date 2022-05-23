@@ -4,6 +4,7 @@ import app.javachat.Logger.Log;
 import app.javachat.ServerConnection;
 import app.javachat.SocketNotInitializedException;
 import app.javachat.Utilities.Info;
+import app.javachat.Utilities.LocalDataManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -45,8 +46,7 @@ public class LoginController {
                }
                if (loginSucces){
                    Info.userIsLogged=true;
-                   Info.setUsername(username);
-                   Info.setPassword(password);
+                   LocalDataManager.saveUserCredentials(username,password);
                    closeLoginWindow();
                }else{
                    // TODO: 18/05/2022

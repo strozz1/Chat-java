@@ -2,7 +2,6 @@ package app.javachat.Utilities;
 
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.MainApplication;
-import app.javachat.Properties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,13 +19,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 public class Info {
     public static String theme;
     public static ThemeTypes themeType;
     public static boolean userIsLogged;
     public static Path profilePictureFile=LocalDataManager.userFolder.resolve("profile.png");
-    public static StringProperty username = new SimpleStringProperty("pepe");
+    public static StringProperty username = new SimpleStringProperty();
     private static String password;
     public static final String APP_NAME = "MensajeriaApp";
     public static HashMap<String,LeftChatItem> rooms = new HashMap<>();
@@ -56,6 +56,11 @@ public class Info {
     public static void setPassword(String password) {
         Info.password=password;
     }
+
+    public static String getPassword() {
+        return password;
+    }
+
 
 
     /**

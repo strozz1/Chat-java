@@ -2,7 +2,6 @@ package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
-import app.javachat.Logger.Log;
 import app.javachat.*;
 import app.javachat.Models.GroupRoom;
 import app.javachat.Models.Room;
@@ -41,18 +40,16 @@ public class MainController {
 
 
     @FXML
-    void initialize() throws IOException {
-        if (checkUserLogged()) {
-
-        } else {
+    void initialize() throws IOException, SocketNotInitializedException {
+        if (!checkUserLogged()) {
             openLoginWindow();
 
         }
 
+
         loadStoredChats(); //todo
         usernameLeftLabel.textProperty().bind(Info.username);
     }
-
 
 
     private void startConnection() {
@@ -61,17 +58,25 @@ public class MainController {
         MessageSenderService.setSocket(serverConnection.getSocket());
     }
 
-    private boolean checkUserLogged() {
-        return Info.userIsLogged;
+    private boolean checkUserLogged() throws SocketNotInitializedException {
+        boolean login = false;
+        String user = Info.username.getValue();
+        String password = Info.getPassword();
+        if (user != null && password != null) {
+            login = serverConnection.login(user, password);
+
+        }
+        return login;
+
     }
 
 
     private void loadStoredChats() {
         // TODO: 18/05/2022
     }
+
     private void openLoginWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
-
 
 
         Stage stage = new Stage();
@@ -85,11 +90,10 @@ public class MainController {
         stage.initStyle(StageStyle.UTILITY);
         stage.setScene(scene);
 
-        stage.setOnCloseRequest(close->{
+        stage.setOnCloseRequest(close -> {
             Platform.exit();
         });
         stage.showAndWait();
-
 
 
     }

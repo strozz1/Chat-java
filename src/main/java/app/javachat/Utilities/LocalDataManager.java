@@ -2,15 +2,17 @@ package app.javachat.Utilities;
 
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Logger.Log;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Properties;
 
 import static app.javachat.Utilities.Info.APP_NAME;
+import static java.nio.file.StandardOpenOption.*;
 
 public class LocalDataManager {
 
@@ -33,6 +35,7 @@ public class LocalDataManager {
 
 
     public static void loadState() {
+        loadUserCredentials();
         Log.show("Loading user data from local store");
         createFiles();
 
@@ -45,6 +48,35 @@ public class LocalDataManager {
             Info.rooms=new HashMap<>();
         }
 
+    }
+
+    private static void loadUserCredentials() {
+        Properties properties= new Properties();
+        try {
+            properties.load( new ObjectInputStream(Files.newInputStream(userDataFile)));
+            String username = properties.getProperty("username");
+            String password = properties.getProperty("password");
+            if(username != null ) Info.username.setValue(username);
+            if(password != null ) Info.setPassword(password);
+        } catch (IOException e) {
+           Log.error("No user data guardada",LocalDataManager.class.getName());
+        }
+
+    }
+    public static void saveUserCredentials(String username, String password) {
+        Properties properties= new Properties();
+        properties.setProperty("username",username);
+        properties.setProperty("password",password);
+        try {
+            OutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(userDataFile,CREATE,TRUNCATE_EXISTING));
+            properties.store(outputStream,"comment");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Info.setUsername(username);
+        Info.setPassword(password);
     }
 
     private static void createFiles() {
