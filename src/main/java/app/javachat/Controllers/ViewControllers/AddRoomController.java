@@ -1,13 +1,11 @@
 package app.javachat.Controllers.ViewControllers;
 
-import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Models.Room;
 import app.javachat.ServerConnection;
 import app.javachat.SimpleRoom;
 import app.javachat.SocketNotInitializedException;
 import app.javachat.Utilities.Info;
-import app.javachat.Utilities.JSONBuilder;
 import app.javachat.Utilities.MessageSenderService;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -45,7 +43,11 @@ public class AddRoomController {
             if (chatInput) {
                 boolean existingChat = createExistingChat(username);
                 if (!existingChat) {
-                    createChat(username, message);
+                    try {
+                        createChat(username, message);
+                    } catch (JSONException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 closeWindow(e);
             } else {
@@ -68,7 +70,7 @@ public class AddRoomController {
         });
     }
 
-    private void createChat(String username, String message) {
+    private void createChat(String username, String message) throws JSONException {
             sendChat(username,message);
     }
 
@@ -87,6 +89,8 @@ public class AddRoomController {
     private void sendChat(String message, String username) throws JSONException {
         String type = "message";
         String id = "null";
+//        createJSONObject(message, username, type, id).var;
+
         String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(), type, id);
         MessageSenderService.sendMessage(jsonMessage);
         LeftChatItem item = Info.rooms.get(username);
@@ -94,9 +98,21 @@ public class AddRoomController {
             SimpleRoom simpleRoom= (SimpleRoom) createNewChatItem(username);
             item = Info.rooms.get(username);
             JSONObject jsonObject = new JSONObject(jsonMessage);
-            item.addMessage(jsonObject);
+            item.addMessage(jsonObject,true);
         }
 
+    }
+
+    private JSONObject createJSONObject(String message, String username, String type, String id) throws JSONException {
+        JSONObject jsonObject= new JSONObject();
+        jsonObject.put("type", type);
+        JSONObject content= new JSONObject();
+        jsonObject.put("content",content);
+        content.put("username", username);
+        content.put("sender",Info.username.getValue());
+        content.put("content", message);
+        content.put("id", id);
+        return jsonObject;
     }
 
     private Room createNewChatItem(String username) {

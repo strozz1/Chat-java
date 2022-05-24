@@ -7,6 +7,7 @@ import app.javachat.SimpleRoom;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -52,8 +53,8 @@ public class ChatItem extends BorderPane implements Serializable {
     }
 
 
-    public void addMessage(JSONObject jsonObject) {
-        controller.addMessage(jsonObject);
+    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException {
+        controller.addMessage(jsonObject,selfMessage);
 
     }
 }

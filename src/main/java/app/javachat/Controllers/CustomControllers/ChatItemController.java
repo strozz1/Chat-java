@@ -113,10 +113,10 @@ public class ChatItemController {
         return room.getId();
     }
 
-    public void addMessage(JSONObject jsonObject) throws JSONException {
+    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException {
         room.addMessage(jsonObject);
         Log.show("Message received. " + jsonObject, "ChatItemController");
         Message message = new Message((String) jsonObject.get("content"), (String) jsonObject.get("sender"), "ahora");
-        Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, false)));
+        Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, selfMessage)));
     }
 }

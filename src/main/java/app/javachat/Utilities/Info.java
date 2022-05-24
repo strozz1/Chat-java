@@ -50,6 +50,8 @@ public class Info {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
