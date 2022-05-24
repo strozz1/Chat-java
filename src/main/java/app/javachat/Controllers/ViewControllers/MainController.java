@@ -3,8 +3,10 @@ package app.javachat.Controllers.ViewControllers;
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.*;
+import app.javachat.Logger.Log;
 import app.javachat.Models.GroupRoom;
 import app.javachat.Models.Room;
+import app.javachat.Utilities.ImageUtils;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
 import javafx.application.Platform;
@@ -12,9 +14,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -46,6 +52,19 @@ public class MainController {
         }
         loadStoredChats(); //todo
         usernameLeftLabel.textProperty().bind(Info.username);
+        putUserImage();
+
+    }
+
+    private void putUserImage() {
+        try{
+        if(Info.image!=null) {
+            Image image = ImageUtils.convertFromBase64(Info.image);
+            circle.setFill(new ImagePattern(image));
+            circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
+        }}catch (Exception e){
+            Log.error("cant parse image");
+        }
     }
 
 

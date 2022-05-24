@@ -5,14 +5,14 @@ import app.javachat.Logger.Log;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Properties;
 
 import static app.javachat.Utilities.Info.APP_NAME;
-import static java.nio.file.StandardOpenOption.*;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
 public class LocalDataManager {
 
@@ -26,7 +26,7 @@ public class LocalDataManager {
     private static final Path userCredentialsFile = userFolder.resolve(CRED_NAME);
 
     public static void saveState() {
-        Log.show("Saving user data to local store","LocalDataManager");
+        Log.show("Saving user data to local store", "LocalDataManager");
         createFiles();
         try (ObjectOutputStream writer = new ObjectOutputStream(Files.newOutputStream(userDataFile))) {
             writer.writeObject(Info.rooms);
@@ -43,34 +43,39 @@ public class LocalDataManager {
 
         try (ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(userDataFile))) {
             HashMap<String, LeftChatItem> appState = (HashMap<String, LeftChatItem>) reader.readObject();
-            Info.rooms=appState;
+            Info.rooms = appState;
         } catch (IOException | ClassNotFoundException e) {
             Log.error(e.getMessage(), "ChatFileManager");
-            Info.rooms=new HashMap<>();
+            Info.rooms = new HashMap<>();
         }
 
     }
 
     private static void loadUserCredentials() {
-        Properties properties= new Properties();
+        Properties properties = new Properties();
         try {
-            properties.load( new ObjectInputStream(Files.newInputStream(userCredentialsFile)));
+            properties.load(new ObjectInputStream(Files.newInputStream(userCredentialsFile)));
             String username = properties.getProperty("username");
             String password = properties.getProperty("password");
-            if(username != null ) Info.username.setValue(username);
-            if(password != null ) Info.setPassword(password);
+            String image = properties.getProperty("image");
+            if (username != null) Info.username.setValue(username);
+            if (password != null) Info.setPassword(password);
+            if (image != null) Info.setImage(image);
         } catch (IOException e) {
-           Log.error("No user data guardada",LocalDataManager.class.getName());
+            Log.error("No user data guardada", LocalDataManager.class.getName());
         }
 
     }
+
     public static void saveUserCredentials(String username, String password) {
-        Properties properties= new Properties();
-        properties.setProperty("username",username);
-        properties.setProperty("password",password);
+        Properties properties = new Properties();
+        properties.setProperty("username", username);
+        properties.setProperty("password", password);
+        if (Info.image != null)
+            properties.setProperty("image", Info.image);
         try {
-            OutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(userCredentialsFile,CREATE,TRUNCATE_EXISTING));
-            properties.store(outputStream,"comment");
+            OutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(userCredentialsFile, CREATE, TRUNCATE_EXISTING));
+            properties.store(outputStream, "comment");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,14 +97,14 @@ public class LocalDataManager {
         }
     }
 
-    public static void savePhoto(File file){
+    public static void savePhoto(File file) {
 
         try {
-            BufferedWriter bufferedWriter= new BufferedWriter(new FileWriter(new File("a.png")));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("a.png")));
             Path resolve = userFolder.resolve("profile.png");
-            if(Files.exists(resolve))
-            Files.delete(resolve);
-            Files.copy(Paths.get(file.getPath()),userFolder.resolve("profile.png"));
+            if (Files.exists(resolve))
+                Files.delete(resolve);
+            Files.copy(Paths.get(file.getPath()), userFolder.resolve("profile.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

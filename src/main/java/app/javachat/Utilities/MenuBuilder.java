@@ -77,6 +77,7 @@ public class MenuBuilder {
                     String fileName = "file:src/main/resources/app/javachat/images/default.png";
                     controller.circle.setFill(new ImagePattern(new Image(fileName)));
                 }
+
                 controller.circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
 
 
@@ -136,13 +137,13 @@ public class MenuBuilder {
         controller.setMainController(MenuBuilder.controller);
         loader.setController(controller);
         Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initModality(Modality.APPLICATION_MODAL);
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().clear();
         scene.getStylesheets().add(Info.theme);
-        stage.initStyle(StageStyle.UTILITY);
-
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
+
         stage.showAndWait();
 
     }

@@ -31,6 +31,7 @@ public class Info {
     public static final String APP_NAME = "MensajeriaApp";
     public static HashMap<String,LeftChatItem> rooms = new HashMap<>();
     public static MessageSenderService messageSender;
+    public static String image;
 
 
     public static void setUsername(String username) {
@@ -63,6 +64,9 @@ public class Info {
         return password;
     }
 
+    public static void setImage(String image) {
+        Info.image=image;
+    }
 
 
     /**
