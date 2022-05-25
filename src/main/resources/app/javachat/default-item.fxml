@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="566.0" prefWidth="895.0" styleClass="primaryColor" stylesheets="@darkMode-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="thirdColor">
+         <children>
+            <Label alignment="CENTER" prefHeight="727.0" prefWidth="1148.0" styleClass="textColor" text="No tienes nada que mostrar. Prueba a iniciar un chat!" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
