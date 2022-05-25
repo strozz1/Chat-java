@@ -12,6 +12,7 @@
 
 <!--        fx:controller="app.javachat.Controllers.ViewControllers.CallWindowController"-->
 
+<?import javafx.scene.Cursor?>
 <VBox prefHeight="196.0" prefWidth="302.0" style="-fx-border-radius: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="NEVER">
@@ -58,6 +59,9 @@
                      </image>
                   </ImageView>
                </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
          </children>
          <padding>

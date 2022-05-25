@@ -145,29 +145,7 @@ public class MenuBuilder {
 
     }
 
-    private static void loadLog(MenuItem itemAbrirLogger) {
-        try {
-            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("logger-window.fxml"));
-            Stage stage = new Stage();
-            stage.initModality(Modality.WINDOW_MODAL);
-            Scene scene;
-            scene = new Scene(loader.load());
 
-            LoggerWindowController controller = loader.getController();
-            Log.setLoggerType(new WindowLogType(controller));
-            stage.setScene(scene);
-            stage.show();
-
-            stage.setOnCloseRequest(windowEvent -> {
-                Log.setLoggerType(new ConsoleType());
-                stage.close();
-                itemAbrirLogger.disableProperty().set(false);
-
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private static void onChangeThemeAction(MenuItem itemToggleMode) {
         if (Info.themeType == ThemeTypes.LIGHT) {
