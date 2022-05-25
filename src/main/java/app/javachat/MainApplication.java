@@ -1,5 +1,6 @@
 package app.javachat;
 
+import app.javachat.Controllers.ViewControllers.MainController;
 import app.javachat.Utilities.LocalDataManager;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MenuBuilder;
@@ -33,8 +34,12 @@ public class MainApplication extends Application {
 
         stage.show();
 
+        MainController controller = fxmlLoader.getController();
         stage.setOnCloseRequest(e->{
             LocalDataManager.saveState();
+            if(Info.username.getValue().isEmpty()){
+                controller.serverConnection.disconnect();
+            }
             Platform.exit();
 
         });

@@ -37,7 +37,7 @@ public class Utils {
 
     public static String objectToBase64(Object o) throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-             ObjectOutputStream oos = new ObjectOutputStream(baos);) {
+             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             oos.writeObject(o);
             return new String(Base64.getEncoder().encode(baos.toByteArray()));
         }

@@ -101,4 +101,8 @@ public class ServerConnection {
         while (true) if (code.get() != 0) break;
         return code.get() == 200;
     }
+
+    public void disconnect(){
+        socket.emit("offline",Info.username.getValue());
+    }
 }

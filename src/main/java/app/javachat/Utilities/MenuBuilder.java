@@ -7,6 +7,7 @@ import app.javachat.Logger.ConsoleType;
 import app.javachat.Logger.Log;
 import app.javachat.Logger.WindowLogType;
 import app.javachat.MainApplication;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -51,8 +52,8 @@ public class MenuBuilder {
 
     private static void createProfileMenu() {
         Menu profileMenu = new Menu("Perfil");
-        MenuItem itemChangeName = new MenuItem("Cambiar nombre");
-        MenuItem itemChangePhoto = new MenuItem("Cambiar Foto");
+        MenuItem itemDisconect = new MenuItem("Disconnect");
+        MenuItem itemChangePhoto = new MenuItem("Change profile picture");
 
         itemChangePhoto.setOnAction(actionEvent -> {
             Stage stage = new Stage();
@@ -81,20 +82,11 @@ public class MenuBuilder {
             }
         });
 
-        itemChangeName.setOnAction(actionEvent -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("change-user-settings-view.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(loader.load());
-                stage.setScene(scene);
-                stage.initStyle(StageStyle.TRANSPARENT);
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.showAndWait();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        itemDisconect.setOnAction(actionEvent -> {
+           LocalDataManager.clearCredentials();
+            Platform.exit();
         });
-        profileMenu.getItems().add(itemChangeName);
+        profileMenu.getItems().add(itemDisconect);
         profileMenu.getItems().add(itemChangePhoto);
         menuBar.getMenus().add(profileMenu);
     }

@@ -2,6 +2,7 @@ package app.javachat.Utilities;
 
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Logger.Log;
+import app.javachat.Models.Container;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,7 +28,7 @@ public class LocalDataManager {
 
     public static void saveState() {
         Log.show("Saving user data to local store", "LocalDataManager");
-        saveUserCredentials(Info.username.getValue(), Info.getPassword(), Info.rooms);
+        saveUserCredentials(Info.username.getValue(), Info.getPassword(), new Container(Info.rooms));
     }
 
 
@@ -52,7 +53,8 @@ public class LocalDataManager {
             else Info.rooms = new HashMap<>();
 
         } catch (IOException e) {
-            Log.error("No user data guardada", LocalDataManager.class.getName());
+            Log.show("No user data guardada, esperando login", LocalDataManager.class.getName());
+            Info.rooms = new HashMap<>();
         }
     }
 
@@ -73,5 +75,13 @@ public class LocalDataManager {
         Info.setUsername(username);
         Info.setPassword(password);
 
+    }
+
+    public static void clearCredentials() {
+        try {
+            Files.delete(userCredentialsFile);
+        } catch (IOException e) {
+            Log.error("No eixste el fichero, pero no pasa nada",LocalDataManager.class.getName());
+        }
     }
 }

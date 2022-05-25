@@ -38,7 +38,7 @@ public class MainController {
     private BorderPane parent;
     @FXML
     public Circle circle;
-    private ServerConnection serverConnection;
+    public ServerConnection serverConnection;
 
     public MainController() {
         startConnection();
