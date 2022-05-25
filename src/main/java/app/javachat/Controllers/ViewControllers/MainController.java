@@ -50,10 +50,9 @@ public class MainController {
         if (!checkUserLogged()) {
             openLoginWindow();
         }
-        loadStoredChats(); //todo
+        serverConnection.listen();
         usernameLeftLabel.textProperty().bind(Info.username);
         putUserImage();
-
     }
 
     private void putUserImage() {
