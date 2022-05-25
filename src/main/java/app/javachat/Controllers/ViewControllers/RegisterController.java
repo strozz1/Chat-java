@@ -3,12 +3,10 @@ package app.javachat.Controllers.ViewControllers;
 import app.javachat.Logger.Log;
 import app.javachat.ServerConnection;
 import app.javachat.SocketNotInitializedException;
-import app.javachat.Utilities.ImageUtils;
-import app.javachat.Utilities.Info;
+import app.javachat.Utilities.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -87,7 +85,7 @@ public class RegisterController {
 
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
-            return ImageUtils.convertToBase64(file);
+            return Utils.fileToBase64(file);
         } else return null;
     }
 
@@ -96,19 +94,16 @@ public class RegisterController {
     }
 
     public boolean isRegisterValid(String username, String password, String email) {
-        Pattern emailRegex = Pattern.compile("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b");
-        Pattern passwordRegex = Pattern.compile("\"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$\"");
-        Pattern usernameRegex = Pattern.compile("/^.{3,}$/");
 
-        boolean isUsernameValid = (!username.isEmpty() && usernameRegex.matcher(username).matches());
-        boolean isPasswordValid = (!password.isEmpty() && passwordRegex.matcher(password).matches());
-        boolean isEmailValid = (!email.isEmpty() && emailRegex.matcher(email).matches());
+        boolean isUsernameValid = (!username.isEmpty());
+        boolean isPasswordValid = (!password.isEmpty());
+        boolean isEmailValid = (!email.isEmpty());
 
-        return true;
+        return isEmailValid && isUsernameValid && isPasswordValid;
     }
 
     private void showInputError() {
-
+        //todo
     }
 
 

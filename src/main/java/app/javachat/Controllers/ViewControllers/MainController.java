@@ -6,7 +6,7 @@ import app.javachat.*;
 import app.javachat.Logger.Log;
 import app.javachat.Models.GroupRoom;
 import app.javachat.Models.Room;
-import app.javachat.Utilities.ImageUtils;
+import app.javachat.Utilities.Utils;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
 import javafx.application.Platform;
@@ -59,7 +59,7 @@ public class MainController {
     private void putUserImage() {
         try{
         if(Info.image!=null) {
-            Image image = ImageUtils.convertFromBase64(Info.image);
+            Image image = Utils.base64ToImage(Info.image);
             circle.setFill(new ImagePattern(image));
             circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
         }}catch (Exception e){

@@ -66,9 +66,6 @@ public class MenuBuilder {
             );
             File file = fileChooser.showOpenDialog(stage);
             if (file != null) {
-                LocalDataManager.savePhoto(file);
-
-
                 if (Files.exists(Info.profilePictureFile)) {
                     System.out.println(Info.profilePictureFile.toString());
                     Image img = new Image("file:" + Info.profilePictureFile.toString());

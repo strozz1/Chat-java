@@ -41,7 +41,7 @@ public class MainApplication extends Application {
     }
 
     private void setTheme() {
-        String theme = Properties.getProperty("theme");
+        String theme = PropertiesLoader.getProperty("theme");
         if(theme.equals("dark")){
             Info.themeType=ThemeTypes.DARK;
             Info.theme=MainApplication.class.getResource("darkMode-style.css").toExternalForm();

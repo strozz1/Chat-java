@@ -1,18 +1,16 @@
 package app.javachat;
 
 import app.javachat.Logger.Log;
+import io.socket.engineio.parser.Base64;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 /**
  *
  * Contains all necessary properties for de application services.
  */
-public class Properties {
+public class PropertiesLoader {
     private static File propertiesFile = new File("src/main/java/app/javachat/application.properties");
     private static HashMap<String, String> propertiesMap = new HashMap<>();
 
@@ -27,6 +25,7 @@ public class Properties {
             Log.error(e.getMessage(),"Properties");
         }
     }
+
 
     /**
      *

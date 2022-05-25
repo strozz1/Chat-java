@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static app.javachat.Utilities.Info.getMapFromJson;
 
 public class ServerConnection {
-    private final String serverURI = Properties.getProperty("server-uri");
+    private final String serverURI = PropertiesLoader.getProperty("server-uri");
     private Socket socket;
     private final Manager manager;
 

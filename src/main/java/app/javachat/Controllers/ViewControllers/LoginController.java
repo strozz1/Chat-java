@@ -54,7 +54,7 @@ public class LoginController {
                }
                if (loginSuccess){
                    Info.userIsLogged=true;
-                   LocalDataManager.saveUserCredentials(username,password);
+                   LocalDataManager.saveUserCredentials(username,password,null);
                    closeLoginWindow();
                }else{
                    inputUsername.setStyle("-fx-background-color: red");
@@ -105,7 +105,7 @@ public class LoginController {
         stage.showAndWait();
     }
 
-    // Verificacion input usuario correcto
+
 
     public boolean isLoginValid(String username,String password){
         boolean isUsernameValid = (!username.isEmpty());
@@ -114,17 +114,12 @@ public class LoginController {
     }
 
 
-    // Verificar login y registro del usuario
+
     public boolean checkLoginCredentials(String username,String password) throws SocketNotInitializedException {
         return serverConnection.checkLoginCredentials(username,password);
     }
-
-
-
     public void setServerConnection(ServerConnection serverConnection) {
         this.serverConnection = serverConnection;
     }
 
-    public void onKeyPressed(KeyEvent event) {
-    }
 }
