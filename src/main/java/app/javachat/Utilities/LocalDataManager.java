@@ -1,8 +1,10 @@
 package app.javachat.Utilities;
 
+import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
 import app.javachat.Logger.Log;
 import app.javachat.Models.Container;
+import app.javachat.Models.Room;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import static app.javachat.Utilities.Info.APP_NAME;
@@ -48,14 +51,22 @@ public class LocalDataManager {
             if (username != null) Info.username.setValue(username);
             if (password != null) Info.setPassword(password);
             if (image != null) Info.setImage(image);
+            if(chats!=null) {
+                HashMap<String, Room> rooms = (HashMap<String, Room>) Utils.base64ToObject(chats);
+                if (rooms != null) loadChats(rooms);
+            }
 
-            if (chats != null) Info.rooms = (HashMap<String, LeftChatItem>) Utils.base64ToObject(chats);
             else Info.rooms = new HashMap<>();
 
         } catch (IOException e) {
             Log.show("No user data guardada, esperando login", LocalDataManager.class.getName());
             Info.rooms = new HashMap<>();
         }
+
+    }
+
+    private static void getRooms(HashMap<String, LeftChatItem> rooms) {
+
     }
 
     public static void saveUserCredentials(String username, String password, Object o) {
@@ -65,7 +76,7 @@ public class LocalDataManager {
             properties.setProperty("password", password);
             if (Info.image != null)
                 properties.setProperty("image", Info.image);
-            if (o != null) properties.setProperty("chats", Utils.objectToBase64(o));
+            if (o != null) properties.setProperty("chats", Utils.objectToBase64(parseToList()));
             OutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(userCredentialsFile, CREATE, TRUNCATE_EXISTING));
             properties.store(outputStream, "comment");
 
@@ -84,4 +95,26 @@ public class LocalDataManager {
             Log.error("No eixste el fichero, pero no pasa nada",LocalDataManager.class.getName());
         }
     }
+
+    public static void loadChats(HashMap<String, Room> rooms){
+        for(Map.Entry<String, Room> entry : rooms.entrySet()) {
+            String key = entry.getKey();
+            Room value = entry.getValue();
+            ChatItem chatItem= new ChatItem(value);
+            LeftChatItem leftChatItem= new LeftChatItem(chatItem);
+            Info.rooms.put(key,leftChatItem);
+            // do what you have to do here
+            // In your case, another loop.
+        }
+
+    }
+    public static HashMap<String, Room> parseToList(){
+        HashMap<String, Room> rooms= new HashMap<>();
+        Info.rooms.forEach((a,b)->{
+            rooms.put(a,b.getChatItem().getController().getRoom());
+        });
+        return rooms;
+    }
+
+
 }

@@ -16,20 +16,17 @@ import javafx.stage.Stage;
 import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
 
 public class Info {
     public static String theme;
     public static ThemeTypes themeType;
     public static boolean userIsLogged;
-    public static Path profilePictureFile=LocalDataManager.userFolder.resolve("profile.png");
+    public static Path profilePictureFile = LocalDataManager.userFolder.resolve("profile.png");
     public static StringProperty username = new SimpleStringProperty();
     private static String password;
     public static final String APP_NAME = "MensajeriaApp";
-    public static HashMap<String,LeftChatItem> rooms = new HashMap<>();
+    public static HashMap<String, LeftChatItem> rooms = new HashMap<>();
     public static MessageSenderService messageSender;
     public static String image;
 
@@ -38,15 +35,16 @@ public class Info {
         Info.username.setValue(username);
     }
 
-    public static void saveChatItemToCOntainer(String username,LeftChatItem item){
-        rooms.put(username,item);
+    public static void saveChatItemToCOntainer(String username, LeftChatItem item) {
+        rooms.put(username, item);
     }
 
 
     public static HashMap<String, Object> getMapFromJson(String json) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
+            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {
+            };
             return mapper.readValue(json, typeRef);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -55,7 +53,7 @@ public class Info {
     }
 
     public static void setPassword(String password) {
-        Info.password=password;
+        Info.password = password;
     }
 
     public static String getPassword() {
@@ -63,7 +61,7 @@ public class Info {
     }
 
     public static void setImage(String image) {
-        Info.image=image;
+        Info.image = image;
     }
 
 

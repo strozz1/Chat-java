@@ -2,13 +2,13 @@ package app.javachat.Controllers.ViewControllers;
 
 import app.javachat.Controllers.CustomControllers.ChatItem;
 import app.javachat.Controllers.CustomControllers.LeftChatItem;
-import app.javachat.*;
 import app.javachat.Logger.Log;
+import app.javachat.*;
 import app.javachat.Models.GroupRoom;
 import app.javachat.Models.Room;
-import app.javachat.Utilities.Utils;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
+import app.javachat.Utilities.Utils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class MainController {
 
@@ -50,18 +51,21 @@ public class MainController {
         if (!checkUserLogged()) {
             openLoginWindow();
         }
-        serverConnection.listen();
+
         usernameLeftLabel.textProperty().bind(Info.username);
         putUserImage();
+        loadStoredChats();
+        serverConnection.listen();
     }
 
     private void putUserImage() {
-        try{
-        if(Info.image!=null) {
-            Image image = Utils.base64ToImage(Info.image);
-            circle.setFill(new ImagePattern(image));
-            circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
-        }}catch (Exception e){
+        try {
+            if (Info.image != null) {
+                Image image = Utils.base64ToImage(Info.image);
+                circle.setFill(new ImagePattern(image));
+                circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
+            }
+        } catch (Exception e) {
             Log.error("cant parse image");
         }
     }
@@ -87,7 +91,15 @@ public class MainController {
 
 
     private void loadStoredChats() {
-        // TODO: 18/05/2022
+        for (Map.Entry<String, LeftChatItem> entry : Info.rooms.entrySet()) {
+            String key = entry.getKey();
+            LeftChatItem value = entry.getValue();
+            value.setMainController(this);
+            lateralMenu.getChildren().add(value);
+
+            // do what you have to do here
+            // In your case, another loop.
+        }
     }
 
     private void openLoginWindow() throws IOException {

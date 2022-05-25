@@ -53,6 +53,7 @@ public class ChatItemController {
     void initialize() {
         if (isGroupRoom) headerUsername.setText(((GroupRoom) room).getName());
         else headerUsername.setText(room.getId());
+        prontMessages();
 
 //        btnLlamar.setOnMouseClicked(mouseEvent -> {
 //            if (!Info.Call.isInCall())
@@ -69,7 +70,23 @@ public class ChatItemController {
             scroll.setVvalue((Double) t1);
         });
     }
-//
+
+    private void prontMessages() {
+        room.getMessages().forEach(hash -> {
+            String sender = (String) hash.get("sender");
+            boolean isMine = false;
+            if (sender.equals(Info.username.getValue())) isMine = true;
+            chatBox.getChildren().add(new MessageItem(new Message((String) hash.get("content"), sender, "ahora"), isMine));
+        });
+
+    }
+
+
+
+    public Room getRoom() {
+        return room;
+    }
+    //
 //    private void sendCallRequest() {
 //        try {
 //
@@ -95,9 +112,9 @@ public class ChatItemController {
     private void sendMessageToServer(String message, String username) {
         Message msg = new Message(message, Info.username.getValue(), LocalDateTime.now().toString());
         Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(msg, true)));
-        String type= (isGroupRoom?"room-message":"message");
-        String id=(isGroupRoom? room.getId():"null");
-        String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(),type,id);
+        String type = (isGroupRoom ? "room-message" : "message");
+        String id = (isGroupRoom ? room.getId() : "null");
+        String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(), type, id);
         MessageSenderService.sendMessage(jsonMessage);
     }
 
@@ -114,12 +131,12 @@ public class ChatItemController {
         return room.getId();
     }
 
-    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException, JsonProcessingException {
+    public void addMessage(JSONObject jsonObject, boolean selfMessage) throws JSONException, JsonProcessingException {
         room.addMessage(jsonObject);
         Log.show("Message received. " + jsonObject, "ChatItemController");
         JSONObject content = (JSONObject) jsonObject.get("content");
         String sender = (String) content.get("sender");
-        Message message = new Message((String) content.get("content"),sender, "ahora");
+        Message message = new Message((String) content.get("content"), sender, "ahora");
         Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, selfMessage)));
     }
 }

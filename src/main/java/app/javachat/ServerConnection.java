@@ -75,6 +75,7 @@ public class ServerConnection {
     public void listen() {
         Log.show("listening for messages", "Server connection");
         socket.on("message", (msg) -> {
+            Log.show("new message");
             manager.manage(String.valueOf(msg[0]));
         });
     }
@@ -103,6 +104,7 @@ public class ServerConnection {
     }
 
     public void disconnect(){
+        Log.show("Disconnected");
         socket.emit("offline",Info.username.getValue());
     }
 }

@@ -37,7 +37,7 @@ public class MainApplication extends Application {
         MainController controller = fxmlLoader.getController();
         stage.setOnCloseRequest(e->{
             LocalDataManager.saveState();
-            if(Info.username.getValue().isEmpty()){
+            if(!Info.username.getValue().isEmpty()){
                 controller.serverConnection.disconnect();
             }
             Platform.exit();
