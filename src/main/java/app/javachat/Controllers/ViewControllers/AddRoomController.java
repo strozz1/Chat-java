@@ -7,6 +7,7 @@ import app.javachat.SimpleRoom;
 import app.javachat.SocketNotInitializedException;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -41,12 +42,14 @@ public class AddRoomController {
             String message = messageChat.getText();
             boolean chatInput = checkChatInput(username, message);
             if (chatInput) {
-                boolean existingChat = createExistingChat(username);
+                boolean existingChat = Info.rooms.get(username)!=null;
                 if (!existingChat) {
                     try {
                         createChat(username, message);
                     } catch (JSONException ex) {
                         throw new RuntimeException(ex);
+                    } catch (JsonProcessingException ex) {
+                        ex.printStackTrace();
                     }
                 }
                 closeWindow(e);
@@ -70,7 +73,7 @@ public class AddRoomController {
         });
     }
 
-    private void createChat(String username, String message) throws JSONException {
+    private void createChat(String username, String message) throws JSONException, JsonProcessingException {
             sendChat(username,message);
     }
 
@@ -86,7 +89,7 @@ public class AddRoomController {
 
     }
 
-    private void sendChat(String message, String username) throws JSONException {
+    private void sendChat(String username, String message) throws JSONException, JsonProcessingException {
         String type = "message";
         String id = "null";
 //        createJSONObject(message, username, type, id).var;
@@ -123,7 +126,7 @@ public class AddRoomController {
     }
 
     private boolean checkChatInput(String username, String message) {
-        return false;
+        return true;
     }
 
     private boolean checkGroupInput(String[] list, String message, String groupName) {

@@ -6,6 +6,7 @@ import app.javachat.Models.Message;
 import app.javachat.Models.Room;
 import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -113,10 +114,12 @@ public class ChatItemController {
         return room.getId();
     }
 
-    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException {
+    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException, JsonProcessingException {
         room.addMessage(jsonObject);
         Log.show("Message received. " + jsonObject, "ChatItemController");
-        Message message = new Message((String) jsonObject.get("content"), (String) jsonObject.get("sender"), "ahora");
+        JSONObject content = (JSONObject) jsonObject.get("content");
+        String sender = (String) content.get("sender");
+        Message message = new Message((String) content.get("content"),sender, "ahora");
         Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(message, selfMessage)));
     }
 }

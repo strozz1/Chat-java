@@ -4,6 +4,7 @@ import app.javachat.MainApplication;
 import app.javachat.Models.Room;
 import app.javachat.Models.User;
 import app.javachat.SimpleRoom;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
@@ -53,7 +54,7 @@ public class ChatItem extends BorderPane implements Serializable {
     }
 
 
-    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException {
+    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException, JsonProcessingException {
         controller.addMessage(jsonObject,selfMessage);
 
     }

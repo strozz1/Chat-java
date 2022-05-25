@@ -144,7 +144,7 @@ public class MainController {
     }
 
     public Room createNewLateralChatContainer(String username) {
-        Room room = new SimpleRoom(username);
+        SimpleRoom room = new SimpleRoom(username);
         ChatItem item = new ChatItem(room);
         LeftChatItem leftChatItem = new LeftChatItem(item);
         leftChatItem.setMainController(this);

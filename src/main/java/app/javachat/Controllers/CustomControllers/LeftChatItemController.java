@@ -1,6 +1,7 @@
 package app.javachat.Controllers.CustomControllers;
 
 import app.javachat.Controllers.ViewControllers.MainController;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -56,7 +57,7 @@ public class LeftChatItemController{
         chatItem.addMessage(message);
     }
 
-    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException {
+    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException, JsonProcessingException {
         chatItem.addMessage(jsonObject,selfMessage);
 
     }

@@ -3,6 +3,7 @@ package app.javachat.Controllers.CustomControllers;
 import app.javachat.Controllers.ViewControllers.MainController;
 import app.javachat.MainApplication;
 import app.javachat.Models.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -57,7 +58,7 @@ public class LeftChatItem extends AnchorPane implements Serializable {
         controller.addMessage(message);
     }
 
-    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException {
+    public void addMessage(JSONObject jsonObject,boolean selfMessage) throws JSONException, JsonProcessingException {
         controller.addMessage(jsonObject,selfMessage);
 
     }

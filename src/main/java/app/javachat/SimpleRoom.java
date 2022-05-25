@@ -1,6 +1,8 @@
 package app.javachat;
 
 import app.javachat.Models.Room;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -34,7 +36,9 @@ public class SimpleRoom implements Serializable, Room {
     }
 
     @Override
-    public void addMessage(JSONObject jsonObject) {
-//        messages.add;
+    public void addMessage(JSONObject jsonObject) throws JsonProcessingException {
+        HashMap<String,Object> result =
+                new ObjectMapper().readValue(jsonObject.toString(), HashMap.class);
+        messages.add(result);
     }
 }
