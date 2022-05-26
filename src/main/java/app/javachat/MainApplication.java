@@ -39,8 +39,10 @@ public class MainApplication extends Application {
             LocalDataManager.saveState();
             if(!Info.username.getValue().isEmpty()){
                 controller.serverConnection.disconnect();
+                controller.serverConnection.getSocket().close();
             }
             Platform.exit();
+            System.exit(0);
 
         });
     }

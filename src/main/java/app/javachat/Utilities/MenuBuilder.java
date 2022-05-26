@@ -85,6 +85,7 @@ public class MenuBuilder {
         itemDisconect.setOnAction(actionEvent -> {
            LocalDataManager.clearCredentials();
             Platform.exit();
+            System.exit(0);
         });
         profileMenu.getItems().add(itemDisconect);
         profileMenu.getItems().add(itemChangePhoto);
