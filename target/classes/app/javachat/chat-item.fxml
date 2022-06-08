@@ -68,11 +68,8 @@
                               <Insets bottom="8.0" left="30.0" right="30.0" top="8.0" />
                            </padding>
                         </HBox>
-                        <Button fx:id="btnLlamar" contentDisplay="RIGHT" mnemonicParsing="false" text="Llamar" textAlignment="CENTER" textFill="#070707" >
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
+
+
                      </children>
                   </HBox>
                </top>
