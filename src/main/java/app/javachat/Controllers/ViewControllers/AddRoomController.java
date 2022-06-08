@@ -86,7 +86,7 @@ public class AddRoomController {
     }
 
     private void badChatInput() {
-
+        userChat.setStyle("-fx-border-color: red");
     }
 
     private void sendChat(String username, String message) throws JSONException, JsonProcessingException {

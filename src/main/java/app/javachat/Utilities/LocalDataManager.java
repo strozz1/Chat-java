@@ -51,12 +51,10 @@ public class LocalDataManager {
             if (username != null) Info.username.setValue(username);
             if (password != null) Info.setPassword(password);
             if (image != null) Info.setImage(image);
-            if(chats!=null) {
+            if (chats != null) {
                 HashMap<String, Room> rooms = (HashMap<String, Room>) Utils.base64ToObject(chats);
                 if (rooms != null) loadChats(rooms);
-            }
-
-            else Info.rooms = new HashMap<>();
+            } else Info.rooms = new HashMap<>();
 
         } catch (IOException e) {
             Log.show("No user data guardada, esperando login", LocalDataManager.class.getName());
@@ -71,6 +69,7 @@ public class LocalDataManager {
 
     public static void saveUserCredentials(String username, String password, Object o) {
         try {
+            createFiles();
             Properties properties = new Properties();
             properties.setProperty("username", username);
             properties.setProperty("password", password);
@@ -88,30 +87,48 @@ public class LocalDataManager {
 
     }
 
+    private static void createFiles() {
+        if (!Files.exists(userCredentialsFile)) {
+            try {
+                Files.createDirectories(userFolder);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+            try {
+                Files.createFile(userCredentialsFile);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
     public static void clearCredentials() {
         try {
             Files.delete(userCredentialsFile);
         } catch (IOException e) {
-            Log.error("No eixste el fichero, pero no pasa nada",LocalDataManager.class.getName());
+            Log.error("No eixste el fichero, pero no pasa nada", LocalDataManager.class.getName());
         }
     }
 
-    public static void loadChats(HashMap<String, Room> rooms){
-        for(Map.Entry<String, Room> entry : rooms.entrySet()) {
+    public static void loadChats(HashMap<String, Room> rooms) {
+        for (Map.Entry<String, Room> entry : rooms.entrySet()) {
             String key = entry.getKey();
             Room value = entry.getValue();
-            ChatItem chatItem= new ChatItem(value);
-            LeftChatItem leftChatItem= new LeftChatItem(chatItem);
-            Info.rooms.put(key,leftChatItem);
+            ChatItem chatItem = new ChatItem(value);
+            LeftChatItem leftChatItem = new LeftChatItem(chatItem);
+            Info.rooms.put(key, leftChatItem);
             // do what you have to do here
             // In your case, another loop.
         }
 
     }
-    public static HashMap<String, Room> parseToList(){
-        HashMap<String, Room> rooms= new HashMap<>();
-        Info.rooms.forEach((a,b)->{
-            rooms.put(a,b.getChatItem().getController().getRoom());
+
+    public static HashMap<String, Room> parseToList() {
+        HashMap<String, Room> rooms = new HashMap<>();
+        Info.rooms.forEach((a, b) -> {
+            rooms.put(a, b.getChatItem().getController().getRoom());
         });
         return rooms;
     }
