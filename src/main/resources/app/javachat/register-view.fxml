@@ -74,6 +74,11 @@
          </Button>
       </children>
    </HBox>
+   <Label prefHeight="25.0" prefWidth="287.0" styleClass="textColor" text="Max size 100KB">
+      <font>
+         <Font size="16.0" />
+      </font>
+   </Label>
    <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="318.0">
       <children>
          <Button fx:id="goLoginButton" alignment="CENTER" mnemonicParsing="false" styleClass="transparentBackGround" stylesheets="@darkMode-style.css" text="Have an account? Login" textFill="#0563ff">

@@ -176,4 +176,9 @@ public class MainController {
         Platform.runLater(() -> lateralMenu.getChildren().add(leftChatItem));
     }
 
+    public void exit() {
+        serverConnection.getSocket().disconnect();
+
+        Platform.exit();
+    }
 }

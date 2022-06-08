@@ -36,7 +36,7 @@ public class ChatItemController {
     @FXML
     private Label headerUsername;
     @FXML
-    private Button btnLlamar, btnSendMessage;
+    private Button btnSendMessage;
     private Room room;
     private Stage callWindow;
     private boolean isGroupRoom;
@@ -55,10 +55,7 @@ public class ChatItemController {
         else headerUsername.setText(room.getId());
         prontMessages();
 
-//        btnLlamar.setOnMouseClicked(mouseEvent -> {
-//            if (!Info.Call.isInCall())
-//                new Thread(this::sendCallRequest).start();
-//        });
+
         btnSendMessage.setOnMouseClicked(mouseEvent -> {
             onSendMessageButton();
         });

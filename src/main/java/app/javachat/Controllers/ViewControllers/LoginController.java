@@ -57,10 +57,7 @@ public class LoginController {
                    LocalDataManager.saveUserCredentials(username,password,null);
                    closeLoginWindow();
                }else{
-                   inputUsername.setStyle("-fx-background-color: red");
-                   inputUsername.setText("");
-                   inputUsername.setStyle("-fx-text-inner-color: red;");
-                   loginButton.setText("aa");
+                   badChatInput();
                }
            }else{
                showInputError();
@@ -85,16 +82,22 @@ public class LoginController {
     private void showInputError() {
         // TODO: 18/05/2022
     }
+    private void badChatInput() {
+        inputUsername.setStyle("-fx-border-color: red");
+        inputPassword.setStyle("-fx-border-color: red");
+    }
 
     private void openRegisterWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("register-view.fxml"));
         Stage stage = new Stage();
+        stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
         RegisterController controller = new RegisterController();
         controller.setServerConnection(serverConnection);
         loader.setController(controller);
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().clear();
+
         scene.getStylesheets().add(Info.theme);
         stage.initStyle(StageStyle.UTILITY);
         stage.setScene(scene);

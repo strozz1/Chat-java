@@ -82,17 +82,18 @@ public class AddRoomController {
     }
 
     private void badGroupInput() {
-
+        messageGroup.setStyle("-fx-border-color: red");
+        nameGroup.setStyle("-fx-border-color: red");
     }
 
     private void badChatInput() {
         userChat.setStyle("-fx-border-color: red");
+        messageChat.setStyle("-fx-border-color: red");
     }
 
     private void sendChat(String username, String message) throws JSONException, JsonProcessingException {
         String type = "message";
         String id = "null";
-//        createJSONObject(message, username, type, id).var;
 
         String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(), type, id);
         MessageSenderService.sendMessage(jsonMessage);
@@ -126,6 +127,9 @@ public class AddRoomController {
     }
 
     private boolean checkChatInput(String username, String message) {
+        String user = userChat.getText();
+        String msg = messageChat.getText();
+        if(user.isEmpty() || msg.isEmpty()) return false;
         return true;
     }
 

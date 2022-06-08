@@ -11,7 +11,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.regex.Pattern;
 
 
 public class RegisterController {
@@ -48,29 +47,35 @@ public class RegisterController {
                 boolean registerSuccess = false;
                 try {
                     registerSuccess = checkRegisterCredentials(username, email, password, image);
-                    System.out.println("Register> "+registerSuccess);
+                    System.out.println("Register> " + registerSuccess);
                 } catch (SocketNotInitializedException ex) {
                     ex.printStackTrace();
                 }
                 if (registerSuccess) {
                     closeRegisterWindow();
                 } else {
-                    usernameInput.setStyle("-fx-border-color: red");
-                    usernameInput.setText("");
-                    usernameInput.setStyle("-fx-text-inner-color: red;");
+                    badChatInput();
                 }
             } else {
-                showInputError();
+                badChatInput();
             }
         });
 
         photoButton.setOnMouseClicked(e -> {
             this.image = selectFile();
+            if (image == null) badImage();
+            else photoButton.setStyle("-fx-border-color: white");
+
+
         });
 
         goLoginButton.setOnMouseClicked(e -> {
             closeRegisterWindow();
         });
+    }
+
+    private void badImage() {
+        photoButton.setStyle("-fx-border-color: red");
     }
 
     private String selectFile() {
@@ -84,13 +89,21 @@ public class RegisterController {
                 new FileChooser.ExtensionFilter("PNG", "*.png"));
 
         File file = fileChooser.showOpenDialog(stage);
-        if (file != null) {
+        System.out.println(file.length());
+        if (file != null && file.length() <= (110000)) {
             return Utils.fileToBase64(file);
         } else return null;
     }
 
-    public boolean checkRegisterCredentials(String username, String email, String password,String photo) throws SocketNotInitializedException {
-        return serverConnection.checkRegisterCredentials(username, email, password,photo);
+    private void badChatInput() {
+        usernameInput.setStyle("-fx-border-color: red");
+        passwordInput.setStyle("-fx-border-color: red");
+        emailInput.setStyle("-fx-border-color: red");
+
+    }
+
+    public boolean checkRegisterCredentials(String username, String email, String password, String photo) throws SocketNotInitializedException {
+        return serverConnection.checkRegisterCredentials(username, email, password, photo);
     }
 
     public boolean isRegisterValid(String username, String password, String email) {
@@ -100,10 +113,6 @@ public class RegisterController {
         boolean isEmailValid = (!email.isEmpty());
 
         return isEmailValid && isUsernameValid && isPasswordValid;
-    }
-
-    private void showInputError() {
-        //todo
     }
 
 
