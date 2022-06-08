@@ -10,6 +10,7 @@ import app.javachat.Utilities.Info;
 import app.javachat.Utilities.MessageSenderService;
 import app.javachat.Utilities.Utils;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -119,12 +120,18 @@ public class MainController {
 
         stage.setOnCloseRequest(close -> {
             serverConnection.getSocket().disconnect();
-
+            serverConnection.getSocket().close();
             Platform.exit();
+            System.exit(0);
         });
         stage.showAndWait();
 
 
+    }
+
+
+    public void onAddChat(MouseEvent mouseEvent) throws IOException {
+        openAddChatView();
     }
 
     public void openAddChatView() throws IOException {
@@ -141,10 +148,6 @@ public class MainController {
         stage.initStyle(StageStyle.UTILITY);
         stage.setScene(scene);
         stage.showAndWait();
-    }
-
-    public void onAddChat(MouseEvent mouseEvent) throws IOException {
-        openAddChatView();
     }
 
     public VBox getLateralMenu() {
