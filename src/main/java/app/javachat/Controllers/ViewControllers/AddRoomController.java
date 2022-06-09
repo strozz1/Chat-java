@@ -61,7 +61,7 @@ public class AddRoomController {
         });
 
         createGroup.setOnMouseClicked(e -> {
-            String[] list = (userList.getText()+Info.username.getValue()).split(",");
+            String[] list = (userList.getText()+","+Info.username.getValue()).split(",");
             String groupName = nameGroup.getText();
             boolean groupInput = checkGroupInput(list, groupName);
             if (groupInput) {
