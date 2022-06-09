@@ -50,7 +50,7 @@ public class LoginController {
                try {
                    loginSuccess = checkLoginCredentials(username, password);
                } catch (SocketNotInitializedException ex) {
-                   ex.printStackTrace();
+                   Log.error("Error login");
                }
                if (loginSuccess){
                    Info.userIsLogged=true;

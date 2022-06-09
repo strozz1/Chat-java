@@ -45,8 +45,6 @@ public class ServerConnection {
     }
 
     public boolean login(String username, String password) throws SocketNotInitializedException {
-
-
         if (socket == null) throw new SocketNotInitializedException();
         AtomicInteger code = new AtomicInteger(0);
         AtomicReference<String> image = new AtomicReference<>();
@@ -56,7 +54,9 @@ public class ServerConnection {
                 int res = Integer.parseInt((String) mapFromJson.get("code"));
                 code.set(res);
                 List<Map<String,Object>> user = (List<Map<String, Object>>) mapFromJson.get("user");
-                image.set(((String) user.get(0).get("image")));
+                Object image1 = user.get(0).get("image");
+                if(image1!=null)
+                image.set(((String) image1));
 
             });
             while (true) if (code.get() != 0) break;

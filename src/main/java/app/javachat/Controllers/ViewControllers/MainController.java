@@ -61,7 +61,7 @@ public class MainController {
 
     private void putUserImage() {
         try {
-            if (Info.image != null) {
+            if (Info.image != null && !Info.image.equals("null")) {
                 Image image = Utils.base64ToImage(Info.image);
                 circle.setFill(new ImagePattern(image));
                 circle.setEffect(new DropShadow(25d, 0d, 0d, Color.GRAY));
