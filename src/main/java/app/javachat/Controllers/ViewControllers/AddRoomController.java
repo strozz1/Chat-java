@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import static app.javachat.Utilities.JSONBuilder.parseMessageToJSON;
 
 
@@ -25,7 +27,7 @@ public class AddRoomController {
     private ServerConnection serverConnection;
     private MainController mainController;
     @FXML
-    private TextField userChat, messageChat, nameGroup, userList, messageGroup;
+    private TextField userChat, messageChat, nameGroup, userList;
 
     @FXML
     private Button addChat, createGroup;
@@ -59,12 +61,11 @@ public class AddRoomController {
         });
 
         createGroup.setOnMouseClicked(e -> {
-            String[] list = userList.getText().split(",");
-            String message = messageGroup.getText();
+            String[] list = (userList.getText()+Info.username.getValue()).split(",");
             String groupName = nameGroup.getText();
-            boolean groupInput = checkGroupInput(list, message, groupName);
+            boolean groupInput = checkGroupInput(list, groupName);
             if (groupInput) {
-
+                MessageSenderService.sendRoomCreation(groupName,list);
                 closeWindow(e);
             } else {
                 badGroupInput();
@@ -82,8 +83,17 @@ public class AddRoomController {
     }
 
     private void badGroupInput() {
-        messageGroup.setStyle("-fx-border-color: red");
         nameGroup.setStyle("-fx-border-color: red");
+        userList.setStyle("-fx-border-color: red");
+    }
+    private void sendMessageToUsers(List<String> userList, String message, String id) {
+        // add user sender to list before this
+        userList.remove(Info.username.getValue());
+        for (String user : userList) {
+            String json = parseMessageToJSON(message, user, Info.username.getValue(), "room-message", id);
+            MessageSenderService.sendMessage(json);
+        }
+
     }
 
     private void badChatInput() {
@@ -133,8 +143,8 @@ public class AddRoomController {
         return true;
     }
 
-    private boolean checkGroupInput(String[] list, String message, String groupName) {
-        return false;
+    private boolean checkGroupInput(String[] list, String groupName) {
+        return list.length > 0 && !groupName.isEmpty();
     }
 
     private void closeWindow(Event event) {

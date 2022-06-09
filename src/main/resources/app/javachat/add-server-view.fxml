@@ -86,16 +86,7 @@
                   <TextField fx:id="userList" promptText="Separated by a coma" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="200.0">
-               <children>
-                  <Label styleClass="textColor" text="Message">
-                     <HBox.margin>
-                        <Insets right="12.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="messageGroup"  />
-               </children>
-            </HBox>
+
             <Button fx:id="createGroup" mnemonicParsing="false"  prefHeight="25.0" prefWidth="90.0" styleClass="addButton" text="Create">
                <VBox.margin>
                   <Insets left="100.0" />

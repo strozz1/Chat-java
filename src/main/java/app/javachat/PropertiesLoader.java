@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Contains all necessary properties for de application services.
  */
 public class PropertiesLoader {
-    private static File propertiesFile = new File("src/main/java/app/javachat/application.properties");
+    private static File propertiesFile = new File("C:\\Users\\triss\\MensajeriaApp\\application.properties");
     private static HashMap<String, String> propertiesMap = new HashMap<>();
 
     static {
