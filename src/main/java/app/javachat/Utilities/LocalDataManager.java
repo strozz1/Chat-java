@@ -25,13 +25,18 @@ public class LocalDataManager {
 
 
     private static final String CRED_NAME = "credentials.conf";
-    private static final String APP_FOLDER = System.getProperty("user.home");
+    public static String APP_FOLDER = "";
     public static final Path userFolder = Paths.get(APP_FOLDER).resolve(APP_NAME);
     private static final Path userCredentialsFile = userFolder.resolve(CRED_NAME);
 
     public static void saveState() {
-        Log.show("Saving user data to local store", "LocalDataManager");
-        saveUserCredentials(Info.username.getValue(), Info.getPassword(), new Container(Info.rooms));
+        try {
+
+            Log.show("Saving user data to local store", "LocalDataManager");
+            saveUserCredentials(Info.username.getValue(), Info.getPassword(), new Container(Info.rooms));
+        } catch (Exception e) {
+
+        }
     }
 
 
@@ -63,11 +68,8 @@ public class LocalDataManager {
 
     }
 
-    private static void getRooms(HashMap<String, LeftChatItem> rooms) {
 
-    }
-
-    public static void saveUserCredentials(String username, String password, Object o) {
+    public static void saveUserCredentials(String username, String password, Object o){
         try {
             createFiles();
             Properties properties = new Properties();
@@ -79,8 +81,8 @@ public class LocalDataManager {
             OutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(userCredentialsFile, CREATE, TRUNCATE_EXISTING));
             properties.store(outputStream, "comment");
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch (Exception e ){
+
         }
         Info.setUsername(username);
         Info.setPassword(password);

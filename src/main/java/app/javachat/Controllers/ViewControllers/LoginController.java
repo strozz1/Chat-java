@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
@@ -31,7 +32,7 @@ public class LoginController {
     @FXML
     private TextField inputUsername;
     @FXML
-    private TextField inputPassword;
+    private PasswordField inputPassword;
 
     public LoginController() {
 
@@ -54,7 +55,11 @@ public class LoginController {
                }
                if (loginSuccess){
                    Info.userIsLogged=true;
-                   LocalDataManager.saveUserCredentials(username,password,null);
+                   try {
+                       LocalDataManager.saveUserCredentials(username,password,null);
+                       } catch (Exception ex) {
+
+                   }
                    closeLoginWindow();
                }else{
                    badChatInput();

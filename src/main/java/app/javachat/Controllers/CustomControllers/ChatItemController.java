@@ -70,14 +70,14 @@ public class ChatItemController {
 
     private void prontMessages() {
         room.getMessages().forEach(hash -> {
-            String sender = (String) hash.get("sender");
+            HashMap sender = (HashMap) hash.get("content");
+            String sender1 = (String) sender.get("sender");
             boolean isMine = false;
-            if (sender.equals(Info.username.getValue())) isMine = true;
-            chatBox.getChildren().add(new MessageItem(new Message((String) hash.get("content"), sender, "ahora"), isMine));
+            if (sender1.equals(Info.username.getValue())) isMine = true;
+            chatBox.getChildren().add(new MessageItem(new Message((String) sender.get("content"), sender1, "ahora"), isMine));
         });
 
     }
-
 
 
     public Room getRoom() {
@@ -108,11 +108,24 @@ public class ChatItemController {
 
     private void sendMessageToServer(String message, String username) {
         Message msg = new Message(message, Info.username.getValue(), LocalDateTime.now().toString());
-        Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(msg, true)));
+//        Platform.runLater(() -> chatBox.getChildren().add(new MessageItem(msg, true)));
+
         String type = (isGroupRoom ? "room-message" : "message");
         String id = (isGroupRoom ? room.getId() : "null");
         String jsonMessage = parseMessageToJSON(message, username, Info.username.getValue(), type, id);
         MessageSenderService.sendMessage(jsonMessage);
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            JSONObject content = new JSONObject();
+            jsonObject.put("content", content);
+            jsonObject.put("content", content);
+            content.put("sender",msg.getSender());
+            content.put("content",msg.getContent());
+            addMessage(jsonObject,true);
+        } catch (JSONException | JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
 

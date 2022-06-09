@@ -7,10 +7,10 @@ import app.javachat.*;
 import app.javachat.Models.GroupRoom;
 import app.javachat.Models.Room;
 import app.javachat.Utilities.Info;
+import app.javachat.Utilities.LocalDataManager;
 import app.javachat.Utilities.MessageSenderService;
 import app.javachat.Utilities.Utils;
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -84,7 +84,6 @@ public class MainController {
         String password = Info.getPassword();
         if (user != null && password != null) {
             login = serverConnection.login(user, password);
-
         }
         return login;
 

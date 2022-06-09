@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -18,8 +19,10 @@ public class MainApplication extends Application {
     private Stage stage;
     private BorderPane root;
 
+    public static void main(String[] args) {
 
-    public static void main(String[] args) {launch();}
+        launch();
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -45,6 +48,7 @@ public class MainApplication extends Application {
             System.exit(0);
 
         });
+
     }
 
     private void setTheme() {
@@ -64,6 +68,8 @@ public class MainApplication extends Application {
     private void setStage() {
         Scene scene = new Scene(root, 1400, 730);
         stage.setTitle("Chat");
+
+        stage.getIcons().add(new Image("file:src/main/resources/app/javachat/images/logo.png"));
         stage.setScene(scene);
         stage.setMinWidth(1000);
         stage.setMinHeight(650);
